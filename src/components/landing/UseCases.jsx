@@ -7,8 +7,9 @@ export default function UseCases() {
     <section id="use-cases" className="relative py-16 sm:py-24 border-t border-border bg-light">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            Cocok Untuk
+<span className="text-xs font-semibold uppercase tracking-widest text-slate-800">
+  Cocok Untuk
+</span>
           </span>
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-light-foreground">
             Laptop buat segala aktivitasmu
