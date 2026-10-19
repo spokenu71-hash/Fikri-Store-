@@ -79,13 +79,12 @@ export const PRODUCTS = [
 ];
 
 export const USE_CASES = [
-  {
-    index: "01",
-    title: "Kuliah",
-    desc: "Tugas, presentasi, multitasking.",
-    image:
-      "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/043cb243d_generated_image.png",
-  },
+{
+  index: "01",
+  title: "Kuliah",
+  desc: "Tugas, presentasi, multitasking.",
+  image: "/images/kuliah-niqab-belakang.jpg",
+},
   {
     index: "02",
     title: "Kerja",
@@ -101,12 +100,11 @@ export const USE_CASES = [
       "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/3399fede3_generated_image.png",
   },
   {
-    index: "04",
-    title: "Gaming Ringan",
-    desc: "Go, Valorant, Minecraft, dan lainnya.",
-    image:
-      "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/c14aeae85_generated_image.png",
-  },
+  index: "04",
+  title: "Gaming Ringan",
+  desc: "Go, Valorant, Minecraft, dan lainnya.",
+  image: "/images/gaming-pria.jpg",
+},
 ];
 
 export const VALUE_PROPS = [
@@ -114,11 +112,6 @@ export const VALUE_PROPS = [
     icon: ShieldCheck,
     title: "Unit pilihan",
     desc: "Tiap unit dicek dan difoto pakai kondisi aslinya sebelum ditawarkan.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Garansi opsional",
-    desc: "Sebagian unit tersedia garansi. Tanya via WhatsApp buat detail tiap unit.",
   },
   {
     icon: Gift,
