@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRight, CheckCircle2, ShieldCheck, Truck, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, Truck, MessageCircle } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 
@@ -8,7 +8,6 @@ const HERO_IMG =
 
 const FEATURES = [
   { icon: CheckCircle2, label: "Unit Dicek Sebelum Kirim" },
-  { icon: ShieldCheck, label: "Garansi Opsional" },
   { icon: Truck, label: "Pengiriman Seluruh Indonesia" },
   { icon: MessageCircle, label: "Konsultasi Via WhatsApp" },
 ];
@@ -71,7 +70,7 @@ export default function Hero() {
         </div>
 
         {/* Features row */}
-        <div className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {FEATURES.map((f) => (
             <div
               key={f.label}
