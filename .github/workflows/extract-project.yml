@@ -18,8 +18,7 @@ jobs:
         run: |
           mkdir -p /tmp/fikri-project
           unzip -q fikri-export.zip -d /tmp/fikri-project
-          cp -R /tmp/fikri-project/fikri-export/. .
-          rm -rf src node_modules dist
+                    cp -R /tmp/fikri-project/fikri-export/. .
 
       - name: Commit project files
         run: |
