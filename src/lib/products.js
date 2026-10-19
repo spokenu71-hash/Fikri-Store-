@@ -135,10 +135,6 @@ export const FAQS = [
     a: "Kami pakai kisaran harga supaya fleksibel mengikuti kondisi tiap unit. Harga pasti dan kemungkinan nego bisa langsung ditanya via WhatsApp, kami kasih info real-time.",
   },
   {
-    q: "Apakah ada garansi?",
-    a: "Sebagian unit ada garansi (misal ThinkPad L13 garansi 1 bulan). Detail garansi tiap unit beda-beda dan ditulis di deskripsi produk. Konfirmasi via WhatsApp ya.",
-  },
-  {
     q: "Bisa minta foto atau video laptop?",
     a: "Bisa banget. Sebagian unit sudah ada foto asli di katalog. Untuk unit yang belum ada foto atau mau minta video kondisi, tinggal chat WhatsApp, kami kirimkan.",
   },
