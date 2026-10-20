@@ -1,0 +1,458 @@
+
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { supabase, supabaseConfigured } from "../lib/supabase";
+import {
+  ArrowLeft,
+  LogIn,
+  LogOut,
+  Plus,
+  Pencil,
+  Trash2,
+  X,
+} from "lucide-react";
+
+const emptyProduct = {
+  name: "",
+  price: "",
+  description: "",
+  category: "kuliah-kerja",
+  stock: 1,
+  image_url: "",
+};
+
+const categories = [
+  ["kuliah-kerja", "Kuliah & Kerja"],
+  ["performa", "Performa"],
+  ["desain-kreatif", "Desain & Kreatif"],
+];
+
+export default function Admin() {
+  const [session, setSession] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [products, setProducts] = useState([]);
+  const [form, setForm] = useState(emptyProduct);
+  const [editingId, setEditingId] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState("");
+
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+
+    supabase.auth.getSession().then(({ data, error }) => {
+      if (error) setNotice(error.message);
+      else setSession(data.session);
+    });
+
+    const { data } = supabase.auth.onAuthStateChange(
+      (_event, nextSession) => {
+        setSession(nextSession);
+      }
+    );
+
+    return () => data.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (session) loadProducts();
+  }, [session]);
+
+  async function loadProducts() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      setNotice(error.message);
+    } else {
+      setProducts(data || []);
+    }
+  }
+
+  async function signIn(e) {
+    e.preventDefault();
+    setBusy(true);
+    setNotice("");
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      setNotice(error.message || "Login gagal.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function signOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      setNotice(error.message);
+      return;
+    }
+
+    setProducts([]);
+    resetForm();
+    setNotice("");
+  }
+
+  function startEdit(product) {
+    setEditingId(product.id);
+    setForm({
+      name: product.name || "",
+      price: String(product.price ?? ""),
+      description: product.description || "",
+      category: product.category || "kuliah-kerja",
+      stock: product.stock ?? 0,
+      image_url: product.image_url || "",
+    });
+    setImageFile(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function resetForm() {
+    setForm(emptyProduct);
+    setEditingId(null);
+    setImageFile(null);
+  }
+
+  async function saveProduct(e) {
+    e.preventDefault();
+    setBusy(true);
+    setNotice("");
+
+    try {
+      let image_url = form.image_url;
+
+      if (imageFile) {
+        const extension =
+          imageFile.name.split(".").pop()?.toLowerCase() || "jpg";
+
+        const path = `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}.${extension}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from("product-images")
+          .upload(path, imageFile, {
+            upsert: false,
+            contentType: imageFile.type || undefined,
+          });
+
+        if (uploadError) throw uploadError;
+
+        const { data } = supabase.storage
+          .from("product-images")
+          .getPublicUrl(path);
+
+        image_url = data.publicUrl;
+      }
+
+      const payload = {
+        name: form.name.trim(),
+        price: Number(form.price),
+        description: form.description.trim(),
+        category: form.category,
+        stock: Number(form.stock),
+        image_url,
+      };
+
+      const result = editingId
+        ? await supabase
+            .from("products")
+            .update(payload)
+            .eq("id", editingId)
+        : await supabase.from("products").insert(payload);
+
+      if (result.error) throw result.error;
+
+      setNotice(
+        editingId
+          ? "Produk berhasil diperbarui."
+          : "Produk berhasil ditambahkan."
+      );
+
+      resetForm();
+      await loadProducts();
+    } catch (error) {
+      setNotice(error.message || "Gagal menyimpan produk.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function deleteProduct(id) {
+    if (!window.confirm("Yakin ingin menghapus produk ini?")) return;
+
+    setNotice("");
+
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      setNotice(error.message);
+    } else {
+      setNotice("Produk berhasil dihapus.");
+      await loadProducts();
+    }
+  }
+
+  if (!supabaseConfigured) {
+    return (
+      <main className="admin-shell">
+        <section className="admin-card">
+          <h1>Konfigurasi belum lengkap</h1>
+          <p>
+            Periksa variabel VITE_SUPABASE_URL dan
+            VITE_SUPABASE_ANON_KEY pada pengaturan Netlify.
+          </p>
+          <Link to="/">Kembali ke toko</Link>
+        </section>
+      </main>
+    );
+  }
+
+  if (!session) {
+    return (
+      <main className="admin-shell">
+        <section className="admin-card">
+          <Link className="admin-back" to="/">
+            <ArrowLeft size={17} /> Kembali ke toko
+          </Link>
+
+          <div className="admin-kicker">FIKRI STORE · ADMIN</div>
+          <h1>Masuk Admin</h1>
+          <p>Masuk menggunakan akun admin Supabase yang terdaftar.</p>
+
+          <form onSubmit={signIn} className="admin-form">
+            <label>
+              Email
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="username"
+                required
+              />
+            </label>
+
+            <label>
+              Password
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
+                required
+              />
+            </label>
+
+            <button className="admin-primary" disabled={busy}>
+              <LogIn size={17} />
+              {busy ? "Memproses..." : "Masuk"}
+            </button>
+          </form>
+
+          {notice && <p className="admin-notice">{notice}</p>}
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="admin-shell admin-wide">
+      <header className="admin-top">
+        <div>
+          <div className="admin-kicker">FIKRI STORE · PANEL ADMIN</div>
+          <h1>Kelola Produk</h1>
+        </div>
+
+        <div className="admin-actions">
+          <Link to="/" className="admin-secondary">
+            <ArrowLeft size={16} /> Toko
+          </Link>
+
+          <button className="admin-secondary" onClick={signOut}>
+            <LogOut size={16} /> Keluar
+          </button>
+        </div>
+      </header>
+
+      {notice && <p className="admin-notice">{notice}</p>}
+
+      <section className="admin-card">
+        <h2>{editingId ? "Edit Produk" : "Tambah Produk"}</h2>
+
+        <form className="admin-form admin-grid" onSubmit={saveProduct}>
+          <label>
+            Nama laptop
+            <input
+              value={form.name}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
+              required
+            />
+          </label>
+
+          <label>
+            Harga (rupiah)
+            <input
+              type="number"
+              min="0"
+              value={form.price}
+              onChange={(e) =>
+                setForm({ ...form, price: e.target.value })
+              }
+              required
+            />
+          </label>
+
+          <label>
+            Kategori
+            <select
+              value={form.category}
+              onChange={(e) =>
+                setForm({ ...form, category: e.target.value })
+              }
+            >
+              {categories.map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Stok
+            <input
+              type="number"
+              min="0"
+              value={form.stock}
+              onChange={(e) =>
+                setForm({ ...form, stock: e.target.value })
+              }
+              required
+            />
+          </label>
+
+          <label className="admin-full">
+            Deskripsi
+            <textarea
+              rows="3"
+              value={form.description}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+            />
+          </label>
+
+          <label className="admin-full">
+            Foto produk
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setImageFile(e.target.files?.[0] || null)
+              }
+            />
+            <small>
+              Foto baru akan diunggah ke Supabase Storage.
+            </small>
+          </label>
+
+          <div className="admin-form-buttons">
+            <button className="admin-primary" disabled={busy}>
+              <Plus size={17} />
+              {busy
+                ? "Menyimpan..."
+                : editingId
+                  ? "Simpan Perubahan"
+                  : "Tambah Produk"}
+            </button>
+
+            {editingId && (
+              <button
+                type="button"
+                className="admin-secondary"
+                onClick={resetForm}
+              >
+                <X size={16} /> Batal
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-list-heading">
+          <h2>Daftar Produk ({products.length})</h2>
+          <button
+            className="admin-secondary"
+            onClick={loadProducts}
+          >
+            Muat Ulang
+          </button>
+        </div>
+
+        {products.length === 0 ? (
+          <p>Belum ada produk di database.</p>
+        ) : (
+          <div className="admin-product-list">
+            {products.map((product) => (
+              <article className="admin-product" key={product.id}>
+                {product.image_url ? (
+                  <img src={product.image_url} alt={product.name} />
+                ) : (
+                  <div className="admin-no-image">Tanpa foto</div>
+                )}
+
+                <div className="admin-product-info">
+                  <strong>{product.name}</strong>
+                  <span>
+                    Rp{" "}
+                    {Number(product.price || 0).toLocaleString("id-ID")}
+                    {" · "}Stok {product.stock}
+                  </span>
+                  <small>
+                    {categories.find(
+                      ([value]) => value === product.category
+                    )?.[1] || product.category}
+                  </small>
+                  <p>{product.description}</p>
+                </div>
+
+                <div className="admin-product-buttons">
+                  <button
+                    aria-label={`Edit ${product.name}`}
+                    onClick={() => startEdit(product)}
+                  >
+                    <Pencil size={17} />
+                  </button>
+
+                  <button
+                    aria-label={`Hapus ${product.name}`}
+                    onClick={() => deleteProduct(product.id)}
+                  >
+                    <Trash2 size={17} />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
+  );
+}
