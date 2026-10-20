@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { supabase, supabaseConfigured } from "../lib/supabase";
-
+import { supabase, supabaseConfigured } from "../lib/supabase.js";
 export default function Admin() {
 const [session, setSession] = useState(null);
 const [email, setEmail] = useState("");
