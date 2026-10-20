@@ -1,18 +1,33 @@
+
 <!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#08090D" />
-    <meta name="description" content="Fikri Store — jual laptop second kece buat kuliah, kerja, sampai desain. Budget tetap aman." />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <title>Fikri Store — Laptop kece, budget tetap aman</title>
+    <title>Fikri Store</title>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <body style="margin:0;background:#08090D;color:white;font-family:Arial,sans-serif">
+    <div id="root" style="padding:24px">
+      Fikri Store sedang memuat...
+    </div>
+
+    <script type="module">
+      import("/src/main.jsx").catch((error) => {
+        const root = document.getElementById("root");
+        root.innerHTML = "";
+
+        const title = document.createElement("h2");
+        title.textContent = "Fikri Store gagal memuat aplikasi";
+        title.style.color = "#d4ff00";
+
+        const detail = document.createElement("pre");
+        detail.style.cssText =
+          "white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;background:#202127";
+
+        detail.textContent = String(error?.stack || error?.message || error);
+        root.append(title, detail);
+      });
+    </script>
   </body>
 </html>
