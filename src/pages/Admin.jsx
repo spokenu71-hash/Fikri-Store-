@@ -216,3 +216,23 @@ borderTop: "1px solid #e5eaf2",
 padding: "12px 0",
 },
 };
+useEffect(() => {
+  if (!supabaseConfigured || !supabase) return;
+
+  supabase.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      setNotice(error.message);
+      return;
+    }
+
+    setSession(data.session);
+  });
+
+  const { data } = supabase.auth.onAuthStateChange(
+    (_event, nextSession) => {
+      setSession(nextSession);
+    }
+  );
+
+  return () => data.subscription.unsubscribe();
+}, []);
