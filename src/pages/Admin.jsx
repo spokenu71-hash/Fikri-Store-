@@ -24,44 +24,32 @@ const CATEGORIES = [
 
 function formatPrice(value) {
   const text = String(value ?? "").trim();
-  if (!text) return "Tanya harga";
 
-  if (/[a-zA-Z]/.test(text) || /Rp/i.test(text)) {
-    return text;
-  }
+  if (!text) return "Tanya harga";
+  if (/[a-zA-Z]/.test(text) || /Rp/i.test(text)) return text;
 
   const digits = text.replace(/\D/g, "");
-  return digits
-    ? `Rp ${Number(digits).toLocaleString("id-ID")}`
-    : text;
+  return digits ? `Rp ${Number(digits).toLocaleString("id-ID")}` : text;
 }
 
 function categoryLabel(value) {
   return (
-    CATEGORIES.find((item) => item.value === value)?.label ||
+    CATEGORIES.find((category) => category.value === value)?.label ||
     value ||
     "Tanpa kategori"
   );
 }
 
-function Notice({ notice, onClose }) {
-  if (!notice.message) return null;
-
+function StatCard({ icon, label, value, description, tone = "blue" }) {
   return (
-    <div
-      className={`ap-notice ${notice.type || "info"}`}
-      role="status"
-    >
-      <span>{notice.message}</span>
-      <button
-        type="button"
-        className="ap-notice-close"
-        aria-label="Tutup pemberitahuan"
-        onClick={onClose}
-      >
-        ×
-      </button>
-    </div>
+    <article className="ap-stat-card">
+      <div className={`ap-stat-icon ${tone}`}>{icon}</div>
+      <div className="ap-stat-content">
+        <p>{label}</p>
+        <strong>{value}</strong>
+        <span>{description}</span>
+      </div>
+    </article>
   );
 }
 
@@ -76,20 +64,13 @@ export default function Admin() {
   const [form, setForm] = useState({ ...EMPTY_FORM });
   const [editingId, setEditingId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-
   const [search, setSearch] = useState("");
   const [activeNav, setActiveNav] = useState("Dashboard");
-  const [notice, setNotice] = useState({
-    message: "",
-    type: "info",
-  });
+
+  const [notice, setNotice] = useState("");
+  const [noticeType, setNoticeType] = useState("info");
   const [loading, setLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  function showNotice(message, type = "info") {
-    setNotice({ message, type });
-  }
 
   useEffect(() => {
     if (!supabaseConfigured || !supabase) {
@@ -99,30 +80,25 @@ export default function Admin() {
 
     let mounted = true;
 
-    async function checkSession() {
-      try {
-        const { data, error } = await supabase.auth.getSession();
-
+    supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
         if (!mounted) return;
 
         if (error) {
-          showNotice(error.message, "error");
+          setNotice(error.message);
+          setNoticeType("error");
         }
 
         setSession(data?.session || null);
-      } catch (error) {
-        if (mounted) {
-          showNotice(
-            error.message || "Gagal memeriksa sesi admin.",
-            "error"
-          );
-        }
-      } finally {
-        if (mounted) setAuthReady(true);
-      }
-    }
-
-    checkSession();
+        setAuthReady(true);
+      })
+      .catch((error) => {
+        if (!mounted) return;
+        setNotice(error.message || "Gagal memeriksa sesi login.");
+        setNoticeType("error");
+        setAuthReady(true);
+      });
 
     const { data } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
@@ -137,13 +113,17 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    if (!session) {
+    if (session) {
+      loadProducts();
+    } else {
       setProducts([]);
-      return;
     }
-
-    loadProducts();
   }, [session]);
+
+  function showNotice(message, type = "info") {
+    setNotice(message);
+    setNoticeType(type);
+  }
 
   async function loadProducts() {
     if (!supabase) return;
@@ -161,7 +141,8 @@ export default function Admin() {
       setProducts(data || []);
     } catch (error) {
       showNotice(
-        `Gagal memuat produk: ${error.message}`,
+        "Gagal memuat produk: " +
+          (error.message || "Kesalahan tidak diketahui."),
         "error"
       );
     } finally {
@@ -172,40 +153,37 @@ export default function Admin() {
   async function handleLogin(event) {
     event.preventDefault();
     setLoading(true);
-    setNotice({ message: "", type: "info" });
+    showNotice("");
 
     try {
+      if (!supabase) throw new Error("Supabase belum dikonfigurasi.");
+
       if (forgot) {
         if (!email.trim()) {
-          throw new Error("Masukkan email admin.");
+          throw new Error("Masukkan email admin terlebih dahulu.");
         }
 
-        const { error } =
-          await supabase.auth.resetPasswordForEmail(
-            email.trim(),
-            { redirectTo: RESET_URL }
-          );
+        const { error } = await supabase.auth.resetPasswordForEmail(
+          email.trim(),
+          { redirectTo: RESET_URL }
+        );
 
         if (error) throw error;
 
         showNotice(
-          "Tautan reset dikirim. Periksa Inbox dan Spam.",
+          "Tautan reset password telah dikirim. Periksa Inbox dan Spam.",
           "success"
         );
       } else {
-        const { error } =
-          await supabase.auth.signInWithPassword({
-            email: email.trim(),
-            password,
-          });
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
 
         if (error) throw error;
       }
     } catch (error) {
-      showNotice(
-        error.message || "Permintaan gagal.",
-        "error"
-      );
+      showNotice(error.message || "Permintaan gagal.", "error");
     } finally {
       setLoading(false);
     }
@@ -234,10 +212,7 @@ export default function Admin() {
     });
 
     setActiveNav("Produk");
-    showNotice(
-      "Mode edit aktif. Perbarui data lalu simpan.",
-      "info"
-    );
+    showNotice("Mode edit aktif. Perbarui informasi produk lalu simpan.");
 
     document
       .getElementById("ap-product-form")
@@ -253,10 +228,7 @@ export default function Admin() {
     }
 
     if (!form.price.trim()) {
-      showNotice(
-        "Isi harga, atau tulis Hubungi kami / Gratis.",
-        "error"
-      );
+      showNotice("Isi harga, atau tulis Hubungi kami / Gratis.", "error");
       return;
     }
 
@@ -266,22 +238,19 @@ export default function Admin() {
     }
 
     setLoading(true);
-    setNotice({ message: "", type: "info" });
+    showNotice("");
 
     try {
       let imageUrl = form.image_url.trim();
 
       if (imageFile) {
-        const extension = (
-          imageFile.name.split(".").pop() || "jpg"
-        )
+        const extension = (imageFile.name.split(".").pop() || "jpg")
           .toLowerCase()
           .replace(/[^a-z0-9]/g, "");
 
-        const path =
-          `${Date.now()}-${Math.random()
-            .toString(36)
-            .slice(2)}.${extension}`;
+        const path = `${Date.now()}-${Math.random()
+          .toString(36)
+          .slice(2)}.${extension}`;
 
         const { error: uploadError } = await supabase.storage
           .from(BUCKET)
@@ -292,9 +261,8 @@ export default function Admin() {
 
         if (uploadError) throw uploadError;
 
-        imageUrl = supabase.storage
-          .from(BUCKET)
-          .getPublicUrl(path).data.publicUrl;
+        imageUrl = supabase.storage.from(BUCKET).getPublicUrl(path)
+          .data.publicUrl;
       }
 
       const payload = {
@@ -326,9 +294,8 @@ export default function Admin() {
       await loadProducts();
     } catch (error) {
       showNotice(
-        `Gagal menyimpan produk: ${
-          error.message || "Kesalahan tidak diketahui."
-        }`,
+        "Gagal menyimpan produk: " +
+          (error.message || "Kesalahan tidak diketahui."),
         "error"
       );
     } finally {
@@ -341,10 +308,10 @@ export default function Admin() {
       `Hapus produk "${product.name}"? Tindakan ini tidak bisa dibatalkan.`
     );
 
-    if (!confirmed) return;
+    if (!confirmed || !supabase) return;
 
     setLoading(true);
-    setNotice({ message: "", type: "info" });
+    showNotice("");
 
     try {
       const { error } = await supabase
@@ -360,15 +327,12 @@ export default function Admin() {
         current.filter((item) => item.id !== product.id)
       );
 
-      showNotice(
-        `Produk "${product.name}" berhasil dihapus.`,
-        "success"
-      );
+      showNotice(`Produk "${product.name}" berhasil dihapus.`, "success");
 
       await loadProducts();
     } catch (error) {
       showNotice(
-        `Gagal menghapus produk: ${error.message}`,
+        "Gagal menghapus produk: " + (error.message || "Terjadi kesalahan."),
         "error"
       );
     } finally {
@@ -376,7 +340,7 @@ export default function Admin() {
     }
   }
 
-  const filtered = useMemo(() => {
+  const filteredProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     if (!query) return products;
@@ -387,9 +351,8 @@ export default function Admin() {
         product.price,
         product.category,
         product.description,
-      ].some((value) =>
-        String(value || "").toLowerCase().includes(query)
-      )
+        product.stock,
+      ].some((value) => String(value ?? "").toLowerCase().includes(query))
     );
   }, [products, search]);
 
@@ -402,41 +365,27 @@ export default function Admin() {
     0
   );
 
-  function navigateTo(name) {
-    setActiveNav(name);
-    setSidebarOpen(false);
+  const lowStockCount = products.filter(
+    (product) => Number(product.stock) <= 5
+  ).length;
 
-    if (name === "Dashboard") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    if (name === "Produk") {
-      document
-        .getElementById("ap-product-section")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    if (name === "Pesanan" || name === "Pengaturan") {
-      showNotice(
-        `Bagian ${name} belum tersedia pada versi ini.`,
-        "info"
-      );
-    }
-  }
+  const navItems = [
+    { name: "Dashboard", icon: "▦" },
+    { name: "Produk", icon: "◇" },
+  ];
 
   if (!supabaseConfigured || !supabase) {
     return (
-      <main className="ap-app ap-auth-page">
+      <main className="ap-auth-page">
         <section className="ap-auth-card">
           <div className="ap-brand">
             FIKRI <span>STORE.</span>
           </div>
-          <div className="ap-eyebrow">ADMINISTRATION PORTAL</div>
+          <span className="ap-eyebrow">SYSTEM CONFIGURATION</span>
           <h1>Konfigurasi Supabase</h1>
-          <p className="ap-subtitle">
-            Periksa VITE_SUPABASE_URL dan
-            VITE_SUPABASE_ANON_KEY pada environment
-            variables hosting.
+          <p>
+            Periksa VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY pada
+            environment variables hosting.
           </p>
         </section>
       </main>
@@ -445,42 +394,35 @@ export default function Admin() {
 
   if (!authReady) {
     return (
-      <main className="ap-app ap-auth-page">
-        <div className="ap-loading">
-          <span className="ap-spinner" />
-          Memeriksa sesi admin...
-        </div>
+      <main className="ap-loading-page">
+        <div className="ap-loader" />
+        <p>Menyiapkan dashboard Fikri Store...</p>
       </main>
     );
   }
 
   if (!session) {
     return (
-      <main className="ap-app ap-auth-page">
+      <main className="ap-auth-page">
         <section className="ap-auth-card">
           <div className="ap-brand">
             FIKRI <span>STORE.</span>
           </div>
 
-          <div className="ap-eyebrow">
-            ADMINISTRATION PORTAL
-          </div>
+          <span className="ap-eyebrow">ADMINISTRATION PORTAL</span>
 
-          <h1>
-            {forgot ? "Reset password" : "Selamat datang!"}
-          </h1>
+          <h1>{forgot ? "Reset password" : "Selamat datang!"}</h1>
 
-          <p className="ap-subtitle">
+          <p>
             {forgot
-              ? "Masukkan email admin untuk menerima tautan reset."
-              : "Masuk untuk mengelola katalog Fikri Store."}
+              ? "Masukkan email admin untuk menerima tautan reset password."
+              : "Masuk untuk mengelola katalog produk Fikri Store."}
           </p>
 
           <form onSubmit={handleLogin}>
             <label className="ap-label" htmlFor="ap-email">
               Email admin
             </label>
-
             <input
               id="ap-email"
               className="ap-input"
@@ -494,13 +436,9 @@ export default function Admin() {
 
             {!forgot && (
               <>
-                <label
-                  className="ap-label"
-                  htmlFor="ap-password"
-                >
+                <label className="ap-label" htmlFor="ap-password">
                   Password
                 </label>
-
                 <input
                   id="ap-password"
                   className="ap-input"
@@ -508,94 +446,102 @@ export default function Admin() {
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={(event) =>
-                    setPassword(event.target.value)
-                  }
+                  onChange={(event) => setPassword(event.target.value)}
                   placeholder="Masukkan password"
                 />
               </>
             )}
 
             <button
-              className="ap-button ap-button-primary ap-full"
-              type="submit"
+              className="ap-button ap-button-primary ap-full-button"
               disabled={loading}
             >
               {loading
                 ? "Memproses..."
                 : forgot
-                  ? "Kirim tautan reset"
+                  ? "Kirim tautan reset →"
                   : "Masuk ke dashboard →"}
             </button>
           </form>
 
           <button
             type="button"
-            className="ap-button ap-button-secondary ap-full ap-forgot"
+            className="ap-button ap-button-secondary ap-full-button"
             onClick={() => {
               setForgot(!forgot);
-              setNotice({ message: "", type: "info" });
+              showNotice("");
             }}
           >
             {forgot ? "← Kembali ke login" : "Lupa password?"}
           </button>
 
-          <Notice
-            notice={notice}
-            onClose={() => setNotice({ message: "", type: "info" })}
-          />
+          {notice && (
+            <div
+              className={`ap-notice ${noticeType}`}
+              role="status"
+              aria-live="polite"
+            >
+              {notice}
+            </div>
+          )}
         </section>
       </main>
     );
   }
 
-  const navItems = [
-    { name: "Dashboard", icon: "▦" },
-    { name: "Produk", icon: "◇" },
-    { name: "Pesanan", icon: "▤" },
-    { name: "Pengaturan", icon: "⚙" },
-  ];
-
   return (
     <main className="ap-app">
-      <aside
-        className={`ap-sidebar ${sidebarOpen ? "ap-sidebar-open" : ""}`}
-      >
-        <Link to="/" className="ap-brand ap-brand-sidebar">
+      <aside className="ap-sidebar">
+        <Link to="/" className="ap-brand ap-sidebar-brand">
           FIKRI <span>STORE.</span>
         </Link>
 
-        <div className="ap-sidebar-caption">
-          WORKSPACE
-        </div>
+        <div className="ap-sidebar-caption">WORKSPACE</div>
 
         <nav className="ap-nav" aria-label="Navigasi admin">
           {navItems.map((item) => (
             <button
-              key={item.name}
               type="button"
-              className={
-                activeNav === item.name
-                  ? "ap-nav-item active"
-                  : "ap-nav-item"
-              }
-              onClick={() => navigateTo(item.name)}
+              key={item.name}
+              className={`ap-nav-item ${
+                activeNav === item.name ? "active" : ""
+              }`}
+              onClick={() => {
+                setActiveNav(item.name);
+
+                if (item.name === "Dashboard") {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                } else {
+                  document
+                    .getElementById("ap-product-form")
+                    ?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                }
+              }}
             >
               <span className="ap-nav-icon">{item.icon}</span>
-              <span>{item.name}</span>
+              {item.name}
               {item.name === "Produk" && (
-                <span className="ap-nav-count">
-                  {products.length}
-                </span>
+                <span className="ap-nav-count">{products.length}</span>
               )}
             </button>
           ))}
         </nav>
 
         <div className="ap-sidebar-bottom">
-          <div className="ap-account">
+          <div className="ap-sidebar-note">
+            <span className="ap-status-dot" />
+            <div>
+              <strong>Sistem terhubung</strong>
+              <small>Database produk aktif</small>
+            </div>
+          </div>
+
+          <div className="ap-profile">
             <div className="ap-avatar">F</div>
-            <div className="ap-account-info">
+            <div className="ap-profile-info">
               <strong>Fikri Store</strong>
               <span>{session.user.email}</span>
             </div>
@@ -606,53 +552,23 @@ export default function Admin() {
             className="ap-logout"
             onClick={() => supabase.auth.signOut()}
           >
-            <span>↪</span> Keluar dari akun
+            <span>↗</span> Keluar dari akun
           </button>
         </div>
       </aside>
 
-      {sidebarOpen && (
-        <button
-          type="button"
-          className="ap-overlay"
-          aria-label="Tutup menu"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
       <section className="ap-main">
         <header className="ap-topbar">
-          <button
-            type="button"
-            className="ap-menu-toggle"
-            aria-label="Buka menu"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            ☰
-          </button>
-
-          <div className="ap-search">
-            <span>⌕</span>
-            <input
-              aria-label="Cari produk"
-              placeholder="Cari produk, kategori, atau harga..."
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            {search && (
-              <button
-                type="button"
-                aria-label="Hapus pencarian"
-                onClick={() => setSearch("")}
-              >
-                ×
-              </button>
-            )}
+          <div className="ap-breadcrumb">
+            <span>Workspace</span>
+            <span className="ap-breadcrumb-separator">/</span>
+            <strong>{activeNav}</strong>
           </div>
 
-          <div className="ap-topbar-right">
-            <span className="ap-status">
-              <i /> Sistem aktif
+          <div className="ap-topbar-actions">
+            <span className="ap-live-indicator">
+              <span className="ap-status-dot" />
+              Live workspace
             </span>
             <Link to="/" className="ap-website-link">
               Lihat website <span>↗</span>
@@ -661,111 +577,144 @@ export default function Admin() {
         </header>
 
         <div className="ap-content">
-          <Notice
-            notice={notice}
-            onClose={() =>
-              setNotice({ message: "", type: "info" })
-            }
-          />
-
           <section className="ap-welcome">
-            <div>
-              <div className="ap-eyebrow">
-                OVERVIEW / FIKRI STORE
-              </div>
+            <div className="ap-welcome-copy">
+              <span className="ap-eyebrow">YOUR STORE OVERVIEW</span>
               <h1>Selamat datang, Fikri</h1>
               <p>
-                Kelola toko Anda dengan mudah dan pantau
-                perkembangan katalog dalam satu tempat.
+                Kelola katalog produk dan pantau inventaris Fikri Store
+                dalam satu tempat.
               </p>
             </div>
 
             <div className="ap-welcome-mark" aria-hidden="true">
-              <div className="ap-mark-inner">F.</div>
+              <div className="ap-mark-orbit" />
+              <div className="ap-mark-core">F.</div>
+              <span className="ap-mark-spark">✦</span>
             </div>
           </section>
 
-          <section className="ap-stats" aria-label="Statistik produk">
-            <article className="ap-stat-card">
-              <div className="ap-stat-top">
-                <span>Total Produk</span>
-                <span className="ap-stat-icon blue">◇</span>
-              </div>
-              <div className="ap-stat-value">
-                {productsLoading ? "—" : products.length}
-              </div>
-              <div className="ap-stat-foot">
-                Produk dalam katalog
-              </div>
-            </article>
+          {notice && (
+            <div
+              className={`ap-notice ${noticeType}`}
+              role="status"
+              aria-live="polite"
+            >
+              <span>{noticeType === "error" ? "!" : "✓"}</span>
+              <p>{notice}</p>
+              <button
+                type="button"
+                aria-label="Tutup pemberitahuan"
+                onClick={() => setNotice("")}
+              >
+                ×
+              </button>
+            </div>
+          )}
 
-            <article className="ap-stat-card">
-              <div className="ap-stat-top">
-                <span>Kategori</span>
-                <span className="ap-stat-icon violet">▦</span>
-              </div>
-              <div className="ap-stat-value">
-                {productsLoading ? "—" : categoryCount}
-              </div>
-              <div className="ap-stat-foot">
-                Kategori yang digunakan
-              </div>
-            </article>
+          <section className="ap-section-heading">
+            <div>
+              <span className="ap-eyebrow">AT A GLANCE</span>
+              <h2>Ringkasan toko</h2>
+            </div>
+            <span className="ap-data-label">
+              <span className="ap-status-dot" />
+              Data produk aktual
+            </span>
+          </section>
 
-            <article className="ap-stat-card">
-              <div className="ap-stat-top">
-                <span>Total Stok</span>
-                <span className="ap-stat-icon green">↗</span>
-              </div>
-              <div className="ap-stat-value">
-                {productsLoading
-                  ? "—"
-                  : totalStock.toLocaleString("id-ID")}
-              </div>
-              <div className="ap-stat-foot">
-                Jumlah stok seluruh produk
-              </div>
-            </article>
+          <section className="ap-stats-grid">
+            <StatCard
+              icon="◇"
+              label="Total produk"
+              value={products.length}
+              description="Produk dalam katalog"
+              tone="blue"
+            />
+            <StatCard
+              icon="▤"
+              label="Kategori"
+              value={categoryCount}
+              description="Kategori yang digunakan"
+              tone="purple"
+            />
+            <StatCard
+              icon="▥"
+              label="Total stok"
+              value={totalStock.toLocaleString("id-ID")}
+              description="Unit seluruh produk"
+              tone="mint"
+            />
+            <StatCard
+              icon="!"
+              label="Stok menipis"
+              value={lowStockCount}
+              description="Produk dengan stok ≤ 5"
+              tone="amber"
+            />
+          </section>
 
-            <article className="ap-stat-card">
-              <div className="ap-stat-top">
-                <span>Status Sistem</span>
-                <span className="ap-stat-icon mint">✓</span>
-              </div>
-              <div className="ap-stat-value ap-online">
-                Online
-              </div>
-              <div className="ap-stat-foot">
-                Panel administrasi aktif
-              </div>
-            </article>
+          <section className="ap-management-heading" id="ap-products">
+            <div>
+              <span className="ap-eyebrow">CATALOG MANAGEMENT</span>
+              <h2>Manajemen produk</h2>
+              <p>
+                Tambahkan produk baru atau perbarui katalog yang sudah ada.
+              </p>
+            </div>
+            <button
+              type="button"
+              className="ap-button ap-button-primary"
+              onClick={() => {
+                resetForm();
+                setActiveNav("Produk");
+                document
+                  .getElementById("ap-product-form")
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+              }}
+            >
+              <span>＋</span> Tambah produk
+            </button>
           </section>
 
           <section className="ap-workspace">
-            <article
-              className="ap-panel ap-form-panel"
-              id="ap-product-form"
-            >
+            <article className="ap-panel ap-form-panel" id="ap-product-form">
               <div className="ap-panel-heading">
+                <div className="ap-panel-icon">✳</div>
                 <div>
-                  <div className="ap-eyebrow">
-                    PRODUCT MANAGEMENT
-                  </div>
-                  <h2>
-                    {editingId ? "Edit produk" : "Tambah produk"}
-                  </h2>
+                  <h3>{editingId ? "Edit produk" : "Tambah produk baru"}</h3>
+                  <p>
+                    {editingId
+                      ? "Perbarui informasi produk pilihanmu."
+                      : "Lengkapi informasi produk di bawah ini."}
+                  </p>
                 </div>
-                <span className="ap-heading-icon">＋</span>
               </div>
 
-              <p className="ap-panel-description">
-                Lengkapi informasi produk untuk katalog toko Anda.
-              </p>
-
               <form onSubmit={saveProduct}>
-                <label className="ap-label" htmlFor="ap-name">
+                <label className="ap-label" htmlFor="ap-product-name">
                   Nama produk <span>*</span>
                 </label>
                 <input
-                  id="ap-name"
-     
+                  id="ap-product-name"
+                  className="ap-input"
+                  value={form.name}
+                  onChange={(event) =>
+                    setForm({ ...form, name: event.target.value })
+                  }
+                  placeholder="Contoh: Laptop Pro 14"
+                  required
+                />
+
+                <div className="ap-form-row">
+                  <div>
+                    <label className="ap-label" htmlFor="ap-product-price">
+                      Harga <span>*</span>
+                    </label>
+                    <input
+                      id="ap-product-price"
+                      className="ap-input"
+ 
