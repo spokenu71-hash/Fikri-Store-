@@ -714,7 +714,295 @@ export default function Admin() {
                     <label className="ap-label" htmlFor="ap-product-price">
                       Harga <span>*</span>
                     </label>
-                    <input
-                      id="ap-product-price"
+                    
+id="ap-product-price"
                       className="ap-input"
+                      type="text"
+                      inputMode="text"
+                      value={form.price}
+                      onChange={(event) =>
+                        setForm({ ...form, price: event.target.value })
+                      }
+                      placeholder="Contoh: 3 jutaan atau 3500000"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="ap-label" htmlFor="ap-product-stock">
+                      Jumlah stok
+                    </label>
+                    <input
+                      id="ap-product-stock"
+                      className="ap-input"
+                      type="number"
+                      min="0"
+                      step="1"
+                      value={form.stock}
+                      onChange={(event) =>
+                        setForm({ ...form, stock: event.target.value })
+                      }
+                      placeholder="1"
+                    />
+                  </div>
+                </div>
+
+                <label className="ap-label" htmlFor="ap-product-category">
+                  Kategori
+                </label>
+                <select
+                  id="ap-product-category"
+                  className="ap-input ap-select"
+                  value={form.category}
+                  onChange={(event) =>
+                    setForm({ ...form, category: event.target.value })
+                  }
+                >
+                  {CATEGORIES.map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+
+                <label className="ap-label" htmlFor="ap-product-description">
+                  Deskripsi produk
+                </label>
+                <textarea
+                  id="ap-product-description"
+                  className="ap-input ap-textarea"
+                  rows="4"
+                  value={form.description}
+                  onChange={(event) =>
+                    setForm({ ...form, description: event.target.value })
+                  }
+                  placeholder="Spesifikasi, kondisi, kelengkapan, dan informasi lainnya..."
+                />
+
+                <label className="ap-label" htmlFor="ap-product-image-url">
+                  URL gambar produk
+                </label>
+                <input
+                  id="ap-product-image-url"
+                  className="ap-input"
+                  type="url"
+                  value={form.image_url}
+                  onChange={(event) =>
+                    setForm({ ...form, image_url: event.target.value })
+                  }
+                  placeholder="https://contoh.com/gambar-laptop.jpg"
+                />
+
+                <label className="ap-label" htmlFor="ap-image-file">
+                  Atau unggah gambar dari galeri
+                </label>
+                <input
+                  id="ap-image-file"
+                  className="ap-input ap-file-input"
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) =>
+                    setImageFile(event.target.files?.[0] || null)
+                  }
+                />
+
+                {imageFile && (
+                  <div className="ap-file-selected">
+                    <span>✓</span>
+                    <span>{imageFile.name}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setImageFile(null);
+                        const input = document.getElementById("ap-image-file");
+                        if (input) input.value = "";
+                      }}
+                    >
+                      Hapus pilihan
+                    </button>
+                  </div>
+                )}
+
+                {form.image_url && !imageFile && (
+                  <div className="ap-image-preview">
+                    <img
+                      src={form.image_url}
+                      alt="Pratinjau produk"
+                      onError={(event) => {
+                        event.currentTarget.style.display = "none";
+                      }}
+                    />
+                    <span>Pratinjau gambar produk</span>
+                  </div>
+                )}
+
+                <div className="ap-form-actions">
+                  <button
+                    type="submit"
+                    className="ap-button ap-button-primary ap-full-button"
+                    disabled={loading}
+                  >
+                    {loading
+                      ? "Menyimpan..."
+                      : editingId
+                        ? "Simpan perubahan"
+                        : "Simpan produk"}
+                  </button>
+
+                  {editingId && (
+                    <button
+                      type="button"
+                      className="ap-button ap-button-secondary ap-full-button"
+                      onClick={resetForm}
+                      disabled={loading}
+                    >
+                      Batalkan edit
+                    </button>
+                  )}
+                </div>
+              </form>
+            </article>
+
+            <article className="ap-panel ap-catalog-panel">
+              <div className="ap-panel-heading ap-catalog-heading">
+                <div className="ap-panel-icon">◇</div>
+                <div>
+                  <h3>Katalog produk</h3>
+                  <p>
+                    {products.length} produk tersimpan di database.
+                  </p>
+                </div>
+              </div>
+
+              <div className="ap-search-wrap">
+                <span aria-hidden="true">⌕</span>
+                <input
+                  className="ap-input ap-search"
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Cari nama, harga, kategori..."
+                  aria-label="Cari produk"
+                />
+                {search && (
+                  <button
+                    type="button"
+                    className="ap-clear-search"
+                    onClick={() => setSearch("")}
+                    aria-label="Hapus pencarian"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+
+              {productsLoading ? (
+                <div className="ap-empty-state">
+                  <div className="ap-loader" />
+                  <p>Memuat katalog produk...</p>
+                </div>
+              ) : filteredProducts.length === 0 ? (
+                <div className="ap-empty-state">
+                  <div className="ap-empty-icon">◇</div>
+                  <h4>
+                    {search ? "Produk tidak ditemukan" : "Belum ada produk"}
+                  </h4>
+                  <p>
+                    {search
+                      ? "Coba kata kunci pencarian yang berbeda."
+                      : "Tambahkan produk pertama untuk mulai mengisi katalog."}
+                  </p>
+                  {search && (
+                    <button
+                      type="button"
+                      className="ap-button ap-button-secondary"
+                      onClick={() => setSearch("")}
+                    >
+                      Hapus pencarian
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="ap-product-list">
+                  {filteredProducts.map((product) => (
+                    <article className="ap-product-item" key={product.id}>
+                      <div className="ap-product-image">
+                        {product.image_url ? (
+                          <img
+                            src={product.image_url}
+                            alt={product.name}
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <span>◇</span>
+                        )}
+                      </div>
+
+                      <div className="ap-product-info">
+                        <span className="ap-product-category">
+                          {categoryLabel(product.category)}
+                        </span>
+                        <h4>{product.name}</h4>
+                        <strong>{formatPrice(product.price)}</strong>
+                        <span className="ap-product-stock">
+                          Stok: {Number(product.stock) || 0} unit
+                        </span>
+                      </div>
+
+                      <div className="ap-product-actions">
+                        <button
+                          type="button"
+                          className="ap-icon-button ap-edit-button"
+                          onClick={() => editProduct(product)}
+                          aria-label={`Edit ${product.name}`}
+                          title="Edit produk"
+                        >
+                          ✎
+                        </button>
+                        <button
+                          type="button"
+                          className="ap-icon-button ap-delete-button"
+                          onClick={() => removeProduct(product)}
+                          disabled={loading}
+                          aria-label={`Hapus ${product.name}`}
+                          title="Hapus produk"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+
+              <div className="ap-catalog-footer">
+                <span>
+                  Menampilkan {filteredProducts.length} dari {products.length}{" "}
+                  produk
+                </span>
+                <button
+                  type="button"
+                  className="ap-text-button"
+                  onClick={loadProducts}
+                  disabled={productsLoading}
+                >
+                  ↻ Segarkan katalog
+                </button>
+              </div>
+            </article>
+          </section>
+
+          <footer className="ap-footer">
+            <span>FIKRI STORE. <span>ADMIN WORKSPACE</span></span>
+            <span>© {new Date().getFullYear()} Fikri Store</span>
+          </footer>
+        </div>
+      </section>
+    </main>
+  );
+              }
+
  
