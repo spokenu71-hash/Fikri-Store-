@@ -308,4 +308,76 @@ export default function Admin() {
           </div>
 
           <div className="admin-stats">
-            <div className="admin-stat"><div className="admin-stat-head"><div className="admin-stat-icon">◇</div><div><div className="admin-stat-label">Total Produk</div><div className="admin-stat
+            
+              <div className="admin-stat"><div className="admin-stat-head"><div className="admin-stat-icon">◇</div><div><div className="admin-stat-label">Total Produk</div><div className="admin-stat-value">{products.length}</div></div></div><div className="admin-stat-foot">↗ Produk dalam katalog</div></div>
+              <div className="admin-stat"><div className="admin-stat-head"><div className="admin-stat-icon purple">◇</div><div><div className="admin-stat-label">Kategori</div><div className="admin-stat-value">{categoryCount}</div></div></div><div className="admin-stat-foot">Kategori produk aktif</div></div>
+              <div className="admin-stat"><div className="admin-stat-head"><div className="admin-stat-icon green">🛒</div><div><div className="admin-stat-label">Total Stok</div><div className="admin-stat-value">{totalStock}</div></div></div><div className="admin-stat-foot">Jumlah stok produk</div></div>
+              <div className="admin-stat"><div className="admin-stat-head"><div className="admin-stat-icon mint">●</div><div><div className="admin-stat-label">Status Sistem</div><div className="admin-stat-value" style={{ color: "#159879", fontSize: 21 }}>Online</div></div></div><div className="admin-stat-foot">Supabase terhubung</div></div>
+            </div>
+
+            <div className="admin-workspace">
+              <section className="admin-panel" id="product-form">
+                <div className="admin-panel-title"><h2>{editingId ? "✎ Edit Produk" : "✚ Tambah / Edit Produk"}</h2></div>
+                <div className="admin-panel-desc">Isi detail produk dengan lengkap. Harga bisa berupa angka atau teks.</div>
+                <form onSubmit={saveProduct}>
+                  <label className="admin-label" htmlFor="product-name">Nama Produk *</label>
+                  <input id="product-name" className="admin-input" required placeholder="Contoh: Laptop untuk kuliah" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
+                  <label className="admin-label" htmlFor="product-price">Harga *</label>
+                  <input id="product-price" className="admin-input" type="text" required placeholder="Rp 450.000 / Hubungi kami / Gratis" value={form.price} onChange={(event) => setForm({ ...form, price: event.target.value })} />
+                  <label className="admin-label" htmlFor="product-category">Kategori</label>
+                  <select id="product-category" className="admin-input" value={form.category} onChange={(event) => setForm({ ...form, category: event.target.value })}>
+                    <option value="kuliah-kerja">Kuliah & Kerja</option>
+                    <option value="performa">Performa</option>
+                    <option value="desain-kreatif">Desain & Kreatif</option>
+                  </select>
+                  <label className="admin-label" htmlFor="product-image">Upload gambar produk</label>
+                  <input id="product-image" className="admin-input" type="file" accept="image/*" onChange={(event) => setImageFile(event.target.files?.[0] || null)} />
+                  {imageFile && <div className="admin-muted">{imageFile.name}</div>}
+                  <label className="admin-label" htmlFor="product-url">Atau URL gambar</label>
+                  <input id="product-url" className="admin-input" type="url" placeholder="https://alamat-gambar.jpg" value={form.image_url} onChange={(event) => setForm({ ...form, image_url: event.target.value })} />
+                  <label className="admin-label" htmlFor="product-stock">Stok</label>
+                  <input id="product-stock" className="admin-input" type="number" min="0" step="1" value={form.stock} onChange={(event) => setForm({ ...form, stock: event.target.value })} />
+                  <label className="admin-label" htmlFor="product-description">Deskripsi & Spesifikasi</label>
+                  <textarea id="product-description" className="admin-input admin-textarea" placeholder="Tulis deskripsi dan spesifikasi produk..." value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} />
+                  <button className="admin-btn admin-btn-primary admin-save" disabled={loading}>{loading ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Simpan Produk"}</button>
+                  {editingId && <button type="button" className="admin-btn admin-btn-light admin-save" style={{ width: "100%", marginTop: 8 }} onClick={resetForm}>Batalkan Edit</button>}
+                </form>
+                {notice && <div className="admin-notice" role="status">{notice}</div>}
+              </section>
+
+              <section className="admin-panel" id="product-list">
+                <div className="admin-panel-title"><h2>Daftar Produk</h2><button className="admin-btn admin-btn-light" onClick={loadProducts} disabled={loading}>↻ Muat Ulang</button></div>
+                <div className="admin-panel-desc">Kelola produk yang ditampilkan di katalog toko.</div>
+                <div className="admin-list-toolbar">
+                  <input className="admin-input" aria-label="Cari daftar produk" placeholder="Cari nama, kategori, atau harga..." value={search} onChange={(event) => setSearch(event.target.value)} />
+                </div>
+                <div className="admin-count">{filtered.length} produk ditemukan</div>
+                {filtered.length === 0 ? <div className="admin-empty">{products.length ? "Produk tidak ditemukan." : "Belum ada produk. Tambahkan melalui formulir."}</div> : (
+                  <div className="admin-product-list">
+                    {filtered.map((product) => (
+                      <article className="admin-product" key={product.id}>
+                        {product.image_url ? <img className="admin-thumb" src={product.image_url} alt={product.name || "Foto produk"} loading="lazy" /> : <div className="admin-thumb admin-thumb-empty">▧</div>}
+                        <div className="admin-product-info">
+                          <div className="admin-product-name">{product.name}</div>
+                          <span className="admin-category">{categoryLabel(product.category)}</span>
+                          <div className="admin-product-price">{formatPrice(product.price)}</div>
+                          <div className="admin-stock">Stok: {product.stock ?? 0}</div>
+                        </div>
+                        <div className="admin-product-actions">
+                          <button className="admin-btn admin-btn-edit" onClick={() => editProduct(product)}>Edit</button>
+                          <button className="admin-btn admin-btn-delete" disabled={loading} onClick={() => removeProduct(product)}>Hapus</button>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                )}
+              </section>
+            </div>
+
+            <div className="admin-tip">Tips: Gunakan gambar berkualitas tinggi dan deskripsi yang jelas agar produk lebih menarik bagi pelanggan.</div>
+          </div>
+        </section>
+      </main>
+    </main>
+  );
+}
