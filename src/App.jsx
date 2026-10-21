@@ -1,8 +1,14 @@
 
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+} from "react-router-dom";
+
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import ResetPassword from "./pages/ResetPassword";
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -21,25 +27,33 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.error) {
       return (
-        <main style={{
-          minHeight: "100vh",
-          padding: 24,
-          background: "#08090D",
-          color: "white",
-          fontFamily: "Arial, sans-serif",
-          overflowWrap: "anywhere"
-        }}>
+        <main
+          style={{
+            minHeight: "100vh",
+            padding: 24,
+            background: "#08090D",
+            color: "white",
+            fontFamily: "Arial, sans-serif",
+            overflowWrap: "anywhere",
+          }}
+        >
           <h1 style={{ color: "#d4ff00" }}>
             Fikri Store Error
           </h1>
+
           <p>Penyebab error:</p>
-          <pre style={{
-            whiteSpace: "pre-wrap",
-            background: "#202127",
-            padding: 16,
-            borderRadius: 8
-          }}>
-            {String(this.state.error?.message || this.state.error)}
+
+          <pre
+            style={{
+              whiteSpace: "pre-wrap",
+              background: "#202127",
+              padding: 16,
+              borderRadius: 8,
+            }}
+          >
+            {String(
+              this.state.error?.message || this.state.error
+            )}
           </pre>
         </main>
       );
@@ -50,12 +64,29 @@ class ErrorBoundary extends React.Component {
 }
 
 export default function App() {
+  const isPasswordRecovery =
+    window.location.hash.includes("type=recovery");
+
   return (
     <ErrorBoundary>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/"
+            element={
+              isPasswordRecovery ? <ResetPassword /> : <Home />
+            }
+          />
+
+          <Route
+            path="/reset-password"
+            element={<ResetPassword />}
+          />
+
+          <Route
+            path="/admin"
+            element={<Admin />}
+          />
         </Routes>
       </Router>
     </ErrorBoundary>
