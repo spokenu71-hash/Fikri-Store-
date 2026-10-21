@@ -4,38 +4,52 @@ import { supabase } from "../lib/supabase.js";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("Memeriksa tautan reset...");
+  const [message, setMessage] = useState("Memeriksa sesi reset...");
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!supabase) {
-      setMessage("Konfigurasi Supabase belum tersedia.");
-      return;
-    }
-
     let active = true;
 
-    supabase.auth.getSession().then(({ data, error }) => {
-      if (!active) return;
-
-      if (error) {
-        setMessage("Tautan reset tidak valid atau sudah kedaluwarsa.");
-      } else if (data.session) {
-        setReady(true);
-        setMessage("");
-      } else {
-        setMessage(
-          "Sesi reset tidak ditemukan. Minta email reset password baru."
-        );
+    async function checkSession() {
+      if (!supabase) {
+        setMessage("Konfigurasi Supabase belum tersedia.");
+        return;
       }
-    });
+
+      try {
+        const { data, error } = await supabase.auth.getSession();
+
+        if (!active) return;
+
+        if (error) {
+          setMessage("Sesi reset tidak valid. Minta tautan reset baru.");
+        } else if (data.session) {
+          setReady(true);
+          setMessage("");
+        } else {
+          setMessage(
+            "Sesi reset tidak ditemukan. Buka halaman melalui tautan reset terbaru dari email."
+          );
+        }
+      } catch (error) {
+        if (active) {
+          setMessage("Gagal memeriksa sesi: " + error.message);
+        }
+      }
+    }
+
+    checkSession();
+
+    if (!supabase) {
+      return () => {
+        active = false;
+      };
+    }
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        if (!active) return;
-
-        if (session) {
+        if (active && session) {
           setReady(true);
           setMessage("");
         }
@@ -51,6 +65,11 @@ export default function ResetPassword() {
   async function handleSubmit(event) {
     event.preventDefault();
 
+    if (!supabase) {
+      setMessage("Konfigurasi Supabase belum tersedia.");
+      return;
+    }
+
     if (password.length < 8) {
       setMessage("Password minimal 8 karakter.");
       return;
@@ -59,42 +78,62 @@ export default function ResetPassword() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.updateUser({
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
 
-    setLoading(false);
-
-    if (error) {
-      setMessage("Gagal mengubah password: " + error.message);
-      return;
+      if (error) {
+        setMessage("Gagal mengubah password: " + error.message);
+      } else {
+        setPassword("");
+        setReady(false);
+        setMessage(
+          "Password berhasil diubah. Silakan login kembali melalui halaman admin."
+        );
+      }
+    } catch (error) {
+      setMessage("Terjadi kesalahan: " + error.message);
+    } finally {
+      setLoading(false);
     }
-
-    setPassword("");
-    setMessage("Password berhasil diubah. Silakan login ke halaman admin.");
   }
 
   return (
-    <main style={{
-      minHeight: "100vh",
-      display: "grid",
-      placeItems: "center",
-      background: "#08090D",
-      color: "white",
-      padding: 24,
-      fontFamily: "Arial, sans-serif"
-    }}>
-      <form onSubmit={handleSubmit} style={{
-        width: "100%",
-        maxWidth: 380,
+    <main
+      style={{
+        minHeight: "100vh",
+        boxSizing: "border-box",
         display: "grid",
-        gap: 16
-      }}>
-        <h1>Reset Password</h1>
+        placeItems: "center",
+        background: "#08090D",
+        color: "white",
+        padding: 24,
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
+      <section
+        style={{
+          width: "100%",
+          maxWidth: 420,
+          padding: 24,
+          boxSizing: "border-box",
+          background: "#17181f",
+          border: "1px solid #343640",
+          borderRadius: 12,
+        }}
+      >
+        <h1 style={{ color: "#d4ff00", marginTop: 0 }}>
+          Reset Password
+        </h1>
+
+        <p>Masukkan password baru untuk akun admin.</p>
 
         {ready && (
-          <>
+          <form
+            onSubmit={handleSubmit}
+            style={{ display: "grid", gap: 14 }}
+          >
             <label htmlFor="new-password">Password baru</label>
+
             <input
               id="new-password"
               type="password"
@@ -104,25 +143,41 @@ export default function ResetPassword() {
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               placeholder="Minimal 8 karakter"
-              style={{ padding: 12, borderRadius: 6 }}
+              style={{
+                boxSizing: "border-box",
+                width: "100%",
+                padding: 12,
+                borderRadius: 6,
+              }}
             />
 
             <button
               type="submit"
               disabled={loading}
-              style={{ padding: 12, cursor: "pointer" }}
+              style={{
+                padding: 12,
+                border: 0,
+                borderRadius: 6,
+                background: "#d4ff00",
+                color: "#111",
+                fontWeight: "bold",
+              }}
             >
               {loading ? "Menyimpan..." : "Simpan Password Baru"}
             </button>
-          </>
+          </form>
         )}
 
-        {message && <p>{message}</p>}
+        {message && (
+          <p role="status" style={{ overflowWrap: "anywhere" }}>
+            {message}
+          </p>
+        )}
 
         <a href="/admin" style={{ color: "#d4ff00" }}>
           Kembali ke login admin
         </a>
-      </form>
+      </section>
     </main>
   );
 }
