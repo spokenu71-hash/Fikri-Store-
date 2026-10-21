@@ -303,7 +303,12 @@ export default function Admin() {
 
         <div className="admin-content">
           <div className="admin-welcome">
-            <div><h1>Selamat datang, Admin! 👋</h1><div className="admin-muted">Kelola produk Fikri Store dengan mudah dan cepat.</div></div>
+            <div>
+  <h1>Selamat datang, Fikri</h1>
+  <div className="admin-muted">
+    Kelola toko Anda dengan mudah dan pantau perkembangan bisnis secara real-time.
+  </div>
+</div>
             <div className="admin-date">▦ &nbsp; Dashboard admin<br />Fikri Store</div>
           </div>
 
