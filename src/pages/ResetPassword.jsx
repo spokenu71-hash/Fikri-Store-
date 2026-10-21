@@ -4,7 +4,9 @@ import { supabase } from "../lib/supabase.js";
 
 export default function ResetPassword() {
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("Memeriksa sesi reset...");
+  const [message, setMessage] = useState(
+    "Memeriksa tautan reset password..."
+  );
   const [ready, setReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -13,48 +15,94 @@ export default function ResetPassword() {
 
     async function checkSession() {
       if (!supabase) {
-        setMessage("Konfigurasi Supabase belum tersedia.");
+        if (active) {
+          setMessage("Konfigurasi Supabase belum tersedia.");
+        }
         return;
       }
 
       try {
-        const { data, error } = await supabase.auth.getSession();
+        // Tunggu inisialisasi Supabase dan pemrosesan URL.
+        let { data, error } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        // Jika belum ada sesi, coba proses callback PKCE.
+        if (!data.session) {
+          const url = new URL(window.location.href);
+          const code = url.searchParams.get("code");
+
+          if (code) {
+            const result =
+              await supabase.auth.exchangeCodeForSession(code);
+
+            if (result.error) throw result.error;
+            data = result.data;
+          }
+        }
+
+        // Mendukung tautan yang membawa access dan refresh token.
+        if (!data.session) {
+          const hash = new URLSearchParams(
+            window.location.hash.replace(/^#/, "")
+          );
+
+          const accessToken = hash.get("access_token");
+          const refreshToken = hash.get("refresh_token");
+          const recoveryType = hash.get("type") === "recovery";
+
+          if (accessToken && refreshToken) {
+            const result = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+            if (result.error) throw result.error;
+            data = result.data;
+          } else if (recoveryType) {
+            throw new Error(
+              "Token pemulihan tidak lengkap. Minta tautan reset baru."
+            );
+          }
+        }
 
         if (!active) return;
 
-        if (error) {
-          setMessage("Sesi reset tidak valid. Minta tautan reset baru.");
-        } else if (data.session) {
+        if (data.session) {
           setReady(true);
           setMessage("");
         } else {
           setMessage(
-            "Sesi reset tidak ditemukan. Buka halaman melalui tautan reset terbaru dari email."
+            "Sesi reset tidak ditemukan. Buka tautan reset terbaru dari email. Jika tautan sudah pernah digunakan atau kedaluwarsa, minta tautan baru."
           );
         }
       } catch (error) {
         if (active) {
-          setMessage("Gagal memeriksa sesi: " + error.message);
+          setMessage(
+            "Tautan reset gagal diproses: " +
+              (error.message || "Terjadi kesalahan.")
+          );
         }
       }
     }
 
     checkSession();
 
-    if (!supabase) {
-      return () => {
-        active = false;
-      };
-    }
+    const { data: listener } = supabase
+      ? supabase.auth.onAuthStateChange((event, session) => {
+          if (!active) return;
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (active && session) {
-          setReady(true);
-          setMessage("");
-        }
-      }
-    );
+          if (
+            session &&
+            (event === "PASSWORD_RECOVERY" ||
+              event === "SIGNED_IN" ||
+              event === "TOKEN_REFRESHED")
+          ) {
+            setReady(true);
+            setMessage("");
+          }
+        })
+      : { data: { subscription: { unsubscribe() {} } } };
 
     return () => {
       active = false;
@@ -79,19 +127,22 @@ export default function ResetPassword() {
     setMessage("");
 
     try {
-      const { error } = await supabase.auth.updateUser({ password });
+      const { error } = await supabase.auth.updateUser({
+        password,
+      });
 
-      if (error) {
-        setMessage("Gagal mengubah password: " + error.message);
-      } else {
-        setPassword("");
-        setReady(false);
-        setMessage(
-          "Password berhasil diubah. Silakan login kembali melalui halaman admin."
-        );
-      }
+      if (error) throw error;
+
+      setPassword("");
+      setReady(false);
+      setMessage(
+        "Password berhasil diubah. Silakan kembali ke halaman admin dan login menggunakan password baru."
+      );
     } catch (error) {
-      setMessage("Terjadi kesalahan: " + error.message);
+      setMessage(
+        "Gagal mengubah password: " +
+          (error.message || "Terjadi kesalahan.")
+      );
     } finally {
       setLoading(false);
     }
@@ -132,7 +183,9 @@ export default function ResetPassword() {
             onSubmit={handleSubmit}
             style={{ display: "grid", gap: 14 }}
           >
-            <label htmlFor="new-password">Password baru</label>
+            <label htmlFor="new-password">
+              Password baru
+            </label>
 
             <input
               id="new-password"
@@ -141,7 +194,9 @@ export default function ResetPassword() {
               minLength={8}
               required
               value={password}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) =>
+                setPassword(event.target.value)
+              }
               placeholder="Minimal 8 karakter"
               style={{
                 boxSizing: "border-box",
@@ -161,15 +216,21 @@ export default function ResetPassword() {
                 background: "#d4ff00",
                 color: "#111",
                 fontWeight: "bold",
+                cursor: loading ? "wait" : "pointer",
               }}
             >
-              {loading ? "Menyimpan..." : "Simpan Password Baru"}
+              {loading
+                ? "Menyimpan..."
+                : "Simpan Password Baru"}
             </button>
           </form>
         )}
 
         {message && (
-          <p role="status" style={{ overflowWrap: "anywhere" }}>
+          <p
+            role="status"
+            style={{ overflowWrap: "anywhere" }}
+          >
             {message}
           </p>
         )}
