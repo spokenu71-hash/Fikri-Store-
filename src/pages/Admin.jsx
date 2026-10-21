@@ -1,5 +1,8 @@
+
 import { useEffect, useState } from "react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
+
+const RESET_URL = "https://fikri-store.pages.dev/reset-password";
 
 const styles = {
   page: {
@@ -37,6 +40,18 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
   },
+  link: {
+    display: "block",
+    marginTop: "16px",
+    textAlign: "center",
+    color: "#155eef",
+    background: "none",
+    border: 0,
+    width: "100%",
+    cursor: "pointer",
+    fontSize: "15px",
+    textDecoration: "underline",
+  },
   secondary: {
     padding: "10px 14px",
     border: "1px solid #d5dce8",
@@ -67,6 +82,8 @@ export default function Admin() {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotMode, setForgotMode] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -122,13 +139,54 @@ export default function Admin() {
     setLoading(true);
     setMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
 
-    setLoading(false);
-    if (error) setMessage(error.message);
+      if (error) throw error;
+    } catch (error) {
+      setMessage(error.message || "Login gagal.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function sendResetEmail(event) {
+    event.preventDefault();
+
+    if (!supabase) {
+      setMessage("Konfigurasi Supabase belum tersedia.");
+      return;
+    }
+
+    if (!email.trim()) {
+      setMessage("Masukkan email akun admin terlebih dahulu.");
+      return;
+    }
+
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        email.trim(),
+        { redirectTo: RESET_URL }
+      );
+
+      if (error) throw error;
+
+      setMessage(
+        "Permintaan reset diproses. Periksa Inbox, Spam, dan folder Promosi email kamu."
+      );
+    } catch (error) {
+      setMessage(
+        error.message || "Gagal mengirim email reset password."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function saveProduct(event) {
@@ -144,28 +202,29 @@ export default function Admin() {
       stock: Number(form.stock),
     };
 
-    const { error } = await supabase
-      .from("products")
-      .insert(payload);
+    try {
+      const { error } = await supabase
+        .from("products")
+        .insert(payload);
 
-    setLoading(false);
+      if (error) throw error;
 
-    if (error) {
-      setMessage(error.message);
-      return;
+      setMessage("Produk berhasil ditambahkan.");
+      setForm({
+        name: "",
+        price: "",
+        category: "",
+        description: "",
+        image_url: "",
+        stock: "1",
+      });
+
+      await loadProducts();
+    } catch (error) {
+      setMessage(error.message || "Gagal menyimpan produk.");
+    } finally {
+      setLoading(false);
     }
-
-    setMessage("Produk berhasil ditambahkan.");
-    setForm({
-      name: "",
-      price: "",
-      category: "",
-      description: "",
-      image_url: "",
-      stock: "1",
-    });
-
-    loadProducts();
   }
 
   async function deleteProduct(id) {
@@ -192,7 +251,7 @@ export default function Admin() {
           <p>
             Konfigurasi Supabase belum benar. Periksa
             VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY
-            di Environment variables Netlify, lalu deploy ulang.
+            di Environment Variables hosting, lalu deploy ulang.
           </p>
         </section>
       </main>
@@ -202,9 +261,16 @@ export default function Admin() {
   if (!session) {
     return (
       <main style={styles.page}>
-        <form onSubmit={login} style={styles.card}>
+        <form
+          onSubmit={forgotMode ? sendResetEmail : login}
+          style={styles.card}
+        >
           <h1>Fikri Store Admin</h1>
-          <p>Masuk untuk mengelola produk toko.</p>
+          <p>
+            {forgotMode
+              ? "Masukkan email admin untuk menerima tautan reset password."
+              : "Masuk untuk mengelola produk toko."}
+          </p>
 
           <input
             style={styles.input}
@@ -212,23 +278,48 @@ export default function Admin() {
             placeholder="Email admin"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            autoComplete="email"
             required
           />
 
-          <input
-            style={styles.input}
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
+          {!forgotMode && (
+            <input
+              style={styles.input}
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete="current-password"
+              required
+            />
+          )}
 
           <button style={styles.button} disabled={loading}>
-            {loading ? "Memproses..." : "Masuk"}
+            {loading
+              ? "Memproses..."
+              : forgotMode
+                ? "Kirim Tautan Reset"
+                : "Masuk"}
           </button>
 
-          {message && <p>{message}</p>}
+          <button
+            type="button"
+            style={styles.link}
+            onClick={() => {
+              setForgotMode(!forgotMode);
+              setMessage("");
+            }}
+          >
+            {forgotMode
+              ? "Kembali ke Login"
+              : "Lupa Password?"}
+          </button>
+
+          {message && (
+            <p style={{ overflowWrap: "anywhere" }} role="status">
+              {message}
+            </p>
+          )}
         </form>
       </main>
     );
@@ -310,4 +401,4 @@ export default function Admin() {
       </section>
     </main>
   );
-          }
+}
