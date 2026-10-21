@@ -375,9 +375,8 @@ export default function Admin() {
             </div>
 
             <div className="admin-tip">Tips: Gunakan gambar berkualitas tinggi dan deskripsi yang jelas agar produk lebih menarik bagi pelanggan.</div>
-          </div>
+                    </div>
         </section>
       </main>
-    </main>
   );
 }
