@@ -1,10 +1,10 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 
 const RESET_URL = "https://fikri-store.pages.dev/reset-password";
-const STORAGE_BUCKET = "product-images";
+const BUCKET = "product-images";
 
 const emptyForm = {
   name: "",
@@ -15,117 +15,200 @@ const emptyForm = {
   stock: "1",
 };
 
-const css = `
-.admin-root {
-  min-height: 100vh; background: #f4f6fb; color: #182238;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+const styles = `
+* { box-sizing: border-box; }
+.admin-app {
+  --navy: #13213b;
+  --blue: #3478f6;
+  --muted: #78869c;
+  min-height: 100vh;
+  background: #f4f7fc;
+  color: #182944;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
-.admin-top {
-  background: #111d35; color: white; padding: 18px 5%;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
+.admin-sidebar {
+  position: fixed; inset: 0 auto 0 0; width: 234px;
+  background: linear-gradient(165deg,#172944,#101c32);
+  color: #d6e0f1; padding: 27px 17px;
+  display: flex; flex-direction: column; z-index: 20;
 }
-.admin-brand { font-size: 20px; font-weight: 850; letter-spacing: -.5px; }
-.admin-brand span { color: #70a5ff; }
-.admin-sub { font-size: 12px; color: #aab9d3; margin-top: 4px; }
-.admin-wrap { max-width: 1250px; margin: auto; padding: 30px 20px 55px; }
-.admin-heading { display:flex; justify-content:space-between; gap:16px; align-items:center; flex-wrap:wrap; margin-bottom:24px; }
-.admin-heading h1 { font-size: clamp(25px,4vw,34px); letter-spacing:-1px; margin:0 0 8px; }
-.admin-muted { color:#71809a; font-size:14px; line-height:1.6; }
-.admin-stats { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin-bottom:24px; }
-.admin-stat { background:white; border:1px solid #e5eaf3; border-radius:17px; padding:20px; box-shadow:0 5px 20px #172b4d08; }
-.admin-stat-label { color:#75839b; font-size:13px; margin-bottom:12px; }
-.admin-stat-value { font-size:28px; font-weight:850; letter-spacing:-1px; overflow-wrap:anywhere; }
-.admin-layout { display:grid; grid-template-columns:minmax(0, .9fr) minmax(0, 1.1fr); gap:22px; align-items:start; }
-.admin-panel { background:white; border:1px solid #e5eaf3; border-radius:19px; padding:24px; box-shadow:0 6px 24px #172b4d08; min-width:0; }
-.admin-panel h2 { font-size:20px; margin:0 0 6px; letter-spacing:-.4px; }
-.admin-label { display:block; font-size:13px; font-weight:750; margin:17px 0 7px; color:#34425a; }
-.admin-input { box-sizing:border-box; display:block; width:100%; padding:12px 13px; border:1px solid #dce3ef; border-radius:10px; font:inherit; font-size:14px; color:#182238; background:#fbfcff; outline:none; }
-.admin-input:focus { border-color:#477ff0; box-shadow:0 0 0 3px #477ff01a; }
-.admin-textarea { min-height:115px; resize:vertical; }
-.admin-btn { border:0; border-radius:10px; padding:11px 15px; font:inherit; font-size:13px; font-weight:750; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:7px; }
-.admin-btn:disabled { opacity:.55; cursor:wait; }
-.admin-primary { background:#316bea; color:white; }
-.admin-primary:hover { background:#2157ce; }
-.admin-light { background:#edf2fb; color:#34435e; }
-.admin-danger { background:#fff0ef; color:#c03333; }
-.admin-full { width:100%; margin-top:20px; }
-.admin-message { border-radius:11px; padding:13px 15px; margin:18px 0; background:#edf4ff; color:#244c91; font-size:13px; line-height:1.55; overflow-wrap:anywhere; }
-.admin-search { margin:18px 0; }
-.admin-list { display:grid; gap:13px; }
-.admin-product { border:1px solid #e6ebf3; border-radius:14px; padding:14px; display:flex; align-items:flex-start; gap:13px; min-width:0; }
-.admin-thumb { width:76px; height:76px; flex:0 0 76px; object-fit:cover; border-radius:11px; background:#edf1f7; }
-.admin-placeholder { display:flex; align-items:center; justify-content:center; font-size:25px; color:#8d9ab0; }
-.admin-product-info { min-width:0; flex:1; }
-.admin-product-name { font-size:14px; font-weight:800; overflow-wrap:anywhere; margin:2px 0 7px; }
-.admin-product-price { color:#2462d5; font-weight:800; font-size:14px; overflow-wrap:anywhere; }
-.admin-tag { display:inline-block; margin-top:8px; border-radius:7px; padding:5px 8px; background:#f0f4fb; color:#5c6a82; font-size:11px; }
-.admin-actions { display:flex; gap:7px; flex-wrap:wrap; margin-top:12px; }
-.admin-empty { text-align:center; padding:35px 12px; color:#7b879b; font-size:14px; line-height:1.7; }
-.admin-login { max-width:460px; margin:8vh auto; }
-.admin-login .admin-panel { padding:clamp(22px,5vw,34px); }
-@media(max-width:850px) { .admin-layout { grid-template-columns:1fr; } }
-@media(max-width:550px) {
-  .admin-top { padding:16px 18px; }
-  .admin-wrap { padding:22px 13px 40px; }
-  .admin-stats { grid-template-columns:1fr 1fr; gap:10px; }
-  .admin-stat { padding:15px; }
-  .admin-stat-value { font-size:23px; }
-  .admin-panel { padding:17px; border-radius:15px; }
-  .admin-product { gap:10px; padding:11px; }
-  .admin-thumb { width:60px; height:60px; flex-basis:60px; }
+.admin-logo { font-size: 21px; font-weight: 900; letter-spacing: -.8px; padding: 0 12px; color: white; white-space: nowrap; }
+.admin-logo span { color: #4c91ff; }
+.admin-nav { display: grid; gap: 8px; margin-top: 39px; }
+.admin-nav button {
+  width: 100%; display: flex; align-items: center; gap: 13px;
+  text-align: left; border: 0; border-radius: 11px; padding: 13px 14px;
+  color: #c5d1e4; background: transparent; font: inherit; font-size: 13px;
+  cursor: pointer;
+}
+.admin-nav button.active { background: linear-gradient(100deg,#2b579a,#234477); color: white; box-shadow: 0 5px 15px #07142b44; }
+.admin-nav .nav-icon { width: 21px; text-align: center; font-size: 18px; }
+.admin-sidebar-bottom { margin-top: auto; padding: 15px 8px 0; }
+.admin-profile { display: flex; align-items: center; gap: 11px; padding: 13px 4px 22px; min-width: 0; }
+.admin-avatar { width: 39px; height: 39px; flex-shrink: 0; border-radius: 50%; background: #f2f6ff; color: #243b60; display: grid; place-items: center; font-size: 19px; }
+.admin-profile strong { display: block; font-size: 12px; color: white; }
+.admin-profile small { display: block; font-size: 10px; color: #aab9d0; margin-top: 5px; overflow-wrap: anywhere; }
+.admin-logout { border: 0; background: transparent; color: #d4deed; padding: 12px 5px; font: inherit; cursor: pointer; font-size: 13px; }
+.admin-main { margin-left: 234px; min-width: 0; }
+.admin-topbar {
+  height: 72px; padding: 0 27px; background: white; border-bottom: 1px solid #e8edf5;
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  position: sticky; top: 0; z-index: 10;
+}
+.admin-global-search { width: min(460px,60%); position: relative; }
+.admin-global-search span { position: absolute; left: 13px; top: 10px; color: #8290a6; }
+.admin-global-search input { width: 100%; height: 38px; padding: 0 13px 0 36px; border: 1px solid #e3e9f2; border-radius: 9px; background: #f5f7fb; font: inherit; font-size: 12px; outline: none; }
+.admin-global-search input:focus { border-color: #76a5ff; background: white; }
+.admin-top-actions { display: flex; align-items: center; gap: 13px; }
+.admin-bell { font-size: 19px; color: #667891; }
+.admin-content { max-width: 1800px; margin: 0 auto; padding: 27px 27px 35px; }
+.admin-welcome { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 25px; }
+.admin-welcome h1 { font-size: clamp(23px,2.5vw,30px); letter-spacing: -.9px; margin: 0 0 7px; }
+.admin-muted { color: var(--muted); font-size: 13px; line-height: 1.65; }
+.admin-date { color: #71829c; font-size: 11px; text-align: right; line-height: 1.8; white-space: nowrap; }
+.admin-stats { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 15px; margin-bottom: 20px; }
+.admin-stat { min-width: 0; background: white; border: 1px solid #e8edf5; border-radius: 12px; padding: 19px 17px; box-shadow: 0 3px 12px #1a31500a; }
+.admin-stat-head { display: flex; align-items: center; gap: 12px; }
+.admin-stat-icon { width: 41px; height: 41px; flex-shrink: 0; border-radius: 10px; display: grid; place-items: center; font-size: 21px; background: #edf3ff; color: #3478f6; }
+.admin-stat-icon.purple { background: #f1edff; color: #8260e8; }
+.admin-stat-icon.green { background: #e8f8f3; color: #159c80; }
+.admin-stat-icon.mint { background: #e8f8ef; color: #1aa36d; }
+.admin-stat-label { color: #64738b; font-size: 11px; }
+.admin-stat-value { font-size: 25px; font-weight: 850; letter-spacing: -.8px; margin-top: 6px; overflow-wrap: anywhere; }
+.admin-stat-foot { color: #6e9b94; font-size: 10px; margin-top: 12px; }
+.admin-workspace { display: grid; grid-template-columns: minmax(300px,.88fr) minmax(0,1.22fr); gap: 19px; align-items: stretch; }
+.admin-panel { background: white; border: 1px solid #e6ecf5; border-radius: 12px; padding: 20px; min-width: 0; box-shadow: 0 3px 13px #18315308; }
+.admin-panel-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 6px; }
+.admin-panel-title h2 { font-size: 16px; letter-spacing: -.35px; margin: 0; }
+.admin-panel-desc { font-size: 11px; color: #8290a5; line-height: 1.6; margin-bottom: 18px; }
+.admin-label { display: block; font-size: 11px; font-weight: 750; color: #34445d; margin: 15px 0 7px; }
+.admin-input { width: 100%; min-width: 0; border: 1px solid #dfe6f0; border-radius: 8px; padding: 11px 12px; color: #243650; background: #fff; font: inherit; font-size: 12px; outline: none; }
+.admin-input:focus { border-color: #6094fa; box-shadow: 0 0 0 3px #3478f614; }
+.admin-input::placeholder { color: #a1adbf; }
+.admin-textarea { resize: vertical; min-height: 95px; line-height: 1.6; }
+.admin-btn { border: 1px solid transparent; border-radius: 8px; padding: 10px 12px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; cursor: pointer; font: inherit; font-size: 11px; font-weight: 750; text-decoration: none; white-space: nowrap; }
+.admin-btn:disabled { opacity: .55; cursor: wait; }
+.admin-btn-primary { background: #3478f6; color: white; box-shadow: 0 3px 8px #3478f628; }
+.admin-btn-primary:hover { background: #2467e4; }
+.admin-btn-light { background: white; color: #4e607a; border-color: #dfe6f0; }
+.admin-btn-edit { background: white; color: #3478f6; border-color: #d8e5ff; }
+.admin-btn-delete { background: white; color: #e05c69; border-color: #ffdade; }
+.admin-save { width: 100%; margin-top: 20px; padding: 12px; }
+.admin-notice { border-radius: 8px; background: #edf4ff; color: #2859a2; padding: 11px 12px; font-size: 12px; line-height: 1.6; margin-top: 15px; overflow-wrap: anywhere; }
+.admin-notice.error { background: #fff0f0; color: #ae3030; }
+.admin-list-toolbar { display: flex; gap: 8px; align-items: center; margin: 16px 0 12px; }
+.admin-list-toolbar .admin-input { flex: 1; min-width: 0; }
+.admin-count { font-size: 11px; color: #8592a6; margin: 13px 0; }
+.admin-product-list { border: 1px solid #e7ecf3; border-radius: 10px; overflow: hidden; }
+.admin-product { padding: 12px 10px; display: grid; grid-template-columns: 60px minmax(0,1fr) auto; gap: 12px; align-items: center; border-bottom: 1px solid #edf0f5; }
+.admin-product:last-child { border-bottom: 0; }
+.admin-thumb { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; background: #f0f3f8; }
+.admin-thumb-empty { display: grid; place-items: center; color: #91a0b4; font-size: 23px; }
+.admin-product-info { min-width: 0; }
+.admin-product-name { font-size: 11px; font-weight: 800; line-height: 1.5; overflow-wrap: anywhere; }
+.admin-category { display: inline-block; font-size: 9px; padding: 4px 7px; border-radius: 20px; background: #edf2ff; color: #5269a5; margin-top: 5px; }
+.admin-product-price { font-size: 12px; font-weight: 850; color: #3478e8; margin-top: 4px; overflow-wrap: anywhere; }
+.admin-stock { font-size: 10px; color: #8996a9; margin-top: 4px; }
+.admin-product-actions { display: flex; gap: 5px; align-items: center; }
+.admin-product-actions .admin-btn { padding: 7px 8px; font-size: 10px; }
+.admin-empty { text-align: center; padding: 35px 15px; color: #8a97aa; font-size: 12px; line-height: 1.7; }
+.admin-tip { margin-top: 17px; padding: 13px 16px; border: 1px solid #dfeaff; background: #edf5ff; border-radius: 9px; color: #4e76b5; font-size: 11px; line-height: 1.6; }
+.admin-login-wrap { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: #f4f7fc; }
+.admin-login-card { width: 100%; max-width: 430px; background: white; border: 1px solid #e6ecf5; border-radius: 17px; padding: 30px; box-shadow: 0 12px 45px #1a315015; }
+.admin-login-card h1 { font-size: 26px; margin: 28px 0 7px; }
+@media(min-width:1500px) {
+ .admin-content { padding-left: 36px; padding-right: 36px; }
+ .admin-workspace { grid-template-columns: minmax(340px,.8fr) minmax(0,1.2fr); }
+}
+@media(max-width:1150px) {
+ .admin-sidebar { width: 205px; }
+ .admin-main { margin-left: 205px; }
+ .admin-content { padding: 22px 18px; }
+ .admin-stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .admin-workspace { grid-template-columns: minmax(0,1fr); }
+}
+@media(max-width:700px) {
+ .admin-sidebar { position: relative; width: 100%; height: auto; padding: 15px 14px 10px; }
+ .admin-logo { font-size: 19px; padding: 0 4px; }
+ .admin-nav { display: flex; overflow-x: auto; margin-top: 14px; gap: 7px; padding-bottom: 3px; }
+ .admin-nav button { width: auto; flex-shrink: 0; padding: 10px 12px; gap: 7px; }
+ .admin-nav .nav-icon { font-size: 15px; width: auto; }
+ .admin-sidebar-bottom { display: none; }
+ .admin-main { margin-left: 0; }
+ .admin-topbar { height: auto; min-height: 61px; padding: 11px 14px; gap: 9px; }
+ .admin-global-search { width: 100%; }
+ .admin-global-search input { height: 37px; }
+ .admin-top-actions { gap: 8px; }
+ .admin-content { padding: 20px 13px 28px; }
+ .admin-welcome { align-items: flex-start; margin-bottom: 19px; }
+ .admin-date { display: none; }
+ .admin-welcome h1 { font-size: 24px; }
+ .admin-stats { gap: 9px; margin-bottom: 14px; }
+ .admin-stat { padding: 13px 11px; }
+ .admin-stat-icon { width: 34px; height: 34px; font-size: 17px; }
+ .admin-stat-head { gap: 8px; }
+ .admin-stat-value { font-size: 22px; }
+ .admin-stat-foot { font-size: 9px; margin-top: 8px; }
+ .admin-panel { padding: 15px 12px; }
+ .admin-product { grid-template-columns: 48px minmax(0,1fr); gap: 10px; padding: 12px 9px; }
+ .admin-thumb { width: 48px; height: 48px; }
+ .admin-product-actions { grid-column: 2; }
+ .admin-product-actions .admin-btn { padding: 7px 10px; }
+ .admin-tip { margin-top: 13px; }
+}
+@media(max-width:360px) {
+ .admin-stats { grid-template-columns: 1fr 1fr; }
+ .admin-stat-head { align-items: flex-start; flex-direction: column; }
+ .admin-stat-value { font-size: 21px; }
+ .admin-topbar { flex-wrap: wrap; }
+ .admin-global-search { width: 100%; }
 }
 `;
 
-function moneyDisplay(value) {
+function displayPrice(value) {
   const text = String(value ?? "").trim();
   if (!text) return "Tanya harga";
-
-  // Harga berupa teks tetap ditampilkan apa adanya.
   if (/[a-zA-Z]/.test(text) || /Rp/i.test(text)) return text;
-
   const digits = text.replace(/\D/g, "");
   return digits ? `Rp ${Number(digits).toLocaleString("id-ID")}` : text;
 }
 
-function categoryName(value) {
-  const names = {
+function categoryLabel(value) {
+  const map = {
     "kuliah-kerja": "Kuliah & Kerja",
     performa: "Performa",
     "desain-kreatif": "Desain & Kreatif",
   };
-  return names[value] || value || "Tanpa kategori";
+  return map[value] || value || "Tanpa kategori";
 }
 
 export default function Admin() {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [forgot, setForgot] = useState(false);
   const [products, setProducts] = useState([]);
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [forgotMode, setForgotMode] = useState(false);
+  const [form, setForm] = useState({ ...emptyForm });
   const [editingId, setEditingId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [form, setForm] = useState({ ...emptyForm });
   const [search, setSearch] = useState("");
+  const [notice, setNotice] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [activeNav, setActiveNav] = useState("Dashboard");
 
   useEffect(() => {
     if (!supabaseConfigured || !supabase) return;
-
     let active = true;
 
     supabase.auth.getSession().then(({ data, error }) => {
       if (!active) return;
-      if (error) setMessage(error.message);
+      if (error) setNotice(error.message);
       setSession(data?.session || null);
     });
 
-    const { data } = supabase.auth.onAuthStateChange(
-      (_event, nextSession) => {
-        if (active) setSession(nextSession);
-      }
-    );
+    const { data } = supabase.auth.onAuthStateChange((_event, next) => {
+      if (active) setSession(next);
+    });
 
     return () => {
       active = false;
@@ -138,64 +221,50 @@ export default function Admin() {
   }, [session]);
 
   async function loadProducts() {
-    if (!supabase) return;
-
     const { data, error } = await supabase
       .from("products")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) {
-      setMessage("Gagal memuat produk: " + error.message);
-    } else {
-      setProducts(data || []);
-    }
+    if (error) setNotice("Gagal memuat produk: " + error.message);
+    else setProducts(data || []);
   }
 
-  async function login(event) {
+  async function handleLogin(event) {
     event.preventDefault();
     setLoading(true);
-    setMessage("");
+    setNotice("");
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim(),
-        password,
-      });
-      if (error) throw error;
+      if (forgot) {
+        if (!email.trim()) throw new Error("Masukkan email admin.");
+        const { error } = await supabase.auth.resetPasswordForEmail(
+          email.trim(),
+          { redirectTo: RESET_URL }
+        );
+        if (error) throw error;
+        setNotice("Permintaan reset dikirim. Periksa Inbox dan Spam.");
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+        if (error) throw error;
+      }
     } catch (error) {
-      setMessage(error.message || "Login gagal.");
+      setNotice(error.message || "Permintaan gagal.");
     } finally {
       setLoading(false);
     }
   }
 
-  async function sendResetEmail(event) {
-    event.preventDefault();
-
-    if (!email.trim()) {
-      setMessage("Masukkan email admin terlebih dahulu.");
-      return;
-    }
-
-    setLoading(true);
-    setMessage("");
-
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(
-        email.trim(),
-        { redirectTo: RESET_URL }
-      );
-      if (error) throw error;
-      setMessage("Permintaan reset diproses. Periksa Inbox dan Spam.");
-    } catch (error) {
-      setMessage(error.message || "Gagal mengirim email reset.");
-    } finally {
-      setLoading(false);
-    }
+  function resetForm() {
+    setForm({ ...emptyForm });
+    setEditingId(null);
+    setImageFile(null);
   }
 
-  function startEdit(product) {
+  function editProduct(product) {
     setEditingId(product.id);
     setImageFile(null);
     setForm({
@@ -206,63 +275,44 @@ export default function Admin() {
       image_url: product.image_url || "",
       stock: String(product.stock ?? 1),
     });
-    setMessage("Mode edit aktif. Ubah data lalu simpan.");
-
+    setNotice("Mode edit aktif. Perbarui data lalu simpan.");
+    setActiveNav("Produk");
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function resetForm() {
-    setEditingId(null);
-    setImageFile(null);
-    setForm({ ...emptyForm });
   }
 
   async function saveProduct(event) {
     event.preventDefault();
 
     if (!form.name.trim()) {
-      setMessage("Nama produk wajib diisi.");
+      setNotice("Nama produk wajib diisi.");
       return;
     }
-
     if (!form.price.trim()) {
-      setMessage("Isi harga produk, atau tulis Hubungi kami / Gratis.");
+      setNotice("Isi harga, atau tulis Hubungi kami / Gratis.");
       return;
     }
 
     setLoading(true);
-    setMessage("");
+    setNotice("");
 
     try {
       let imageUrl = form.image_url.trim();
 
       if (imageFile) {
-        const extension = (
-          imageFile.name.split(".").pop() || "jpg"
-        ).toLowerCase().replace(/[^a-z0-9]/g, "");
-
-        const path =
-          `${Date.now()}-${Math.random().toString(36).slice(2)}.${extension}`;
+        const ext = (imageFile.name.split(".").pop() || "jpg")
+          .toLowerCase().replace(/[^a-z0-9]/g, "");
+        const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
         const { error: uploadError } = await supabase.storage
-          .from(STORAGE_BUCKET)
+          .from(BUCKET)
           .upload(path, imageFile, {
             upsert: false,
             contentType: imageFile.type || "image/jpeg",
           });
 
-        if (uploadError) {
-          throw new Error(
-            "Upload gagal. Pastikan bucket product-images tersedia " +
-            "dan izin upload sudah diatur. " + uploadError.message
-          );
-        }
+        if (uploadError) throw uploadError;
 
-        const { data } = supabase.storage
-          .from(STORAGE_BUCKET)
-          .getPublicUrl(path);
-
-        imageUrl = data.publicUrl;
+        imageUrl = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
       }
 
       const payload = {
@@ -280,70 +330,57 @@ export default function Admin() {
 
       if (result.error) throw result.error;
 
-      setMessage(
-        editingId ? "Produk berhasil diperbarui." : "Produk berhasil ditambahkan."
-      );
+      setNotice(editingId ? "Produk berhasil diperbarui." : "Produk berhasil ditambahkan.");
       resetForm();
       await loadProducts();
     } catch (error) {
-      setMessage(error.message || "Gagal menyimpan produk.");
+      setNotice("Gagal menyimpan produk: " + (error.message || "Kesalahan tidak diketahui."));
     } finally {
       setLoading(false);
     }
   }
 
-  async function deleteProduct(product) {
-    const confirmed = window.confirm(
-      `Yakin ingin menghapus "${product.name}"? Tindakan ini tidak bisa dibatalkan.`
-    );
-
-    if (!confirmed) return;
+  async function removeProduct(product) {
+    if (!window.confirm(`Hapus produk "${product.name}"? Tindakan ini tidak bisa dibatalkan.`)) return;
 
     setLoading(true);
-    setMessage("");
+    setNotice("");
 
     try {
-      const { error } = await supabase
-        .from("products")
-        .delete()
-        .eq("id", product.id);
-
+      const { error } = await supabase.from("products").delete().eq("id", product.id);
       if (error) throw error;
 
       if (editingId === product.id) resetForm();
-
-      setProducts((current) =>
-        current.filter((item) => item.id !== product.id)
-      );
-      setMessage(`Produk "${product.name}" berhasil dihapus.`);
+      setProducts((current) => current.filter((item) => item.id !== product.id));
+      setNotice(`Produk "${product.name}" berhasil dihapus.`);
       await loadProducts();
     } catch (error) {
-      setMessage("Gagal menghapus produk: " + error.message);
+      setNotice("Gagal menghapus produk: " + error.message);
     } finally {
       setLoading(false);
     }
   }
 
-  const filteredProducts = products.filter((product) => {
-    const query = search.toLowerCase().trim();
-    return (
-      String(product.name || "").toLowerCase().includes(query) ||
-      String(product.category || "").toLowerCase().includes(query) ||
-      String(product.price || "").toLowerCase().includes(query)
+  const filtered = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return products.filter((product) =>
+      [product.name, product.price, product.category, product.description]
+        .some((value) => String(value || "").toLowerCase().includes(query))
     );
-  });
+  }, [products, search]);
+
+  const categoryCount = new Set(products.map((p) => p.category).filter(Boolean)).size;
+  const totalStock = products.reduce((sum, p) => sum + (Number(p.stock) || 0), 0);
 
   if (!supabaseConfigured || !supabase) {
     return (
-      <main className="admin-root">
-        <style>{css}</style>
-        <div className="admin-wrap">
-          <section className="admin-panel">
-            <h1>Fikri Store Admin</h1>
-            <p className="admin-muted">
-              Konfigurasi Supabase belum benar. Periksa VITE_SUPABASE_URL
-              dan VITE_SUPABASE_ANON_KEY pada environment variables hosting.
-            </p>
+      <main className="admin-app">
+        <style>{styles}</style>
+        <div className="admin-login-wrap">
+          <section className="admin-login-card">
+            <div className="admin-logo" style={{ color: "#13213b" }}>FIKRI <span>STORE.</span></div>
+            <h1>Konfigurasi Supabase</h1>
+            <p className="admin-muted">Periksa VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY di environment variables hosting.</p>
           </section>
         </div>
       </main>
@@ -352,233 +389,60 @@ export default function Admin() {
 
   if (!session) {
     return (
-      <main className="admin-root">
-        <style>{css}</style>
-        <div className="admin-login admin-wrap">
-          <section className="admin-panel">
-            <div className="admin-brand" style={{ color: "#182238" }}>
-              FIKRI <span>STORE.</span>
-            </div>
-            <p className="admin-muted">ADMINISTRATION PORTAL</p>
-            <h1 style={{ fontSize: 29, margin: "28px 0 8px" }}>
-              {forgotMode ? "Reset password" : "Selamat datang"}
-            </h1>
+      <main className="admin-app">
+        <style>{styles}</style>
+        <div className="admin-login-wrap">
+          <section className="admin-login-card">
+            <div className="admin-logo" style={{ color: "#13213b", padding: 0 }}>FIKRI <span>STORE.</span></div>
+            <div className="admin-muted">ADMINISTRATION PORTAL</div>
+            <h1>{forgot ? "Reset password" : "Selamat datang!"}</h1>
             <p className="admin-muted">
-              {forgotMode
-                ? "Masukkan email admin untuk menerima tautan reset."
-                : "Masuk untuk mengelola katalog produk Fikri Store."}
+              {forgot ? "Masukkan email admin untuk menerima tautan reset." : "Masuk untuk mengelola katalog Fikri Store."}
             </p>
 
-            <form onSubmit={forgotMode ? sendResetEmail : login}>
-              <label className="admin-label" htmlFor="admin-email">
-                Email admin
-              </label>
-              <input
-                id="admin-email"
-                className="admin-input"
-                type="email"
-                placeholder="nama@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-                required
-              />
+            <form onSubmit={handleLogin}>
+              <label className="admin-label" htmlFor="login-email">Email admin</label>
+              <input id="login-email" className="admin-input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="nama@email.com" />
 
-              {!forgotMode && (
+              {!forgot && (
                 <>
-                  <label className="admin-label" htmlFor="admin-password">
-                    Password
-                  </label>
-                  <input
-                    id="admin-password"
-                    className="admin-input"
-                    type="password"
-                    placeholder="Masukkan password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    autoComplete="current-password"
-                    required
-                  />
+                  <label className="admin-label" htmlFor="login-password">Password</label>
+                  <input id="login-password" className="admin-input" type="password" autoComplete="current-password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Masukkan password" />
                 </>
               )}
 
-              <button
-                className="admin-btn admin-primary admin-full"
-                disabled={loading}
-              >
-                {loading
-                  ? "Memproses..."
-                  : forgotMode
-                    ? "Kirim tautan reset"
-                    : "Masuk ke dashboard →"}
+              <button className="admin-btn admin-btn-primary admin-save" disabled={loading}>
+                {loading ? "Memproses..." : forgot ? "Kirim tautan reset" : "Masuk ke dashboard →"}
               </button>
             </form>
 
-            <button
-              type="button"
-              className="admin-btn admin-light admin-full"
-              onClick={() => {
-                setForgotMode(!forgotMode);
-                setMessage("");
-              }}
-            >
-              {forgotMode ? "← Kembali ke login" : "Lupa password?"}
+            <button className="admin-btn admin-btn-light admin-save" style={{ width: "100%" }} onClick={() => { setForgot(!forgot); setNotice(""); }}>
+              {forgot ? "← Kembali ke login" : "Lupa password?"}
             </button>
-
-            {message && <div className="admin-message">{message}</div>}
+            {notice && <div className="admin-notice">{notice}</div>}
           </section>
         </div>
       </main>
     );
   }
 
+  const navItems = [
+    { name: "Dashboard", icon: "▦" },
+    { name: "Produk", icon: "♧" },
+    { name: "Pesanan", icon: "▤" },
+    { name: "Pengaturan", icon: "⚙" },
+  ];
+
   return (
-    <main className="admin-root">
-      <style>{css}</style>
+    <main className="admin-app">
+      <style>{styles}</style>
 
-      <header className="admin-top">
-        <div>
-          <div className="admin-brand">FIKRI <span>STORE.</span></div>
-          <div className="admin-sub">PANEL MANAJEMEN TOKO</div>
-        </div>
-        <div style={{ display: "flex", gap: 9, flexWrap: "wrap" }}>
-          <Link
-            to="/"
-            className="admin-btn admin-light"
-            style={{ textDecoration: "none" }}
-          >
-            ← Lihat website
-          </Link>
-          <button
-            className="admin-btn admin-light"
-            onClick={() => supabase.auth.signOut()}
-          >
-            Keluar
-          </button>
-        </div>
-      </header>
+      <aside className="admin-sidebar">
+        <div className="admin-logo">FIKRI <span>STORE.</span></div>
 
-      <div className="admin-wrap">
-        <div className="admin-heading">
-          <div>
-            <h1>Dashboard Produk</h1>
-            <div className="admin-muted">
-              Kelola katalog dan informasi produk dari satu tempat.
-            </div>
-          </div>
-          <button
-            className="admin-btn admin-primary"
-            onClick={() => {
-              resetForm();
-              setMessage("");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-          >
-            + Produk baru
-          </button>
-        </div>
-
-        <div className="admin-muted" style={{ marginBottom: 18 }}>
-          Login sebagai {session.user.email}
-        </div>
-
-        <div className="admin-stats">
-          <div className="admin-stat">
-            <div className="admin-stat-label">Total produk</div>
-            <div className="admin-stat-value">{products.length}</div>
-          </div>
-          <div className="admin-stat">
-            <div className="admin-stat-label">Hasil pencarian</div>
-            <div className="admin-stat-value">{filteredProducts.length}</div>
-          </div>
-          <div className="admin-stat">
-            <div className="admin-stat-label">Status sistem</div>
-            <div className="admin-stat-value" style={{ fontSize: 20, color: "#16845b" }}>
-              ● Terhubung
-            </div>
-          </div>
-        </div>
-
-        <div className="admin-layout">
-          <section className="admin-panel">
-            <h2>{editingId ? "Edit produk" : "Tambah produk"}</h2>
-            <p className="admin-muted">
-              {editingId
-                ? "Perbarui informasi produk yang dipilih."
-                : "Masukkan detail produk yang akan ditampilkan di toko."}
-            </p>
-
-            <form onSubmit={saveProduct}>
-              <label className="admin-label" htmlFor="product-name">
-                Nama produk *
-              </label>
-              <input
-                id="product-name"
-                className="admin-input"
-                placeholder="Contoh: Laptop untuk kuliah"
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                required
-              />
-
-              <label className="admin-label" htmlFor="product-price">
-                Harga *
-              </label>
-              <input
-                id="product-price"
-                className="admin-input"
-                type="text"
-                inputMode="text"
-                placeholder="Rp 450.000 / Hubungi kami / Gratis"
-                value={form.price}
-                onChange={(e) => setForm({ ...form, price: e.target.value })}
-                required
-              />
-              <p className="admin-muted" style={{ fontSize: 12, margin: "6px 0 0" }}>
-                Bisa angka atau teks bebas, misalnya “Mulai Rp 200 ribuan”.
-              </p>
-
-              <label className="admin-label" htmlFor="product-category">
-                Kategori
-              </label>
-              <select
-                id="product-category"
-                className="admin-input"
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                required
-              >
-                <option value="kuliah-kerja">Kuliah & Kerja</option>
-                <option value="performa">Performa</option>
-                <option value="desain-kreatif">Desain & Kreatif</option>
-              </select>
-
-              <label className="admin-label" htmlFor="product-image">
-                Upload foto dari HP
-              </label>
-              <input
-                id="product-image"
-                className="admin-input"
-                type="file"
-                accept="image/*"
-                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-              />
-              {imageFile && (
-                <p className="admin-muted" style={{ fontSize: 12 }}>
-                  File dipilih: {imageFile.name}
-                </p>
-              )}
-
-              <label className="admin-label" htmlFor="product-image-url">
-                Atau URL gambar
-              </label>
-              <input
-                id="product-image-url"
-                className="admin-input"
-                type="url"
-                placeholder="https://alamat-gambar.jpg"
-                value={form.image_url}
-                onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-              />
-
-              <label className="admin-label" htmlFor="pr
+        <nav className="admin-nav" aria-label="Navigasi admin">
+          {navItems.map((item) => (
+            <button
+              key={item.name}
+              className={activeNav === item.name ? "active" : ""}
+              onClick={() =>
