@@ -8,26 +8,7 @@
     <title>Fikri Store</title>
   </head>
   <body style="margin:0;background:#08090D;color:white;font-family:Arial,sans-serif">
-    <div id="root" style="padding:24px">
-      Fikri Store sedang memuat...
-    </div>
-
-    <script type="module">
-      import("/src/main.jsx").catch((error) => {
-        const root = document.getElementById("root");
-        root.innerHTML = "";
-
-        const title = document.createElement("h2");
-        title.textContent = "Fikri Store gagal memuat aplikasi";
-        title.style.color = "#d4ff00";
-
-        const detail = document.createElement("pre");
-        detail.style.cssText =
-          "white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;background:#202127";
-
-        detail.textContent = String(error?.stack || error?.message || error);
-        root.append(title, detail);
-      });
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
