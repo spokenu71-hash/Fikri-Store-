@@ -27,10 +27,14 @@ const categories = [
   ["desain-kreatif", "Desain & Kreatif"],
 ];
 
+const RESET_REDIRECT_URL =
+  "https://fikri-store.pages.dev/reset-password";
+
 export default function Admin() {
   const [session, setSession] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [forgotMode, setForgotMode] = useState(false);
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(emptyProduct);
   const [editingId, setEditingId] = useState(null);
@@ -41,18 +45,28 @@ export default function Admin() {
   useEffect(() => {
     if (!supabaseConfigured) return;
 
+    let active = true;
+
     supabase.auth.getSession().then(({ data, error }) => {
-      if (error) setNotice(error.message);
-      else setSession(data.session);
+      if (!active) return;
+
+      if (error) {
+        setNotice(error.message);
+      } else {
+        setSession(data.session);
+      }
     });
 
     const { data } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
-        setSession(nextSession);
+        if (active) setSession(nextSession);
       }
     );
 
-    return () => data.subscription.unsubscribe();
+    return () => {
+      active = false;
+      data.subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -86,6 +100,40 @@ export default function Admin() {
       if (error) throw error;
     } catch (error) {
       setNotice(error.message || "Login gagal.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function sendResetEmail(e) {
+    e.preventDefault();
+
+    if (!email.trim()) {
+      setNotice("Masukkan email akun admin terlebih dahulu.");
+      return;
+    }
+
+    setBusy(true);
+    setNotice("");
+
+    try {
+      const { error } =
+        await supabase.auth.resetPasswordForEmail(
+          email.trim(),
+          {
+            redirectTo: RESET_REDIRECT_URL,
+          }
+        );
+
+      if (error) throw error;
+
+      setNotice(
+        "Permintaan reset telah diproses. Periksa kotak masuk dan folder spam email kamu."
+      );
+    } catch (error) {
+      setNotice(
+        error.message || "Gagal mengirim email reset password."
+      );
     } finally {
       setBusy(false);
     }
@@ -213,8 +261,8 @@ export default function Admin() {
         <section className="admin-card">
           <h1>Konfigurasi belum lengkap</h1>
           <p>
-            Periksa variabel VITE_SUPABASE_URL dan
-            VITE_SUPABASE_ANON_KEY pada pengaturan Netlify.
+            Periksa VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY
+            pada environment variables hosting.
           </p>
           <Link to="/">Kembali ke toko</Link>
         </section>
@@ -231,39 +279,94 @@ export default function Admin() {
           </Link>
 
           <div className="admin-kicker">FIKRI STORE · ADMIN</div>
-          <h1>Masuk Admin</h1>
-          <p>Masuk menggunakan akun admin Supabase yang terdaftar.</p>
+          <h1>{forgotMode ? "Reset Password" : "Masuk Admin"}</h1>
 
-          <form onSubmit={signIn} className="admin-form">
-            <label>
-              Email
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="username"
-                required
-              />
-            </label>
+          <p>
+            {forgotMode
+              ? "Masukkan email akun admin untuk menerima tautan reset password."
+              : "Masuk menggunakan akun admin Supabase yang terdaftar."}
+          </p>
 
-            <label>
-              Password
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-                required
-              />
-            </label>
+          {forgotMode ? (
+            <form onSubmit={sendResetEmail} className="admin-form">
+              <label>
+                Email akun admin
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  required
+                />
+              </label>
 
-            <button className="admin-primary" disabled={busy}>
-              <LogIn size={17} />
-              {busy ? "Memproses..." : "Masuk"}
-            </button>
-          </form>
+              <button className="admin-primary" disabled={busy}>
+                <LogIn size={17} />
+                {busy ? "Mengirim..." : "Kirim Tautan Reset"}
+              </button>
 
-          {notice && <p className="admin-notice">{notice}</p>}
+              <button
+                type="button"
+                className="admin-secondary"
+                disabled={busy}
+                onClick={() => {
+                  setForgotMode(false);
+                  setNotice("");
+                }}
+              >
+                Kembali ke login
+              </button>
+            </form>
+          ) : (
+            <>
+              <form onSubmit={signIn} className="admin-form">
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="username"
+                    required
+                  />
+                </label>
+
+                <label>
+                  Password
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="current-password"
+                    required
+                  />
+                </label>
+
+                <button className="admin-primary" disabled={busy}>
+                  <LogIn size={17} />
+                  {busy ? "Memproses..." : "Masuk"}
+                </button>
+              </form>
+
+              <button
+                type="button"
+                className="admin-secondary"
+                style={{ marginTop: 12 }}
+                onClick={() => {
+                  setForgotMode(true);
+                  setNotice("");
+                }}
+              >
+                Lupa Password?
+              </button>
+            </>
+          )}
+
+          {notice && (
+            <p className="admin-notice" role="status">
+              {notice}
+            </p>
+          )}
         </section>
       </main>
     );
