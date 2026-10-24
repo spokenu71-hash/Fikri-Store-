@@ -1758,3 +1758,176 @@
   }
   }
   
+/* FIKRI STORE — CINEMATIC ADMIN MOTION */
+
+.ap-auth-page,
+.ap-loading-page,
+.ap-app {
+  position: relative;
+  isolation: isolate;
+}
+
+.ap-auth-page::before,
+.ap-loading-page::before,
+.ap-app::before {
+  content: "";
+  position: fixed;
+  inset: -35%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(70, 110, 255, .13), transparent 30%),
+    radial-gradient(circle at 85% 75%, rgba(155, 95, 255, .12), transparent 30%);
+  animation: ap-cinematic-glow 15s ease-in-out infinite alternate;
+}
+
+.ap-auth-card {
+  animation: ap-cinematic-enter .85s cubic-bezier(.16, 1, .3, 1) both;
+  transition: box-shadow .35s ease, border-color .35s ease;
+}
+
+.ap-auth-card:hover {
+  border-color: rgba(106, 130, 255, .42);
+  box-shadow: 0 28px 80px rgba(54, 75, 155, .15);
+}
+
+.ap-welcome {
+  animation: ap-cinematic-enter .8s .08s both;
+}
+
+.ap-welcome-mark {
+  animation: ap-mark-float 6s ease-in-out infinite;
+}
+
+.ap-mark-orbit {
+  animation: ap-orbit-spin 18s linear infinite;
+}
+
+.ap-stat-card {
+  animation: ap-cinematic-enter .7s both;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.ap-stat-card:nth-child(1) { animation-delay: .1s; }
+.ap-stat-card:nth-child(2) { animation-delay: .2s; }
+.ap-stat-card:nth-child(3) { animation-delay: .3s; }
+.ap-stat-card:nth-child(4) { animation-delay: .4s; }
+
+.ap-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 35px rgba(42, 58, 100, .1);
+}
+
+.ap-panel {
+  animation: ap-cinematic-enter .8s .25s both;
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+
+.ap-panel:hover {
+  border-color: rgba(112, 135, 255, .32);
+  box-shadow: 0 14px 38px rgba(42, 58, 100, .07);
+}
+
+.ap-button-primary {
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 7px 20px rgba(76, 104, 228, .18);
+}
+
+.ap-button-primary::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: -55%;
+  width: 35%;
+  transform: skewX(-24deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.45), transparent);
+  animation: ap-button-shine 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ap-button-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(76, 104, 228, .28);
+}
+
+.ap-input {
+  transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+}
+
+.ap-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 4px rgba(69, 104, 245, .1);
+}
+
+.ap-product-item {
+  transition: transform .25s ease, background .25s ease;
+}
+
+.ap-product-item:hover {
+  transform: translateX(3px);
+  background: #fafbff;
+}
+
+.ap-product-image img {
+  transition: transform .35s ease;
+}
+
+.ap-product-item:hover .ap-product-image img {
+  transform: scale(1.07);
+}
+
+.ap-nav-item {
+  transition: transform .22s ease, background .22s ease;
+}
+
+.ap-nav-item:hover {
+  transform: translateX(3px);
+}
+
+@keyframes ap-cinematic-glow {
+  from { transform: translate(-1%, -1%) scale(.98); }
+  to { transform: translate(2%, 2%) scale(1.06); }
+}
+
+@keyframes ap-cinematic-enter {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes ap-mark-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes ap-orbit-spin {
+  from { transform: rotate(25deg); }
+  to { transform: rotate(385deg); }
+}
+
+@keyframes ap-button-shine {
+  0%, 65% { left: -55%; }
+  85%, 100% { left: 130%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-auth-page *,
+  .ap-loading-page *,
+  .ap-app *,
+  .ap-auth-page *::before,
+  .ap-app *::before {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+        }
+
