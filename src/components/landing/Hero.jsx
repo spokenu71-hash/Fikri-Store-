@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowRight,
   CheckCircle2,
@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
+import { supabase } from "@/lib/supabase";
 
 const HERO_IMG =
   "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/7b34e082f_generated_image.png";
@@ -19,6 +20,30 @@ const FEATURES = [
 ];
 
 export default function Hero() {
+  const [customHeroImage, setCustomHeroImage] = useState("");
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadHeroImage() {
+      const { data } = await supabase
+        .from("site_images")
+        .select("image_url")
+        .eq("image_key", "hero")
+        .maybeSingle();
+
+      if (active && data?.image_url) {
+        setCustomHeroImage(data.image_url);
+      }
+    }
+
+    loadHeroImage();
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const waLink = buildWhatsAppLink(
     "Halo Fikri Store, saya mau tanya-tanya soal laptop second yang available. Ada rekomendasi buat budget saya?"
   );
@@ -86,16 +111,14 @@ export default function Hero() {
 
             <div className="fs-hero-visual relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card">
               <Image
-                src={HERO_IMG}
+                src={customHeroImage || HERO_IMG}
                 alt="Laptop second berkualitas dari Fikri Store"
                 className="fs-hero-image w-full h-full"
                 fittingType="fill"
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/10" />
-
               <div className="fs-scanline" />
-
               <div className="fs-corner fs-corner-top" />
               <div className="fs-corner fs-corner-bottom" />
 
@@ -120,7 +143,6 @@ export default function Hero() {
             <div className="fs-floating-chip fs-chip-top">
               <span>✦</span> Selected for you
             </div>
-
             <div className="fs-floating-chip fs-chip-bottom">
               <span className="fs-live-dot" /> Ready to explore
             </div>
