@@ -553,3 +553,99 @@
     transition-duration: .01ms !important;
   }
 } 
+/* ========================================
+   FIKRI STORE — DESKTOP LAYOUT REFINEMENT
+   Tidak mengubah layout mobile
+======================================== */
+
+@media (min-width: 1024px) {
+  .fs-hero > .relative.max-w-6xl {
+    max-width: 1280px;
+  }
+
+  .fs-hero > .relative.max-w-6xl > .grid {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(40px, 5vw, 76px);
+  }
+
+  .fs-hero-copy {
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .fs-hero-copy h1 {
+    font-size: clamp(42px, 4.2vw, 64px);
+    line-height: 1.05;
+    overflow-wrap: break-word;
+  }
+
+  .fs-hero-copy > p {
+    max-width: 490px;
+  }
+
+  .fs-hero-visual-wrap {
+    width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+  }
+
+  .fs-hero-visual {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    transform: perspective(1200px) rotateY(-2deg);
+    transform-origin: center;
+  }
+
+  .fs-hero-visual-wrap:hover .fs-hero-visual {
+    transform: perspective(1200px) rotateY(0) translateY(-3px);
+  }
+
+  .fs-floating-chip {
+    max-width: 180px;
+    white-space: normal;
+  }
+
+  .fs-chip-top {
+    right: -12px;
+  }
+
+  .fs-chip-bottom {
+    left: -12px;
+  }
+
+  .fs-orbit {
+    max-width: 115%;
+  }
+
+  .fs-hero > .relative.max-w-6xl > .mt-10.grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+}
+
+/* Laptop dengan viewport lebih kecil */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .fs-hero > .relative.max-w-6xl {
+    padding-inline: 28px;
+  }
+
+  .fs-hero > .relative.max-w-6xl > .grid {
+    gap: 36px;
+  }
+
+  .fs-hero-copy h1 {
+    font-size: 42px;
+  }
+}
+
+/* Mencegah elemen dekoratif menyebabkan scroll horizontal */
+@media (min-width: 641px) {
+  .fs-hero {
+    overflow: clip;
+  }
+
+  .fs-hero-visual-wrap {
+    isolation: isolate;
+  }
+}
