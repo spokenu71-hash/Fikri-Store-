@@ -1,8 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* FIKRI STORE — CINEMATIC MOTION */
+/* ========================================
+   FIKRI STORE — ORIGINAL THEME
+======================================== */
+
+@layer base {
+  :root {
+    --background: 240 6% 4%;
+    --foreground: 0 0% 96%;
+    --card: 225 14% 9%;
+    --card-foreground: 0 0% 96%;
+    --popover: 225 14% 9%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 70 100% 50%;
+    --primary-foreground: 240 6% 6%;
+    --secondary: 225 14% 14%;
+    --secondary-foreground: 0 0% 96%;
+    --muted: 225 14% 14%;
+    --muted-foreground: 0 0% 63%;
+    --accent: 225 14% 16%;
+    --accent-foreground: 0 0% 96%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 225 14% 18%;
+    --input: 225 14% 18%;
+    --ring: 70 100% 50%;
+    --radius: 1.25rem;
+
+    --light-bg: 0 0% 97%;
+    --light-fg: 240 6% 10%;
+    --light-muted: 240 5% 45%;
+    --light-border: 240 6% 90%;
+
+    --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    font-feature-settings: "cv11", "ss01";
+    letter-spacing: -0.011em;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .glow-lime {
+    box-shadow:
+      0 0 0 1px rgba(212, 255, 0, 0.35),
+      0 0 32px -6px rgba(212, 255, 0, 0.5);
+  }
+
+  .text-glow-lime {
+    text-shadow: 0 0 28px rgba(212, 255, 0, 0.4);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .bg-light {
+    background-color: hsl(var(--light-bg));
+    color: hsl(var(--light-fg));
+  }
+
+  .text-light-muted {
+    color: hsl(var(--light-muted));
+  }
+
+  .border-light-border {
+    border-color: hsl(var(--light-border));
+  }
+}
+
+/* ========================================
+   FIKRI STORE — CINEMATIC MOTION
+======================================== */
 
 .fs-hero {
+  position: relative;
   isolation: isolate;
+  overflow: hidden;
   background:
     radial-gradient(ellipse at 80% 25%, rgba(65, 95, 255, .14), transparent 40%),
     radial-gradient(ellipse at 10% 80%, rgba(135, 55, 255, .10), transparent 35%);
@@ -274,7 +371,7 @@
   opacity: 1;
 }
 
-/* Motion on product cards */
+/* Animasi kartu produk dan use case */
 #produk .grid > *,
 #use-cases .grid > * {
   transition: transform .35s ease, box-shadow .35s ease;
@@ -287,79 +384,166 @@
 
 /* Keyframes */
 @keyframes fs-enter {
-  from { opacity: 0; transform: translateY(24px); filter: blur(5px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
 }
 
 @keyframes fs-visual-enter {
-  from { opacity: 0; transform: translateY(25px) scale(.96); filter: blur(8px); }
-  to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(.96);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
 }
 
 @keyframes fs-grid-move {
-  to { background-position: 48px 48px, 48px 48px; }
+  to {
+    background-position: 48px 48px, 48px 48px;
+  }
 }
 
 @keyframes fs-aura-move {
-  from { transform: translate(-8px, 8px) scale(.94); }
-  to { transform: translate(24px, -18px) scale(1.08); }
+  from {
+    transform: translate(-8px, 8px) scale(.94);
+  }
+  to {
+    transform: translate(24px, -18px) scale(1.08);
+  }
 }
 
 @keyframes fs-streak-move {
-  0%, 100% { opacity: .15; transform: translateX(-5%) rotate(-18deg); }
-  50% { opacity: .7; transform: translateX(110%) rotate(-18deg); }
+  0%, 100% {
+    opacity: .15;
+    transform: translateX(-5%) rotate(-18deg);
+  }
+  50% {
+    opacity: .7;
+    transform: translateX(110%) rotate(-18deg);
+  }
 }
 
 @keyframes fs-image-float {
-  from { transform: scale(1.04) translateY(0); }
-  to { transform: scale(1.08) translateY(-7px); }
+  from {
+    transform: scale(1.04) translateY(0);
+  }
+  to {
+    transform: scale(1.08) translateY(-7px);
+  }
 }
 
 @keyframes fs-orbit-spin {
-  from { transform: translate(-50%, -50%) rotate(0); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+  from {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 @keyframes fs-orbit-spin-reverse {
-  from { transform: translate(-50%, -50%) rotate(360deg); }
-  to { transform: translate(-50%, -50%) rotate(0); }
+  from {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(0);
+  }
 }
 
 @keyframes fs-chip-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
 }
 
 @keyframes fs-scan {
-  0% { transform: translateY(-20%); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateY(480%); opacity: 0; }
+  0% {
+    transform: translateY(-20%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(480%);
+    opacity: 0;
+  }
 }
 
 @keyframes fs-dot-pulse {
-  50% { opacity: .45; box-shadow: 0 0 2px rgba(212, 255, 0, .3); }
+  50% {
+    opacity: .45;
+    box-shadow: 0 0 2px rgba(212, 255, 0, .3);
+  }
 }
 
 @keyframes fs-neon-pulse {
-  from { text-shadow: 0 0 10px rgba(212, 255, 0, .15); }
-  to { text-shadow: 0 0 28px rgba(212, 255, 0, .5); }
+  from {
+    text-shadow: 0 0 10px rgba(212, 255, 0, .15);
+  }
+  to {
+    text-shadow: 0 0 28px rgba(212, 255, 0, .5);
+  }
 }
 
 @keyframes fs-button-shine {
-  0%, 65% { left: -50%; }
-  85%, 100% { left: 130%; }
+  0%, 65% {
+    left: -50%;
+  }
+  85%, 100% {
+    left: 130%;
+  }
 }
 
+/* Responsif untuk ponsel */
 @media (max-width: 640px) {
-  .fs-aura { width: 210px; filter: blur(55px); }
-  .fs-hero-visual { transform: none; }
-  .fs-hero-visual-wrap:hover .fs-hero-visual { transform: translateY(-2px); }
-  .fs-floating-chip { padding: 8px 10px; font-size: 9px; }
-  .fs-chip-top { right: 0; }
-  .fs-chip-bottom { left: 0; }
-  .fs-trust-row { font-size: 10px; }
+  .fs-aura {
+    width: 210px;
+    filter: blur(55px);
+  }
+
+  .fs-hero-visual {
+    transform: none;
+  }
+
+  .fs-hero-visual-wrap:hover .fs-hero-visual {
+    transform: translateY(-2px);
+  }
+
+  .fs-floating-chip {
+    padding: 8px 10px;
+    font-size: 9px;
+  }
+
+  .fs-chip-top {
+    right: 0;
+  }
+
+  .fs-chip-bottom {
+    left: 0;
+  }
+
+  .fs-trust-row {
+    font-size: 10px;
+  }
 }
 
+/* Hormati pengaturan pengguna yang mengurangi animasi */
 @media (prefers-reduced-motion: reduce) {
   .fs-hero *,
   .fs-hero *::before,
@@ -368,4 +552,4 @@
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
   }
-}
+} 
