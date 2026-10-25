@@ -1758,3 +1758,824 @@
   }
   }
   
+/* =========================================================
+   FIKRI STORE — PREMIUM REFINEMENT
+   Aligns real Admin.jsx selectors and refines responsive UI.
+   Append this block at the end of AdminPremium.css.
+   ========================================================= */
+
+:root {
+  --ap-ink: #192436;
+  --ap-muted: #738096;
+  --ap-blue: #3458d4;
+  --ap-blue-dark: #2445b8;
+  --ap-line: #e4e8ef;
+  --ap-surface: #ffffff;
+  --ap-page: #f6f7f9;
+  --ap-radius: 16px;
+}
+
+.ap-app {
+  background: var(--ap-page);
+  color: var(--ap-ink);
+}
+
+.ap-sidebar {
+  width: 244px;
+  flex-basis: 244px;
+  padding: 27px 17px 17px;
+  border-right-color: #e7eaf0;
+  background: #fff;
+}
+
+.ap-sidebar-brand {
+  margin-bottom: 39px;
+}
+
+.ap-sidebar-caption {
+  color: #99a2b2;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.ap-nav {
+  gap: 4px;
+}
+
+.ap-nav-item {
+  min-height: 44px;
+  border-radius: 10px;
+  color: #68758b;
+  font-size: 12px;
+}
+
+.ap-nav-item:hover {
+  background: #f5f7fc;
+  color: var(--ap-blue);
+}
+
+.ap-nav-item.active {
+  background: #edf1ff;
+  color: var(--ap-blue);
+}
+
+.ap-nav-icon {
+  border-radius: 7px;
+  background: #f5f6f8;
+}
+
+.ap-sidebar-note {
+  border-color: #e4eee8;
+  border-radius: 11px;
+  background: #f8fbf9;
+}
+
+.ap-profile {
+  border-top-color: var(--ap-line);
+}
+
+.ap-avatar {
+  border: 1px solid #dbe3f7;
+  border-radius: 10px;
+  background: #edf1fc;
+  color: #3455c1;
+}
+
+.ap-topbar {
+  min-height: 70px;
+  border-bottom-color: var(--ap-line);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.ap-website-link {
+  border-color: #dfe4ec;
+  border-radius: 9px;
+  color: #35435b;
+}
+
+.ap-website-link:hover {
+  border-color: #b9c7f2;
+  color: var(--ap-blue);
+}
+
+.ap-content {
+  width: min(100%, 1540px);
+  padding: 32px 36px 25px;
+}
+
+/* Welcome: restrained, branded, no ornamental background */
+
+.ap-welcome {
+  min-height: 190px;
+  padding: 33px 36px;
+  border: 1px solid #e1e5ed;
+  border-radius: 17px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.ap-welcome::after {
+  display: none;
+}
+
+.ap-welcome .ap-eyebrow {
+  color: #667aa9;
+  letter-spacing: 1.35px;
+}
+
+.ap-welcome h1 {
+  color: #18263b;
+  font-size: clamp(27px, 2.6vw, 35px);
+  letter-spacing: -1.4px;
+}
+
+.ap-welcome p {
+  color: #69768a;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.ap-welcome-mark {
+  width: 92px;
+  height: 92px;
+  flex-basis: 92px;
+}
+
+.ap-mark-orbit,
+.ap-mark-spark {
+  display: none;
+}
+
+.ap-mark-core {
+  width: 76px;
+  height: 76px;
+  border: 0;
+  border-radius: 21px;
+  background: #1e2c43;
+  box-shadow: none;
+  color: #fff;
+  font-size: 29px;
+}
+
+/* Section hierarchy */
+
+.ap-section-heading {
+  margin-top: 32px;
+  margin-bottom: 15px;
+}
+
+.ap-section-heading h2,
+.ap-management-heading h2 {
+  color: #1d2a3e;
+  letter-spacing: -0.65px;
+}
+
+.ap-eyebrow {
+  font-size: 9px;
+  letter-spacing: 1.4px;
+}
+
+.ap-data-label {
+  border-color: #e3e9e5;
+  border-radius: 8px;
+  color: #657e70;
+  background: #fff;
+}
+
+/* Overview cards */
+
+.ap-stats-grid {
+  gap: 12px;
+}
+
+.ap-stat-card {
+  gap: 13px;
+  padding: 19px 16px;
+  border-color: #e3e7ee;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.ap-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #cfd8ed;
+  box-shadow: 0 7px 20px rgba(27, 42, 67, 0.045);
+}
+
+.ap-stat-icon {
+  width: 39px;
+  height: 39px;
+  flex-basis: 39px;
+  border-radius: 11px;
+}
+
+.ap-stat-icon.blue {
+  background: #edf1ff;
+  color: #3458d4;
+}
+
+.ap-stat-icon.purple {
+  background: #f2effb;
+  color: #7960b7;
+}
+
+.ap-stat-icon.mint {
+  background: #eaf5ef;
+  color: #31855e;
+}
+
+.ap-stat-icon.amber {
+  background: #fbf2e5;
+  color: #a76d21;
+}
+
+.ap-stat-content p {
+  color: #758196;
+}
+
+.ap-stat-content strong {
+  color: #1c2a3f;
+  letter-spacing: -0.8px;
+}
+
+.ap-stat-content > span {
+  color: #8c96a7;
+}
+
+/* Management workspace */
+
+.ap-management-heading {
+  margin-top: 35px;
+  margin-bottom: 16px;
+}
+
+.ap-management-heading p {
+  color: #788498;
+}
+
+.ap-workspace {
+  grid-template-columns: minmax(290px, 0.88fr) minmax(0, 1.12fr);
+  align-items: start;
+  gap: 17px;
+}
+
+.ap-panel {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #e2e7ee;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: none;
+}
+
+.ap-panel-heading {
+  align-items: flex-start;
+  gap: 11px;
+  margin-bottom: 20px;
+}
+
+.ap-panel-icon {
+  width: 36px;
+  height: 36px;
+  flex-basis: 36px;
+  border-color: #e2e8f6;
+  border-radius: 10px;
+  background: #f0f3fb;
+  color: #3458bd;
+}
+
+.ap-panel-heading h3 {
+  color: #243249;
+  font-size: 14px;
+}
+
+.ap-panel-heading p {
+  color: #7d899c;
+  line-height: 1.65;
+}
+
+/* Fix: match the actual class names in Admin.jsx */
+
+.ap-list-panel {
+  min-width: 0;
+  padding-bottom: 0;
+}
+
+.ap-list-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ap-list-panel-heading > div {
+  min-width: 0;
+}
+
+.ap-list-panel-heading .ap-button {
+  flex-shrink: 0;
+}
+
+.ap-product-details {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.ap-product-details > strong {
+  display: block;
+  margin: 0 0 5px;
+  color: #243249;
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ap-product-details .ap-product-price {
+  display: block;
+  margin-bottom: 5px;
+  color: #3458c5;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ap-product-details > small {
+  display: block;
+  margin-top: 3px;
+  color: #7b879b;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.ap-product-details > p {
+  margin: 7px 0 0;
+  color: #778397;
+  font-size: 10px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+/* Product image: Admin.jsx applies this class directly to the img */
+
+img.ap-product-image {
+  display: block;
+  width: 66px;
+  height: 66px;
+  flex: 0 0 66px;
+  object-fit: cover;
+  border: 1px solid #e3e7ee;
+  border-radius: 11px;
+  background: #f5f6f8;
+}
+
+.ap-product-item > .ap-no-image {
+  display: grid;
+  place-items: center;
+  color: #8994a7;
+  background: #f4f6f9;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.ap-product-item {
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom-color: #edf0f4;
+}
+
+.ap-product-actions {
+  align-items: center;
+  gap: 5px;
+}
+
+.ap-icon-button {
+  border-color: #e5e9f0;
+  border-radius: 9px;
+  background: #fff;
+  color: #58667d;
+}
+
+.ap-icon-button:hover:not(:disabled) {
+  background: #f3f6fd;
+}
+
+.ap-delete-button {
+  border-color: #f0dfe3;
+  background: #fff8f8;
+  color: #c14e62;
+}
+
+.ap-delete-button:hover:not(:disabled) {
+  background: #ffedef;
+}
+
+/* Search and empty states */
+
+.ap-search {
+  border-color: #dfe5ee;
+  border-radius: 9px;
+  background: #fafbfd;
+}
+
+.ap-search:focus {
+  background: #fff;
+}
+
+.ap-empty-state {
+  color: #778397;
+  font-size: 12px;
+}
+
+.ap-empty-state p {
+  line-height: 1.75;
+}
+
+/* Form details */
+
+.ap-label {
+  color: #36445b;
+  font-size: 11px;
+}
+
+.ap-input {
+  border-color: #dfe5ed;
+  border-radius: 9px;
+  background: #fbfcfd;
+  color: #243249;
+  font-size: 12px;
+}
+
+.ap-input:hover {
+  border-color: #c4cfe0;
+}
+
+.ap-input:focus {
+  border-color: #8198e3;
+  box-shadow: 0 0 0 3px rgba(52, 88, 212, 0.09);
+}
+
+.ap-textarea {
+  min-height: 100px;
+}
+
+.ap-help-text {
+  margin: 8px 0 0;
+  color: #7b8799;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.ap-form-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+.ap-form-buttons .ap-button {
+  flex: 1 1 auto;
+  margin-top: 0;
+}
+
+.ap-button {
+  min-height: 42px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.ap-button-primary {
+  background: #3458d4;
+  box-shadow: none;
+}
+
+.ap-button-primary:hover:not(:disabled) {
+  background: #2445b8;
+  box-shadow: 0 4px 10px rgba(36, 69, 184, 0.13);
+}
+
+.ap-button-secondary {
+  border-color: #dfe5ed;
+  background: #fff;
+  color: #526078;
+}
+
+.ap-button-secondary:hover:not(:disabled) {
+  border-color: #c8d2e3;
+  background: #f8f9fc;
+}
+
+/* Homepage image manager section */
+
+.ap-site-images-panel {
+  margin-top: 20px;
+}
+
+.ap-site-images-panel .ap-panel-heading {
+  margin-bottom: 20px;
+}
+
+.ap-footer {
+  border-top: 1px solid #e5e9ef;
+  margin-top: 24px;
+  padding-top: 19px;
+  color: #8893a4;
+}
+
+.ap-footer > span:first-child {
+  color: #35435a;
+}
+
+/* Authentication screens */
+
+.ap-auth-page {
+  background: #f5f6f8;
+}
+
+.ap-auth-card {
+  border-color: #e3e7ed;
+  border-radius: 18px;
+  box-shadow: 0 14px 45px rgba(27, 42, 67, 0.06);
+}
+
+.ap-auth-card h1 {
+  color: #1d2a3e;
+}
+
+.ap-auth-card > p {
+  color: #6f7c90;
+  line-height: 1.75;
+}
+
+/* Responsive: tablet */
+
+@media (max-width: 1200px) {
+  .ap-content {
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+
+  .ap-workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ap-list-panel {
+    order: 1;
+  }
+
+  .ap-form-panel {
+    order: 2;
+  }
+}
+
+/* Responsive: mobile */
+
+@media (max-width: 760px) {
+  .ap-sidebar {
+    gap: 9px;
+    padding: 12px 15px;
+  }
+
+  .ap-sidebar-brand {
+    font-size: 17px;
+  }
+
+  .ap-nav {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .ap-nav-item {
+    min-height: 36px;
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .ap-topbar {
+    min-height: 55px;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .ap-content {
+    padding: 17px 14px 20px;
+  }
+
+  .ap-welcome {
+    min-height: 160px;
+    gap: 10px;
+    padding: 23px 19px;
+    border-radius: 14px;
+  }
+
+  .ap-welcome h1 {
+    max-width: 270px;
+    font-size: clamp(23px, 6vw, 29px);
+  }
+
+  .ap-welcome p {
+    font-size: 11px;
+  }
+
+  .ap-welcome-mark {
+    width: 54px;
+    height: 54px;
+    flex: 0 0 54px;
+  }
+
+  .ap-mark-core {
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    font-size: 21px;
+  }
+
+  .ap-section-heading {
+    gap: 10px;
+  }
+
+  .ap-section-heading h2,
+  .ap-management-heading h2 {
+    font-size: 18px;
+  }
+
+  .ap-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .ap-stat-card {
+    min-height: 105px;
+    gap: 9px;
+    padding: 13px 10px;
+  }
+
+  .ap-stat-icon {
+    width: 31px;
+    height: 31px;
+    flex-basis: 31px;
+    border-radius: 9px;
+    font-size: 15px;
+  }
+
+  .ap-stat-content p {
+    margin-bottom: 7px;
+    font-size: 9px;
+  }
+
+  .ap-stat-content strong {
+    font-size: 21px;
+  }
+
+  .ap-stat-content > span {
+    font-size: 8px;
+  }
+
+  .ap-management-heading {
+    gap: 12px;
+    margin-top: 29px;
+  }
+
+  .ap-panel {
+    padding: 16px;
+    border-radius: 13px;
+  }
+
+  .ap-list-panel {
+    padding-bottom: 0;
+  }
+
+  .ap-list-panel-heading {
+    flex-direction: column;
+  }
+
+  .ap-list-panel-heading .ap-button {
+    width: 100%;
+  }
+
+  .ap-product-item {
+    align-items: flex-start;
+    gap: 9px;
+    padding: 13px 0;
+  }
+
+  img.ap-product-image,
+  .ap-product-item > .ap-no-image {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+    border-radius: 9px;
+  }
+
+  .ap-product-details > strong {
+    font-size: 11px;
+  }
+
+  .ap-product-details .ap-product-price {
+    font-size: 11px;
+  }
+
+  .ap-product-details > small {
+    font-size: 9px;
+  }
+
+  .ap-product-actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .ap-icon-button {
+    width: 29px;
+    height: 29px;
+  }
+
+  .ap-form-buttons {
+    flex-direction: column;
+  }
+
+  .ap-form-buttons .ap-button {
+    width: 100%;
+  }
+
+  .ap-site-images-panel {
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 390px) {
+  .ap-sidebar {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .ap-nav {
+    gap: 4px;
+  }
+
+  .ap-nav-item {
+    font-size: 9px;
+  }
+
+  .ap-welcome {
+    padding: 20px 15px;
+  }
+
+  .ap-welcome h1 {
+    font-size: 22px;
+  }
+
+  .ap-welcome-mark {
+    width: 40px;
+    flex-basis: 40px;
+  }
+
+  .ap-mark-core {
+    width: 37px;
+    height: 37px;
+    font-size: 18px;
+  }
+
+  .ap-data-label {
+    max-width: 120px;
+    white-space: normal;
+  }
+
+  .ap-stat-card {
+    gap: 7px;
+    padding: 12px 8px;
+  }
+
+  .ap-stat-content strong {
+    font-size: 19px;
+  }
+
+  .ap-panel {
+    padding: 12px;
+  }
+
+  .ap-list-panel {
+    padding-bottom: 0;
+  }
+
+  img.ap-product-image,
+  .ap-product-item > .ap-no-image {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+  }
+
+  .ap-product-actions {
+    gap: 4px;
+  }
+
+  .ap-icon-button {
+    width: 27px;
+    height: 27px;
+  }
+  }
+  
