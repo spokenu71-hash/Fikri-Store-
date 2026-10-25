@@ -854,155 +854,19 @@ id="ap-product-price"
                       type="button"
                       className="ap-button ap-button-secondary ap-full-button"
                       onClick={resetForm}
-                      disabled={loading}
-                    >
-                      Batalkan edit
-                    </button>
-                  )}
-                </div>
-              </form>
-            </article>
-
-            <article className="ap-panel ap-catalog-panel">
-              <div className="ap-panel-heading ap-catalog-heading">
-                <div className="ap-panel-icon">◇</div>
-                <div>
-                  <h3>Katalog produk</h3>
-                  <p>
-                    {products.length} produk tersimpan di database.
-                  </p>
-                </div>
-              </div>
-
-              <div className="ap-search-wrap">
-                <span aria-hidden="true">⌕</span>
-                <input
-                  className="ap-input ap-search"
-                  type="search"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Cari nama, harga, kategori..."
-                  aria-label="Cari produk"
-                />
-                {search && (
-                  <button
-                    type="button"
-                    className="ap-clear-search"
-                    onClick={() => setSearch("")}
-                    aria-label="Hapus pencarian"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-
-              {productsLoading ? (
-                <div className="ap-empty-state">
-                  <div className="ap-loader" />
-                  <p>Memuat katalog produk...</p>
-                </div>
-              ) : filteredProducts.length === 0 ? (
-                <div className="ap-empty-state">
-                  <div className="ap-empty-icon">◇</div>
-                  <h4>
-                    {search ? "Produk tidak ditemukan" : "Belum ada produk"}
-                  </h4>
-                  <p>
-                    {search
-                      ? "Coba kata kunci pencarian yang berbeda."
-                      : "Tambahkan produk pertama untuk mulai mengisi katalog."}
-                  </p>
-                  {search && (
-                    <button
-                      type="button"
-                      className="ap-button ap-button-secondary"
-                      onClick={() => setSearch("")}
-                    >
-                      Hapus pencarian
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="ap-product-list">
-                  {filteredProducts.map((product) => (
-                    <article className="ap-product-item" key={product.id}>
-                      <div className="ap-product-image">
-                        {product.image_url ? (
-                          <img
-                            src={product.image_url}
-                            alt={product.name}
-                            loading="lazy"
-                            onError={(event) => {
-                              event.currentTarget.style.display = "none";
-                            }}
-                          />
-                        ) : (
-                          <span>◇</span>
-                        )}
-                      </div>
-
-                      <div className="ap-product-info">
-                        <span className="ap-product-category">
-                          {categoryLabel(product.category)}
-                        </span>
-                        <h4>{product.name}</h4>
-                        <strong>{formatPrice(product.price)}</strong>
-                        <span className="ap-product-stock">
-                          Stok: {Number(product.stock) || 0} unit
-                        </span>
-                      </div>
-
-                      <div className="ap-product-actions">
-                        <button
-                          type="button"
-                          className="ap-icon-button ap-edit-button"
-                          onClick={() => editProduct(product)}
-                          aria-label={`Edit ${product.name}`}
-                          title="Edit produk"
-                        >
-                          ✎
-                        </button>
-                        <button
-                          type="button"
-                          className="ap-icon-button ap-delete-button"
-                          onClick={() => removeProduct(product)}
-                          disabled={loading}
-                          aria-label={`Hapus ${product.name}`}
-                          title="Hapus produk"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              )}
-
-              <div className="ap-catalog-footer">
-                <span>
-                  Menampilkan {filteredProducts.length} dari {products.length}{" "}
-                  produk
-                </span>
-                <button
-                  type="button"
-                  className="ap-text-button"
-                  onClick={loadProducts}
-                  disabled={productsLoading}
-                >
-                  ↻ Segarkan katalog
-                </button>
-              </div>
-            </article>
-          </section>
-
-          <footer className="ap-footer">
-            <span>FIKRI STORE. <span>ADMIN WORKSPACE</span></span>
-            <span>© {new Date().getFullYear()} Fikri Store</span>
-          </footer>
-        </div>
-      </section>
-    </main>
-  );
-              }
-
- 
+<label className="ap-label" htmlFor="ap-product-price">
+  Harga <span>*</span>
+</label>
+<input
+  id="ap-product-price"
+  className="ap-input"
+  type="text"
+  inputMode="text"
+  value={form.price}
+  onChange={(event) =>
+    setForm({ ...form, price: event.target.value })
+  }
+  placeholder="Contoh: 3 jutaan atau 3500000"
+  required
+/>
+                  
