@@ -1659,12 +1659,12 @@ transform: rotate(360deg);
 
 /* ACCESSIBILITY */
 @media (prefers-reduced-motion: reduce) {
-  .ap-app *,
-  .ap-app *::before,
-  .ap-app *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-     }
+.ap-app *,
+.ap-app *::before,
+.ap-app *::after {
+scroll-behavior: auto !important;
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+}
+}
