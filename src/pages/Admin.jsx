@@ -3,6 +3,7 @@ import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
+import SiteImagesManager from "./SiteImagesManager.jsx";
 
 const RESET_URL = "https://fikri-store.pages.dev/reset-password";
 const BUCKET = "product-images";
@@ -29,7 +30,9 @@ function formatPrice(value) {
   if (/[a-zA-Z]/.test(text) || /Rp/i.test(text)) return text;
 
   const digits = text.replace(/\D/g, "");
-  return digits ? `Rp ${Number(digits).toLocaleString("id-ID")}` : text;
+  return digits
+    ? `Rp ${Number(digits).toLocaleString("id-ID")}`
+    : text;
 }
 
 function categoryLabel(value) {
@@ -95,6 +98,7 @@ export default function Admin() {
       })
       .catch((error) => {
         if (!mounted) return;
+
         setNotice(error.message || "Gagal memeriksa sesi login.");
         setNoticeType("error");
         setAuthReady(true);
@@ -137,7 +141,6 @@ export default function Admin() {
         .order("created_at", { ascending: false });
 
       if (error) throw error;
-
       setProducts(data || []);
     } catch (error) {
       showNotice(
@@ -156,7 +159,9 @@ export default function Admin() {
     showNotice("");
 
     try {
-      if (!supabase) throw new Error("Supabase belum dikonfigurasi.");
+      if (!supabase) {
+        throw new Error("Supabase belum dikonfigurasi.");
+      }
 
       if (forgot) {
         if (!email.trim()) {
@@ -187,6 +192,18 @@ export default function Admin() {
     } finally {
       setLoading(false);
     }
+  }
+
+  async function handleSignOut() {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      showNotice(error.message, "error");
+      return;
+    }
+
+    resetForm();
+    setNotice("");
   }
 
   function resetForm() {
@@ -228,7 +245,7 @@ export default function Admin() {
     }
 
     if (!form.price.trim()) {
-      showNotice("Isi harga, atau tulis Hubungi kami / Gratis.", "error");
+      showNotice("Isi harga produk terlebih dahulu.", "error");
       return;
     }
 
@@ -244,7 +261,9 @@ export default function Admin() {
       let imageUrl = form.image_url.trim();
 
       if (imageFile) {
-        const extension = (imageFile.name.split(".").pop() || "jpg")
+        const extension = (
+          imageFile.name.split(".").pop() || "jpg"
+        )
           .toLowerCase()
           .replace(/[^a-z0-9]/g, "");
 
@@ -261,8 +280,9 @@ export default function Admin() {
 
         if (uploadError) throw uploadError;
 
-        imageUrl = supabase.storage.from(BUCKET).getPublicUrl(path)
-          .data.publicUrl;
+        imageUrl = supabase.storage
+          .from(BUCKET)
+          .getPublicUrl(path).data.publicUrl;
       }
 
       const payload = {
@@ -327,12 +347,16 @@ export default function Admin() {
         current.filter((item) => item.id !== product.id)
       );
 
-      showNotice(`Produk "${product.name}" berhasil dihapus.`, "success");
+      showNotice(
+        `Produk "${product.name}" berhasil dihapus.`,
+        "success"
+      );
 
       await loadProducts();
     } catch (error) {
       showNotice(
-        "Gagal menghapus produk: " + (error.message || "Terjadi kesalahan."),
+        "Gagal menghapus produk: " +
+          (error.message || "Terjadi kesalahan."),
         "error"
       );
     } finally {
@@ -352,7 +376,9 @@ export default function Admin() {
         product.category,
         product.description,
         product.stock,
-      ].some((value) => String(value ?? "").toLowerCase().includes(query))
+      ].some((value) =>
+        String(value ?? "").toLowerCase().includes(query)
+      )
     );
   }, [products, search]);
 
@@ -372,7 +398,22 @@ export default function Admin() {
   const navItems = [
     { name: "Dashboard", icon: "▦" },
     { name: "Produk", icon: "◇" },
+    { name: "Foto Homepage", icon: "▧" },
   ];
+
+  function navigateTo(name) {
+    setActiveNav(name);
+
+    const targets = {
+      Dashboard: "ap-dashboard",
+      Produk: "ap-product-form",
+      "Foto Homepage": "ap-site-images",
+    };
+
+    document
+      .getElementById(targets[name])
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   if (!supabaseConfigured || !supabase) {
     return (
@@ -384,9 +425,10 @@ export default function Admin() {
           <span className="ap-eyebrow">SYSTEM CONFIGURATION</span>
           <h1>Konfigurasi Supabase</h1>
           <p>
-            Periksa VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY pada
-            environment variables hosting.
+            Periksa VITE_SUPABASE_URL dan VITE_SUPABASE_ANON_KEY
+            pada environment variables hosting.
           </p>
+          <Link to="/">Kembali ke toko</Link>
         </section>
       </main>
     );
@@ -405,9 +447,9 @@ export default function Admin() {
     return (
       <main className="ap-auth-page">
         <section className="ap-auth-card">
-          <div className="ap-brand">
+          <Link to="/" className="ap-brand">
             FIKRI <span>STORE.</span>
-          </div>
+          </Link>
 
           <span className="ap-eyebrow">ADMINISTRATION PORTAL</span>
 
@@ -476,11 +518,7 @@ export default function Admin() {
           </button>
 
           {notice && (
-            <div
-              className={`ap-notice ${noticeType}`}
-              role="status"
-              aria-live="polite"
-            >
+            <div className={`ap-notice ${noticeType}`} role="status">
               {notice}
             </div>
           )}
@@ -506,20 +544,7 @@ export default function Admin() {
               className={`ap-nav-item ${
                 activeNav === item.name ? "active" : ""
               }`}
-              onClick={() => {
-                setActiveNav(item.name);
-
-                if (item.name === "Dashboard") {
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                } else {
-                  document
-                    .getElementById("ap-product-form")
-                    ?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                }
-              }}
+              onClick={() => navigateTo(item.name)}
             >
               <span className="ap-nav-icon">{item.icon}</span>
               {item.name}
@@ -550,7 +575,7 @@ export default function Admin() {
           <button
             type="button"
             className="ap-logout"
-            onClick={() => supabase.auth.signOut()}
+            onClick={handleSignOut}
           >
             <span>↗</span> Keluar dari akun
           </button>
@@ -576,7 +601,7 @@ export default function Admin() {
           </div>
         </header>
 
-        <div className="ap-content">
+        <div className="ap-content" id="ap-dashboard">
           <section className="ap-welcome">
             <div className="ap-welcome-copy">
               <span className="ap-eyebrow">YOUR STORE OVERVIEW</span>
@@ -662,18 +687,13 @@ export default function Admin() {
                 Tambahkan produk baru atau perbarui katalog yang sudah ada.
               </p>
             </div>
+
             <button
               type="button"
               className="ap-button ap-button-primary"
               onClick={() => {
                 resetForm();
-                setActiveNav("Produk");
-                document
-                  .getElementById("ap-product-form")
-                  ?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
+                navigateTo("Produk");
               }}
             >
               <span>＋</span> Tambah produk
@@ -715,7 +735,8 @@ export default function Admin() {
                       Harga <span>*</span>
                     </label>
                     
-id="ap-product-price"
+                    <input
+                      id="ap-product-price"
                       className="ap-input"
                       type="text"
                       inputMode="text"
@@ -742,7 +763,6 @@ id="ap-product-price"
                       onChange={(event) =>
                         setForm({ ...form, stock: event.target.value })
                       }
-                      placeholder="1"
                     />
                   </div>
                 </div>
@@ -752,7 +772,7 @@ id="ap-product-price"
                 </label>
                 <select
                   id="ap-product-category"
-                  className="ap-input ap-select"
+                  className="ap-input"
                   value={form.category}
                   onChange={(event) =>
                     setForm({ ...form, category: event.target.value })
@@ -780,7 +800,7 @@ id="ap-product-price"
                 />
 
                 <label className="ap-label" htmlFor="ap-product-image-url">
-                  URL gambar produk
+                  URL foto produk (opsional)
                 </label>
                 <input
                   id="ap-product-image-url"
@@ -790,15 +810,15 @@ id="ap-product-price"
                   onChange={(event) =>
                     setForm({ ...form, image_url: event.target.value })
                   }
-                  placeholder="https://contoh.com/gambar-laptop.jpg"
+                  placeholder="https://..."
                 />
 
                 <label className="ap-label" htmlFor="ap-image-file">
-                  Atau unggah gambar dari galeri
+                  Upload foto dari HP
                 </label>
                 <input
                   id="ap-image-file"
-                  className="ap-input ap-file-input"
+                  className="ap-input"
                   type="file"
                   accept="image/*"
                   onChange={(event) =>
@@ -806,67 +826,155 @@ id="ap-product-price"
                   }
                 />
 
-                {imageFile && (
-                  <div className="ap-file-selected">
-                    <span>✓</span>
-                    <span>{imageFile.name}</span>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setImageFile(null);
-                        const input = document.getElementById("ap-image-file");
-                        if (input) input.value = "";
-                      }}
-                    >
-                      Hapus pilihan
-                    </button>
-                  </div>
-                )}
+                <p className="ap-help-text">
+                  Jika memilih foto baru, foto tersebut akan menggantikan
+                  URL foto yang digunakan.
+                </p>
 
-                {form.image_url && !imageFile && (
-                  <div className="ap-image-preview">
-                    <img
-                      src={form.image_url}
-                      alt="Pratinjau produk"
-                      onError={(event) => {
-                        event.currentTarget.style.display = "none";
-                      }}
-                    />
-                    <span>Pratinjau gambar produk</span>
-                  </div>
-                )}
-
-                <div className="ap-form-actions">
+                <div className="ap-form-buttons">
                   <button
                     type="submit"
-                    className="ap-button ap-button-primary ap-full-button"
+                    className="ap-button ap-button-primary"
                     disabled={loading}
                   >
                     {loading
                       ? "Menyimpan..."
                       : editingId
                         ? "Simpan perubahan"
-                        : "Simpan produk"}
+                        : "＋ Tambah produk"}
                   </button>
 
                   {editingId && (
                     <button
                       type="button"
-                      className="ap-button ap-button-secondary ap-full-button"
+                      className="ap-button ap-button-secondary"
                       onClick={resetForm}
-<label className="ap-label" htmlFor="ap-product-price">
-  Harga <span>*</span>
-</label>
-<input
-  id="ap-product-price"
-  className="ap-input"
-  type="text"
-  inputMode="text"
-  value={form.price}
-  onChange={(event) =>
-    setForm({ ...form, price: event.target.value })
-  }
-  placeholder="Contoh: 3 jutaan atau 3500000"
-  required
-/>
-                  
+                      disabled={loading}
+                    >
+                      Batal edit
+                    </button>
+                  )}
+                </div>
+              </form>
+            </article>
+
+            <article className="ap-panel ap-list-panel">
+              <div className="ap-panel-heading ap-list-panel-heading">
+                <div>
+                  <span className="ap-eyebrow">YOUR INVENTORY</span>
+                  <h3>Daftar produk</h3>
+                  <p>
+                    {filteredProducts.length} dari {products.length} produk
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  className="ap-button ap-button-secondary"
+                  onClick={loadProducts}
+                  disabled={productsLoading}
+                >
+                  {productsLoading ? "Memuat..." : "↻ Segarkan katalog"}
+                </button>
+              </div>
+
+              <input
+                className="ap-input ap-search"
+                type="search"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Cari nama, harga, kategori..."
+                aria-label="Cari produk"
+              />
+
+              {productsLoading ? (
+                <p className="ap-empty-state">Memuat katalog produk...</p>
+              ) : filteredProducts.length === 0 ? (
+                <p className="ap-empty-state">
+                  {products.length === 0
+                    ? "Belum ada produk di database."
+                    : "Produk yang kamu cari tidak ditemukan."}
+                </p>
+              ) : (
+                <div className="ap-product-list">
+                  {filteredProducts.map((product) => (
+                    <article className="ap-product-item" key={product.id}>
+                      {product.image_url ? (
+                        <img
+                          className="ap-product-image"
+                          src={product.image_url}
+                          alt={product.name}
+                        />
+                      ) : (
+                        <div className="ap-product-image ap-no-image">
+                          FOTO
+                        </div>
+                      )}
+
+                      <div className="ap-product-details">
+                        <strong>{product.name}</strong>
+                        <span className="ap-product-price">
+                          {formatPrice(product.price)}
+                        </span>
+                        <small>{categoryLabel(product.category)}</small>
+                        <small>Stok: {product.stock ?? 0}</small>
+                        {product.description && (
+                          <p>{product.description}</p>
+                        )}
+                      </div>
+
+                      <div className="ap-product-actions">
+                        <button
+                          type="button"
+                          className="ap-icon-button"
+                          aria-label={`Edit ${product.name}`}
+                          onClick={() => editProduct(product)}
+                        >
+                          ✎
+                        </button>
+                        <button
+                          type="button"
+                          className="ap-icon-button ap-delete-button"
+                          aria-label={`Hapus ${product.name}`}
+                          onClick={() => removeProduct(product)}
+                          disabled={loading}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </article>
+          </section>
+
+          <section
+            className="ap-panel ap-site-images-panel"
+            id="ap-site-images"
+          >
+            <div className="ap-panel-heading">
+              <div className="ap-panel-icon">▧</div>
+              <div>
+                <span className="ap-eyebrow">HOMEPAGE CUSTOMIZATION</span>
+                <h3>Pengaturan foto homepage</h3>
+                <p>
+                  Atur foto Hero, Kuliah, Kerja, Desain & Kreatif, dan Gaming
+                  Ringan.
+                </p>
+              </div>
+            </div>
+
+            <SiteImagesManager />
+          </section>
+
+          <footer className="ap-footer">
+            <span>FIKRI STORE.</span>
+            <span>Admin workspace · {new Date().getFullYear()}</span>
+          </footer>
+        </div>
+      </section>
+    </main>
+  );
+                }
+                      
