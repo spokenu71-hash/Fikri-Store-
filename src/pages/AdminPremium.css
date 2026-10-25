@@ -1668,3 +1668,127 @@ animation-iteration-count: 1 !important;
 transition-duration: 0.01ms !important;
 }
 }
+/* FIKRI STORE — CURVED MOBILE NAVIGATION */
+@media (max-width: 700px) {
+  .ap-app {
+    padding-bottom: calc(92px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .ap-sidebar {
+    padding: 0 14px calc(9px + env(safe-area-inset-bottom)) !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .ap-nav {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0 !important;
+    max-width: 520px !important;
+    min-height: 65px !important;
+    padding: 7px 8px 5px !important;
+    border-radius: 23px !important;
+    background: #087f5b !important;
+    box-shadow: 0 10px 28px rgba(8, 127, 91, .22) !important;
+    overflow: visible !important;
+  }
+
+  .ap-nav-item,
+  .ap-nav-item:hover {
+    position: relative !important;
+    display: flex !important;
+    min-width: 0 !important;
+    min-height: 52px !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 4px !important;
+    padding: 4px 2px 3px !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    color: rgba(255,255,255,.85) !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+  }
+
+  .ap-nav-item.active {
+    color: #fff !important;
+    background: transparent !important;
+  }
+
+  .ap-nav-item.active::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -21px !important;
+    left: 50% !important;
+    right: auto !important;
+    width: 62px !important;
+    height: 62px !important;
+    transform: translateX(-50%) !important;
+    border: 7px solid #fff !important;
+    border-radius: 50% !important;
+    background: #087f5b !important;
+    z-index: 1 !important;
+  }
+
+  .ap-nav-icon {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    width: 23px !important;
+    height: 23px !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  .ap-nav-item.active .ap-nav-icon {
+    width: 48px !important;
+    height: 48px !important;
+    margin-top: -31px !important;
+    margin-bottom: -1px !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    color: #087f5b !important;
+  }
+
+  .ap-nav-count {
+    display: none !important;
+  }
+
+  .ap-management-heading,
+  .ap-form-panel,
+  .ap-list-panel,
+  .ap-site-images-panel {
+    scroll-margin-bottom: 105px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .ap-nav {
+    min-height: 61px !important;
+    border-radius: 20px !important;
+  }
+
+  .ap-nav-item {
+    font-size: 9px !important;
+  }
+
+  .ap-nav-item.active::before {
+    top: -19px !important;
+    width: 58px !important;
+    height: 58px !important;
+  }
+
+  .ap-nav-item.active .ap-nav-icon {
+    width: 44px !important;
+    height: 44px !important;
+    margin-top: -28px !important;
+  }
+}
