@@ -24,6 +24,16 @@ const CATEGORIES = [
   { value: "desain-kreatif", label: "Desain & Kreatif" },
 ];
 
+function isSafeImageUrl(value) {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 function formatPrice(value) {
   const text = String(value ?? "").trim();
 
@@ -296,6 +306,27 @@ export default function Admin() {
       return;
     }
 
+    const stockValue = form.stock.trim() === "" ? 0 : Number(form.stock);
+    if (!Number.isSafeInteger(stockValue) || stockValue < 0) {
+      showNotice("Jumlah stok harus berupa bilangan bulat minimal 0.", "error");
+      return;
+    }
+
+    if (form.name.trim().length > 120 || form.price.trim().length > 80) {
+      showNotice("Nama produk maksimal 120 karakter dan harga maksimal 80 karakter.", "error");
+      return;
+    }
+
+    if (form.description.length > 3000) {
+      showNotice("Deskripsi produk maksimal 3.000 karakter.", "error");
+      return;
+    }
+
+    if (!isSafeImageUrl(form.image_url.trim())) {
+      showNotice("URL foto harus menggunakan alamat HTTP atau HTTPS yang valid.", "error");
+      return;
+    }
+
     if (!supabase) {
       showNotice("Supabase belum dikonfigurasi.", "error");
       return;
@@ -345,7 +376,7 @@ export default function Admin() {
         category: form.category,
         description: form.description.trim(),
         image_url: imageUrl,
-        stock: Math.max(0, Number(form.stock || 0)),
+        stock: stockValue,
       };
 
       const result = editingId
@@ -967,7 +998,7 @@ export default function Admin() {
                   id="ap-image-file"
                   className="ap-input"
                   type="file"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                   onChange={(event) =>
                     setImageFile(event.target.files?.[0] || null)
                   }
