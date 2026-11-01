@@ -63,20 +63,19 @@ export default function Hero() {
           <div className="fs-hero-copy">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary">
               <span className="fs-live-dot" />
-              A Smart Choice for Everyday Needs
+              GOOD FINDS. BETTER CHOICES.
             </span>
 
             <h1 className="mt-5 font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
-              Pilihan tepat,
+              Cari yang kamu butuh,
               <br />
               <span className="fs-neon-text text-primary text-glow-lime">
-                budget tetap aman.
+                temukan yang cocok.
               </span>
             </h1>
 
             <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Buat kuliah, kerja, sampai desain. Nggak harus keluar
-              budget gede buat dapetin laptop yang cocok.
+              Lagi cari perangkat buat kuliah, kerja, atau sekadar upgrade barang andalan? Mulai cari yang cocok di sini. Kalau masih bingung, ngobrol dulu aja sama kami.
             </p>
 
             <div className="fs-hero-actions">
@@ -125,12 +124,12 @@ export default function Hero() {
               <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
                 <div>
                   <span className="block mb-2 text-[8px] font-bold tracking-[.2em] text-white/60">
-                    FIKRI STORE / SELECTED UNIT
+                    FIKRI STORE / GOOD FINDS
                   </span>
                   <p className="font-heading text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-tight">
-                    Good Laptop,
+                    Good Finds,
                     <br />
-                    Better Days.
+                    Better Choices.
                   </p>
                 </div>
 
