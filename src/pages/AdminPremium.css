@@ -1601,3 +1601,149 @@ html {
     background: #eef2ff;
   }
 }
+
+
+/* FIKRI STORE — COMPACT HOMEPAGE IMAGE MANAGER */
+.ap-site-images-panel {
+  margin-top: 24px;
+  padding: 22px;
+}
+.ap-site-images-heading {
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.ap-site-images-heading-icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #eef2ff;
+  color: #3658d4;
+  font-size: 18px;
+}
+.ap-site-images-heading .ap-eyebrow {
+  display: block;
+  margin-bottom: 6px;
+}
+.ap-site-image-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ap-site-image-item {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e9edf5;
+  border-radius: 14px;
+  background: #fff;
+}
+.ap-site-image-summary {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  list-style: none;
+  cursor: pointer;
+}
+.ap-site-image-summary::-webkit-details-marker { display: none; }
+.ap-site-image-number {
+  color: #9aa5bb;
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+}
+.ap-site-image-summary-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+.ap-site-image-summary-copy strong {
+  color: #2d3953;
+  font-size: 12px;
+  font-weight: 800;
+}
+.ap-site-image-summary-copy small {
+  color: #929db0;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.ap-site-image-thumb,
+.ap-site-image-placeholder {
+  width: 48px;
+  height: 42px;
+  flex: 0 0 48px;
+  border-radius: 9px;
+  object-fit: cover;
+  background: #f2f5fc;
+}
+.ap-site-image-placeholder {
+  display: grid;
+  place-items: center;
+  color: #8a98b7;
+  font-size: 18px;
+}
+.ap-site-image-status {
+  white-space: nowrap;
+  color: #9a6a26;
+  font-size: 9px;
+  font-weight: 700;
+}
+.ap-site-image-status.is-set { color: #26956a; }
+.ap-site-image-chevron {
+  color: #8793a9;
+  font-size: 17px;
+  transition: transform .2s ease;
+}
+.ap-site-image-item[open] .ap-site-image-chevron { transform: rotate(180deg); }
+.ap-site-image-editor {
+  display: grid;
+  gap: 10px;
+  padding: 0 16px 16px;
+  border-top: 1px solid #eff2f7;
+}
+.ap-site-image-preview {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: 150px;
+  margin-top: 14px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #f3f5fa;
+}
+.ap-site-image-editor .ap-label { margin: 4px 0 0; }
+.ap-site-image-save { justify-self: start; margin-top: 4px; }
+.ap-site-image-message {
+  margin: 14px 0 0;
+  color: #61708a;
+  font-size: 11px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 900px) {
+  .ap-app { padding-bottom: calc(132px + env(safe-area-inset-bottom)); }
+  .ap-main { padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+  .ap-content { scroll-padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+  .ap-mobile-bottom-nav {
+    bottom: calc(14px + env(safe-area-inset-bottom));
+  }
+}
+@media (max-width: 600px) {
+  .ap-site-images-panel { margin-top: 18px; padding: 16px; }
+  .ap-site-image-summary { min-height: 70px; gap: 8px; padding: 10px; }
+  .ap-site-image-number { font-size: 10px; }
+  .ap-site-image-summary-copy strong { font-size: 11px; }
+  .ap-site-image-summary-copy small { font-size: 9px; }
+  .ap-site-image-thumb, .ap-site-image-placeholder {
+    width: 42px; height: 38px; flex-basis: 42px;
+  }
+  .ap-site-image-status { display: none; }
+  .ap-site-image-editor { padding: 0 12px 13px; }
+  .ap-site-image-preview { height: 132px; }
+  .ap-site-image-save { width: 100%; }
+}
