@@ -73,6 +73,7 @@ export default function Admin() {
   const [openProductMenu, setOpenProductMenu] = useState(null);
   const [activeNav, setActiveNav] = useState("Produk");
   const [showProductForm, setShowProductForm] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
 
   const [notice, setNotice] = useState("");
   const [noticeType, setNoticeType] = useState("info");
@@ -616,7 +617,22 @@ export default function Admin() {
             <svg className="ap-mobile-logo-image" viewBox="0 0 64 64" role="img" aria-label="Fikri Store"><path fill="#2452e7" d="M8 18 34 3h23L31 18H8Zm0 8h18L8 41v-15Zm0 20 34-20h15L8 62V46Zm23-20h17L31 49V26Z"/></svg>
             <strong>Fikri Store</strong>
           </Link>
-          <div className="ap-mobile-user" aria-label="Administrator Fikri"><strong>F</strong><span /></div>
+          <div className="ap-mobile-account">
+            <button type="button" className="ap-mobile-user" aria-label="Buka menu akun administrator" aria-haspopup="menu" aria-expanded={showAccountMenu} onClick={() => setShowAccountMenu((open) => !open)}>
+              <strong>F</strong><span />
+            </button>
+            {showAccountMenu && (
+              <div className="ap-account-menu" role="menu">
+                <div className="ap-account-menu-heading">
+                  <strong>Fikri Store</strong>
+                  <small>{session?.user?.email || "Administrator"}</small>
+                </div>
+                <button type="button" role="menuitem" onClick={() => { setShowAccountMenu(false); handleSignOut(); }}>
+                  Keluar dari akun <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
         <header className="ap-topbar">
           <div className="ap-breadcrumb">
