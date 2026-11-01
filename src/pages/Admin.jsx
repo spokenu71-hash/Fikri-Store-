@@ -627,11 +627,11 @@ export default function Admin() {
         <div className="ap-content" id="ap-dashboard">
           <section className="ap-welcome">
             <div className="ap-welcome-copy">
-              <span className="ap-eyebrow">YOUR STORE OVERVIEW</span>
-              <h1>Selamat datang, Fikri</h1>
+              <span className="ap-eyebrow">RINGKASAN TOKO</span>
+              <h1>Selamat datang kembali, Fikri</h1>
               <p>
-                Kelola katalog produk dan pantau inventaris Fikri Store
-                dalam satu tempat.
+                Atur produk, perbarui foto homepage, dan pastikan informasi
+                Fikri Store selalu akurat.
               </p>
             </div>
 
