@@ -650,3 +650,65 @@
   }
 }
 
+/* ========================================
+   FIKRI STORE — ACCESSIBILITY & RESPONSIVE POLISH
+======================================== */
+
+/* Fokus keyboard terlihat jelas di seluruh landing page */
+:where(a, button):focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 4px;
+}
+
+/* Konten kartu tetap rapi pada layar sempit dan teks panjang */
+#produk article,
+#produk article > div:last-child {
+  min-width: 0;
+}
+
+#produk article h3,
+#produk article li span {
+  overflow-wrap: anywhere;
+}
+
+#produk article ul li {
+  min-width: 0;
+}
+
+/* Ruang aman untuk tombol tetap di bawah pada perangkat dengan safe area */
+@media (max-width: 639px) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  #produk [role="tablist"] {
+    padding-bottom: 3px;
+  }
+
+  #produk [role="tab"] {
+    min-height: 42px;
+  }
+
+  .fs-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .fs-hero-actions > a {
+    margin-top: 22px;
+  }
+}
+
+/* Kurangi gerakan untuk seluruh halaman, bukan hanya hero */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
