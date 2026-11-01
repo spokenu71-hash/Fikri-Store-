@@ -127,20 +127,20 @@ export const VALUE_PROPS = [
 
 export const FAQS = [
   {
-    q: "Apakah semua laptop benar-benar second?",
-    a: "Iya, semua unit yang kami jual adalah laptop second. Tapi kondisinya kami pilih dan cek dulu — detail kondisi fisik dan battery health ditulis jelas di tiap produk.",
+    q: "Produk apa saja yang tersedia di Fikri Store?",
+    a: "Saat ini Fikri Store berfokus pada laptop second pilihan. Ke depannya, kategori produk akan terus berkembang. Setiap produk yang tersedia akan dilengkapi informasi kondisi dan detail yang jelas.",
   },
   {
     q: "Kenapa harganya ditulis 'jutaan'?",
     a: "Kami pakai kisaran harga supaya fleksibel mengikuti kondisi tiap unit. Harga pasti dan kemungkinan nego bisa langsung ditanya via WhatsApp, kami kasih info real-time.",
   },
   {
-    q: "Bisa minta foto atau video laptop?",
-    a: "Bisa banget. Sebagian unit sudah ada foto asli di katalog. Untuk unit yang belum ada foto atau mau minta video kondisi, tinggal chat WhatsApp, kami kirimkan.",
+    q: "Bisa minta foto atau detail produk?",
+    a: "Bisa banget. Hubungi kami melalui WhatsApp untuk meminta foto, video, atau detail kondisi terbaru dari produk yang kamu minati.",
   },
   {
     q: "Bagaimana cara order?",
-    a: "Gampang. Pilih laptop yang kamu suka, klik tombol WhatsApp di kartu produk, nanti pesan otomatis sudah terisi. Tinggal kirim, kami bantu proses sampai deal.",
+    a: "Pilih produk yang kamu minati, klik tombol WhatsApp, lalu kirim pesan otomatis yang sudah disiapkan. Tim kami akan membantu mengecek ketersediaan dan proses pemesanan.",
   },
 ];
 
