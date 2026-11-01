@@ -2,7 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LayoutDashboard, Package, Images } from "lucide-react";
+import { LayoutDashboard, Package, Images, Layers, Pencil, Trash2 } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -695,19 +695,7 @@ export default function Admin() {
 
           <section className="ap-stats-grid">
             <StatCard
-              icon="◇"
-              label="Total Produk"
-              value={products.length}
-              description="Produk dalam katalog"
-              tone="blue"
-            />
-            <StatCard
-              icon="▤"
-              label="Kategori"
-              value={categoryCount}
-              description="Kategori yang digunakan"
-              tone="purple"
-            />
+              icon={<Package size={29} strokeWidth={2.2} />
             <StatCard
               icon="▥"
               label="Stok Tersedia"
@@ -716,12 +704,9 @@ export default function Admin() {
               tone="mint"
             />
             <StatCard
-              icon="!"
-              label="Stok menipis"
-              value={lowStockCount}
-              description="Produk dengan stok ≤ 5"
-              tone="amber"
-            />
+              icon={<Layers size={29} strokeWidth={2.2} />
+            <StatCard
+              icon={<Package size={29} strokeWidth={2.2} />
           </section>
 
           <section className="ap-management-heading" id="ap-products">
@@ -992,7 +977,7 @@ export default function Admin() {
                           aria-label={`Edit ${product.name}`}
                           onClick={() => editProduct(product)}
                         >
-                          ✎
+                          <Pencil size={22} strokeWidth={2.1} />
                         </button>
                         <button
                           type="button"
@@ -1001,7 +986,7 @@ export default function Admin() {
                           onClick={() => removeProduct(product)}
                           disabled={loading}
                         >
-                          ×
+                          <Trash2 size={22} strokeWidth={2.1} />
                         </button>
                       </div>
                     </article>
