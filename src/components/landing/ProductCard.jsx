@@ -61,8 +61,7 @@ export default function ProductCard({ product }) {
               <Monitor className="h-7 w-7 text-muted-foreground" />
             </div>
             <p className="text-sm text-muted-foreground max-w-[16rem]">
-              Foto unit asli belum diunggah. Chat WhatsApp buat minta foto
-              terbaru &amp; cek kondisi unit.
+              Foto produk belum tersedia. Hubungi kami untuk melihat foto dan detail terbarunya.
             </p>
           </div>
         )}
