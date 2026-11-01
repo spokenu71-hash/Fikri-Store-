@@ -6,7 +6,7 @@ import {
   HardDrive,
   Monitor,
 } from "lucide-react";
-import { CATEGORIES, PRODUCTS } from "@/lib/products";
+import { CATEGORIES } from "@/lib/products";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/landing/ProductCard";
 
@@ -104,9 +104,9 @@ export default function Products() {
     async function loadProducts() {
       if (!supabase) {
         if (mounted) {
-          setProducts(PRODUCTS);
-          setLoading(false);
+          setProducts([]);
           setLoadError(true);
+          setLoading(false);
         }
         return;
       }
@@ -120,7 +120,7 @@ export default function Products() {
 
       if (error) {
         console.error("Gagal memuat produk Supabase:", error);
-        setProducts(PRODUCTS);
+        setProducts([]);
         setLoadError(true);
       } else {
         setProducts((data || []).map(toProductCard));
@@ -168,8 +168,9 @@ export default function Products() {
 
         {loadError && (
           <p className="mt-4 text-sm text-amber-600">
-            Katalog belum dapat terhubung ke Supabase. Produk
-            cadangan sedang ditampilkan.
+            Katalog sedang tidak dapat dimuat. Informasi stok dan harga
+            belum tersedia. Silakan coba kembali beberapa saat lagi atau
+            hubungi kami melalui WhatsApp.
           </p>
         )}
 
