@@ -24,12 +24,10 @@ export default function Story() {
               Story
             </span>
             <h2 className="mt-3 font-heading text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-              Lebih dari sekadar produk.
+              Mulai dari yang kamu cari.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
-              Fikri Store hadir dari keresahan yang sama: nyari laptop second
-              yang bagus, aman, dan nggak ribet. Kami pengen bikin beli laptop
-              second terasa gampang dan transparan.
+              Fikri Store berawal dari satu hal sederhana: bikin orang lebih gampang menemukan barang yang memang mereka cari. Kami mulai dari laptop, lalu akan terus berkembang mengikuti kebutuhanmu.
             </p>
             <a
               href="#faq"
