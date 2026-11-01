@@ -740,7 +740,9 @@ export default function Admin() {
               className="ap-button ap-button-primary"
               onClick={() => {
                 resetForm();
+                setShowProductForm(true);
                 navigateTo("Produk");
+                requestAnimationFrame(() => document.getElementById("ap-product-form")?.scrollIntoView({ behavior: "smooth", block: "start" }));
               }}
             >
               <span>＋</span> Tambah Produk
@@ -748,7 +750,7 @@ export default function Admin() {
           </section>
 
           <section className="ap-workspace">
-            <article className="ap-panel ap-form-panel" id="ap-product-form">
+            {showProductForm && <article className="ap-panel ap-form-panel" id="ap-product-form">
               <div className="ap-panel-heading">
                 <div className="ap-panel-icon">✳</div>
                 <div>
@@ -895,7 +897,7 @@ export default function Admin() {
                     <button
                       type="button"
                       className="ap-button ap-button-secondary"
-                      onClick={resetForm}
+                      onClick={() => { resetForm(); setShowProductForm(false); }}
                       disabled={loading}
                     >
                       Batal edit
@@ -903,7 +905,7 @@ export default function Admin() {
                   )}
                 </div>
               </form>
-            </article>
+            </article>}
 
             <article className="ap-panel ap-list-panel">
               <div className="ap-panel-heading ap-list-panel-heading">
