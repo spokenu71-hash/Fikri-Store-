@@ -60,6 +60,8 @@ function StatCard({ icon, label, value, description, tone = "blue" }) {
 export default function Admin() {
   const [session, setSession] = useState(null);
   const [authReady, setAuthReady] = useState(false);
+  const [adminReady, setAdminReady] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [forgot, setForgot] = useState(false);
@@ -128,6 +130,45 @@ export default function Admin() {
     } else {
       setProducts([]);
     }
+  }, [session]);
+
+  useEffect(() => {
+    let active = true;
+
+    async function verifyAdmin() {
+      if (!session?.user?.id || !supabase) {
+        setIsAdmin(false);
+        setAdminReady(true);
+        return;
+      }
+
+      setAdminReady(false);
+      try {
+        const { data, error } = await supabase
+          .from("admin_users")
+          .select("user_id")
+          .eq("user_id", session.user.id)
+          .maybeSingle();
+
+        if (error) throw error;
+        if (active) setIsAdmin(Boolean(data));
+      } catch (error) {
+        if (active) {
+          setIsAdmin(false);
+          showNotice(
+            "Tidak dapat memverifikasi hak administrator. Silakan coba masuk kembali.",
+            "error"
+          );
+        }
+      } finally {
+        if (active) setAdminReady(true);
+      }
+    }
+
+    verifyAdmin();
+    return () => {
+      active = false;
+    };
   }, [session]);
 
   function showNotice(message, type = "info") {
@@ -267,8 +308,8 @@ export default function Admin() {
       let imageUrl = form.image_url.trim();
 
       if (imageFile) {
-        if (!imageFile.type.startsWith("image/")) {
-          throw new Error("File yang dipilih harus berupa gambar.");
+        if (!["image/jpeg", "image/png", "image/webp"].includes(imageFile.type)) {
+          throw new Error("Format foto harus JPEG, PNG, atau WebP.");
         }
         if (imageFile.size > 8 * 1024 * 1024) {
           throw new Error("Ukuran foto produk maksimal 8 MB.");
@@ -446,6 +487,36 @@ export default function Admin() {
       <main className="ap-loading-page">
         <div className="ap-loader" />
         <p>Menyiapkan dashboard Fikri Store...</p>
+      </main>
+    );
+  }
+
+  if (session && !adminReady) {
+    return (
+      <main className="ap-loading-page">
+        <div className="ap-loader" />
+        <p>Memverifikasi akses administrator...</p>
+      </main>
+    );
+  }
+
+  if (session && adminReady && !isAdmin) {
+    return (
+      <main className="ap-auth-page">
+        <section className="ap-auth-card">
+          <div className="ap-brand">FIKRI <span>STORE.</span></div>
+          <span className="ap-eyebrow">AKSES TERBATAS</span>
+          <h1>Akun bukan administrator</h1>
+          <p>Akun ini berhasil login, tetapi tidak terdaftar sebagai administrator Fikri Store.</p>
+          <button
+            type="button"
+            className="ap-button ap-button-primary ap-full-button"
+            onClick={handleSignOut}
+          >
+            Keluar dari akun
+          </button>
+          {notice && <div className={`ap-notice ${noticeType}`} role="status">{notice}</div>}
+        </section>
       </main>
     );
   }
