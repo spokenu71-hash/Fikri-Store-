@@ -20,8 +20,7 @@ export default function ClosingCTA() {
               Masih bingung pilih yang mana?
             </h2>
             <p className="mt-4 text-muted-foreground max-w-lg mx-auto">
-              Langsung ke WhatsApp aja. Konsultasi gratis, kita bantu cari unit
-              yang paling pas sama budget &amp; kebutuhan kamu.
+              Ceritain apa yang lagi kamu cari dan budget yang kamu siapkan. Kita bantu cek pilihan yang paling masuk akal.
             </p>
             <a
               href={waLink}
