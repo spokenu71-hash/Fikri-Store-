@@ -70,7 +70,7 @@ function toProductCard(row) {
   return {
     id: row.id,
     name: row.name || "Produk Fikri Store",
-    tagline: lines[0] || "Laptop second pilihan",
+    tagline: lines[0] || "Pilihan produk Fikri Store",
     price: formatPrice(row.price),
     priceNote:
       stock > 0
