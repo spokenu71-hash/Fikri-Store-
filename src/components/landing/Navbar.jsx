@@ -29,7 +29,7 @@ export default function Navbar() {
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [open]);
 
-  const waLink = buildWhatsAppLink("Halo Fikri Store, saya ingin bertanya tentang produk yang tersedia. Bisa bantu rekomendasikan sesuai kebutuhan dan budget saya?");
+  const waLink = buildWhatsAppLink("Halo, Fikri Store. Saya tertarik untuk mencari laptop second. Boleh dibantu rekomendasikan beberapa pilihan yang sesuai dengan budget saya dan kebutuhan penggunaan sehari-hari?");
 
   return (
     <header
