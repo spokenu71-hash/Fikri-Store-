@@ -157,12 +157,11 @@ export default function Products() {
           </span>
 
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Produk terbaik untuk kebutuhanmu
+            Lagi cari apa?
           </h2>
 
           <p className="mt-3 text-muted-foreground">
-            Temukan pilihan produk Fikri Store. Hubungi kami untuk
-            memastikan kondisi dan ketersediaan unit.
+            Lihat yang tersedia sekarang. Kalau ada yang menarik, tinggal tanya detailnya lewat WhatsApp.
           </p>
         </div>
 
@@ -214,8 +213,7 @@ export default function Products() {
 
         {!loading && filtered.length === 0 && (
           <p className="mt-10 text-center text-muted-foreground">
-            Belum ada unit di kategori ini. Coba kategori lain
-            atau chat WhatsApp untuk menanyakan stok.
+            Belum ada produk di sini. Coba cek lagi nanti, atau hubungi kami untuk tanya ketersediaan.
           </p>
         )}
       </div>
