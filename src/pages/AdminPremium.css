@@ -2356,9 +2356,9 @@ img.ap-product-image { display:block; object-fit:cover; }
 }
 
 
-/* Interactive mobile administrator account menu */
+/* Premium administrator account popover */
 @media (max-width: 900px) {
-  .ap-mobile-account { position: relative; z-index: 30; }
+  .ap-mobile-account { position: relative; z-index: 40; }
   .ap-mobile-user {
     padding: 0;
     border: 0;
@@ -2368,58 +2368,49 @@ img.ap-product-image { display:block; object-fit:cover; }
     -webkit-tap-highlight-color: transparent;
     transition: transform .18s ease, box-shadow .18s ease;
   }
-  .ap-mobile-user:active { transform: scale(.94); }
-  .ap-mobile-user:focus-visible {
-    outline: 3px solid rgba(36,82,231,.3);
-    outline-offset: 4px;
-  }
+  .ap-mobile-user:active { transform: scale(.95); }
+  .ap-mobile-user:focus-visible { outline: 3px solid rgba(36,82,231,.28); outline-offset: 4px; }
   .ap-account-menu {
     position: absolute;
-    top: calc(100% + 12px);
+    top: calc(100% + 13px);
     right: 0;
     z-index: 100;
-    width: min(270px, calc(100vw - 36px));
-    padding: 10px;
-    border: 1px solid #e9edf6;
-    border-radius: 17px;
+    width: min(310px, calc(100vw - 28px));
+    padding: 15px;
+    border: 1px solid #e8ecf5;
+    border-radius: 20px;
     background: #fff;
-    box-shadow: 0 16px 42px rgba(23,37,82,.16);
-    animation: ap-account-in .16s ease-out;
+    box-shadow: 0 20px 55px rgba(24,39,83,.17), 0 3px 10px rgba(24,39,83,.04);
+    animation: ap-account-in .18s cubic-bezier(.2,.8,.2,1);
+    transform-origin: top right;
   }
-  .ap-account-menu-heading {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 10px 11px 13px;
-    border-bottom: 1px solid #edf0f6;
+  .ap-account-menu-top { display:flex; align-items:center; gap:12px; padding:3px 2px 15px; }
+  .ap-account-menu-avatar {
+    display:grid; width:46px; height:46px; flex:0 0 46px; place-items:center;
+    border:1px solid #dce5ff; border-radius:15px;
+    background:linear-gradient(145deg,#edf2ff,#dfe8ff);
+    color:#2452e7; font-family:Manrope,sans-serif; font-size:20px; font-weight:800;
   }
-  .ap-account-menu-heading strong { color: #17234d; font-size: 14px; font-weight: 800; }
-  .ap-account-menu-heading small {
-    overflow: hidden;
-    color: #7b849b;
-    font-size: 11px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .ap-account-menu-identity { display:flex; min-width:0; flex-direction:column; gap:3px; }
+  .ap-account-eyebrow { color:#8b95aa; font-size:9px; font-weight:800; letter-spacing:1.05px; }
+  .ap-account-menu-identity strong { overflow:hidden; color:#17234d; font-size:14px; font-weight:800; text-overflow:ellipsis; white-space:nowrap; }
+  .ap-account-menu-identity small { overflow:hidden; color:#7b849b; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
+  .ap-account-menu-status {
+    display:flex; align-items:center; gap:8px; min-height:38px; padding:0 10px;
+    border:1px solid #e8f3ed; border-radius:11px; background:#f7fbf8;
+    color:#47735b; font-size:11px; font-weight:600;
   }
+  .ap-account-menu-status i { width:7px; height:7px; margin-left:auto; border-radius:50%; background:#20b477; box-shadow:0 0 0 3px rgba(32,180,119,.12); }
+  .ap-account-menu-divider { height:1px; margin:13px 0 9px; background:#edf0f6; }
   .ap-account-menu > button {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 7px;
-    padding: 12px 11px;
-    border: 0;
-    border-radius: 11px;
-    background: #fff5f4;
-    color: #c33b36;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 700;
-    text-align: left;
+    display:flex; width:100%; min-height:43px; align-items:center; gap:10px;
+    padding:0 11px; border:0; border-radius:11px; background:transparent;
+    color:#c34242; cursor:pointer; font-size:12px; font-weight:700; text-align:left;
+    transition:background .15s ease;
   }
-  .ap-account-menu > button:active { background: #ffe9e7; }
+  .ap-account-menu > button:active { background:#fff1f0; }
 }
 @keyframes ap-account-in {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity:0; transform:translateY(-6px) scale(.98); }
+  to { opacity:1; transform:translateY(0) scale(1); }
 }
