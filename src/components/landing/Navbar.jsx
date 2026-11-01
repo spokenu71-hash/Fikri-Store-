@@ -18,6 +18,17 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+
   const waLink = buildWhatsAppLink("Halo Fikri Store, saya ingin bertanya tentang produk yang tersedia. Bisa bantu rekomendasikan sesuai kebutuhan dan budget saya?");
 
   return (
@@ -28,8 +39,8 @@ export default function Navbar() {
           : "bg-transparent border-b border-transparent"
       }`}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <a href="#hero" className="font-heading text-lg font-extrabold tracking-tight">
+      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between" aria-label="Navigasi utama">
+        <a href="#hero" className="font-heading text-lg font-extrabold tracking-tight" onClick={() => setOpen(false)}>
           Fikri<span className="text-primary"> Store</span>
         </a>
 
@@ -56,8 +67,11 @@ export default function Navbar() {
             Chat WhatsApp
           </a>
           <button
+            type="button"
             onClick={() => setOpen((o) => !o)}
-            aria-label="Menu"
+            aria-label={open ? "Tutup menu navigasi" : "Buka menu navigasi"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
             className="md:hidden h-10 w-10 rounded-full border border-border flex items-center justify-center"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -65,9 +79,8 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg">
+        <div id="mobile-navigation" className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg">
           <div className="px-4 py-4 flex flex-col gap-1">
             {NAV_LINKS.map((l) => (
               <a
