@@ -12,16 +12,24 @@ const BUCKET = "product-images";
 const EMPTY_FORM = {
   name: "",
   price: "",
-  category: "kuliah-kerja",
+  category: "laptop",
   description: "",
   image_url: "",
   stock: "1",
 };
 
 const CATEGORIES = [
-  { value: "kuliah-kerja", label: "Kuliah & Kerja" },
-  { value: "performa", label: "Performa" },
-  { value: "desain-kreatif", label: "Desain & Kreatif" },
+  { value: "laptop", label: "Laptop" },
+  { value: "smartphone", label: "Smartphone" },
+  { value: "tablet", label: "Tablet" },
+  { value: "aksesori", label: "Aksesori" },
+  { value: "elektronik-lainnya", label: "Elektronik lainnya" },
+];
+
+const LEGACY_CATEGORIES = [
+  { value: "kuliah-kerja", label: "Kuliah & Kerja (lama)" },
+  { value: "performa", label: "Performa (lama)" },
+  { value: "desain-kreatif", label: "Desain & Kreatif (lama)" },
 ];
 
 function isSafeImageUrl(value) {
@@ -278,7 +286,7 @@ export default function Admin() {
     setForm({
       name: product.name || "",
       price: String(product.price ?? ""),
-      category: product.category || "kuliah-kerja",
+      category: product.category || "laptop",
       description: product.description || "",
       image_url: product.image_url || "",
       stock: String(product.stock ?? 1),
@@ -464,6 +472,13 @@ export default function Admin() {
   const categoryCount = new Set(
     products.map((product) => product.category).filter(Boolean)
   ).size;
+
+  const categoryOptions = [
+    ...CATEGORIES,
+    ...LEGACY_CATEGORIES.filter((category) =>
+      products.some((product) => product.category === category.value)
+    ),
+  ];
 
   const totalStock = products.reduce(
     (sum, product) => sum + (Number(product.stock) || 0),
@@ -956,7 +971,7 @@ export default function Admin() {
                     setForm({ ...form, category: event.target.value })
                   }
                 >
-                  {CATEGORIES.map((category) => (
+                  {categoryOptions.map((category) => (
                     <option key={category.value} value={category.value}>
                       {category.label}
                     </option>
