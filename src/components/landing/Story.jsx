@@ -11,7 +11,7 @@ export default function Story() {
       <div className="relative h-[420px] sm:h-[480px] overflow-hidden">
         <Image
           src={STORY_IMG}
-          alt="Lebih dari sekadar laptop — kisah Fikri Store"
+          alt="Cerita dan nilai Fikri Store"
           className="w-full h-full"
           fittingType="fill"
         />
@@ -24,7 +24,7 @@ export default function Story() {
               Story
             </span>
             <h2 className="mt-3 font-heading text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-              Lebih dari sekadar laptop.
+              Lebih dari sekadar produk.
             </h2>
             <p className="mt-4 text-base text-muted-foreground leading-relaxed">
               Fikri Store hadir dari keresahan yang sama: nyari laptop second
