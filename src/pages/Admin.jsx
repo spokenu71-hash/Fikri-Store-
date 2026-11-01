@@ -75,6 +75,7 @@ export default function Admin() {
   const [noticeType, setNoticeType] = useState("info");
   const [loading, setLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
+  const [productError, setProductError] = useState("");
 
   useEffect(() => {
     if (!supabaseConfigured || !supabase) {
@@ -134,6 +135,7 @@ export default function Admin() {
     if (!supabase) return;
 
     setProductsLoading(true);
+    setProductError("");
 
     try {
       const { data, error } = await supabase
@@ -144,11 +146,9 @@ export default function Admin() {
       if (error) throw error;
       setProducts(data || []);
     } catch (error) {
-      showNotice(
-        "Gagal memuat produk: " +
-          (error.message || "Kesalahan tidak diketahui."),
-        "error"
-      );
+      const message = error.message || "Kesalahan tidak diketahui.";
+      setProductError(message);
+      showNotice("Gagal memuat produk: " + message, "error");
     } finally {
       setProductsLoading(false);
     }
@@ -262,6 +262,13 @@ export default function Admin() {
       let imageUrl = form.image_url.trim();
 
       if (imageFile) {
+        if (!imageFile.type.startsWith("image/")) {
+          throw new Error("File yang dipilih harus berupa gambar.");
+        }
+        if (imageFile.size > 8 * 1024 * 1024) {
+          throw new Error("Ukuran foto produk maksimal 8 MB.");
+        }
+
         const extension = (
           imageFile.name.split(".").pop() || "jpg"
         )
@@ -927,6 +934,18 @@ export default function Admin() {
 
               {productsLoading ? (
                 <p className="ap-empty-state">Memuat katalog produk...</p>
+              ) : productError ? (
+                <div className="ap-empty-state ap-load-error" role="alert">
+                  <strong>Katalog belum bisa dimuat</strong>
+                  <p>{productError}</p>
+                  <button
+                    type="button"
+                    className="ap-button ap-button-secondary"
+                    onClick={loadProducts}
+                  >
+                    Coba muat ulang
+                  </button>
+                </div>
               ) : filteredProducts.length === 0 ? (
                 <p className="ap-empty-state">
                   {products.length === 0
