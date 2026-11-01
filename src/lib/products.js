@@ -13,6 +13,12 @@ export const WHATSAPP_NUMBER = "6289528541574";
 
 export const CATEGORIES = [
   { id: "all", label: "Semua" },
+  { id: "laptop", label: "Laptop" },
+  { id: "smartphone", label: "Smartphone" },
+  { id: "tablet", label: "Tablet" },
+  { id: "aksesori", label: "Aksesori" },
+  { id: "elektronik-lainnya", label: "Elektronik lainnya" },
+  // Kategori lama tetap dikenali agar data produk sebelumnya tidak hilang.
   { id: "kuliah-kerja", label: "Kuliah & Kerja" },
   { id: "performa", label: "Performa" },
   { id: "desain-kreatif", label: "Desain & Kreatif" },
