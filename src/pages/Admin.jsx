@@ -2,6 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { LayoutDashboard, Package, Images } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -396,9 +397,9 @@ export default function Admin() {
   ).length;
 
   const navItems = [
-    { name: "Dashboard", icon: "▦" },
-    { name: "Produk", icon: "◇" },
-    { name: "Foto Homepage", icon: "▧" },
+    { name: "Dashboard", shortName: "Home", icon: LayoutDashboard },
+    { name: "Produk", shortName: "Produk", icon: Package },
+    { name: "Foto Homepage", shortName: "Foto", icon: Images },
   ];
 
   function navigateTo(name) {
@@ -406,7 +407,7 @@ export default function Admin() {
 
     const targets = {
       Dashboard: "ap-dashboard",
-      Produk: "ap-product-form",
+      Produk: "ap-products",
       "Foto Homepage": "ap-site-images",
     };
 
@@ -546,8 +547,8 @@ export default function Admin() {
               }`}
               onClick={() => navigateTo(item.name)}
             >
-              <span className="ap-nav-icon">{item.icon}</span>
-              {item.name}
+              <span className="ap-nav-icon"><item.icon size={18} strokeWidth={2} /></span>
+              <span>{item.name}</span>
               {item.name === "Produk" && (
                 <span className="ap-nav-count">{products.length}</span>
               )}
@@ -581,6 +582,28 @@ export default function Admin() {
           </button>
         </div>
       </aside>
+
+      <nav className="ap-mobile-bottom-nav" aria-label="Navigasi admin mobile">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <button
+              type="button"
+              key={item.name}
+              className={`ap-mobile-nav-item ${activeNav === item.name ? "active" : ""}`}
+              onClick={() => navigateTo(item.name)}
+              aria-label={item.name}
+              aria-current={activeNav === item.name ? "page" : undefined}
+            >
+              <span className="ap-mobile-nav-icon"><Icon size={20} strokeWidth={2.1} /></span>
+              <span className="ap-mobile-nav-label">{item.shortName}</span>
+              {item.name === "Produk" && products.length > 0 && (
+                <span className="ap-mobile-nav-count">{products.length}</span>
+              )}
+            </button>
+          );
+        })}
+      </nav>
 
       <section className="ap-main">
         <header className="ap-topbar">
