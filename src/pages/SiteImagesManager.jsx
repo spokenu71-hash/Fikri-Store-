@@ -81,6 +81,17 @@ export default function SiteImagesManager() {
     setMessage("");
   }
 
+  function clearSelectedFile(key) {
+    setFiles((old) => ({ ...old, [key]: null }));
+    setPreviews((old) => {
+      if (old[key]) {
+        URL.revokeObjectURL(old[key]);
+        previewUrls.current.delete(old[key]);
+      }
+      return { ...old, [key]: "" };
+    });
+  }
+
   async function save(key) {
     setBusy(key);
     setMessage("");
@@ -171,7 +182,11 @@ export default function SiteImagesManager() {
                   className="ap-input ap-file-input"
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                  onChange={(event) => chooseFile(item.key, event.target.files?.[0])}
+                  disabled={busy === item.key}
+                  onChange={(event) => {
+                    chooseFile(item.key, event.target.files?.[0]);
+                    event.target.value = "";
+                  }}
                 />
                 <label className="ap-label" htmlFor={`site-url-${item.key}`}>Atau gunakan URL gambar</label>
                 <input
@@ -179,7 +194,11 @@ export default function SiteImagesManager() {
                   className="ap-input"
                   type="url"
                   value={images[item.key] || ""}
-                  onChange={(event) => setImages((old) => ({ ...old, [item.key]: event.target.value }))}
+                  disabled={busy === item.key}
+                  onChange={(event) => {
+                    clearSelectedFile(item.key);
+                    setImages((old) => ({ ...old, [item.key]: event.target.value }));
+                  }}
                   placeholder="https://contoh.com/foto.jpg"
                 />
                 <button
