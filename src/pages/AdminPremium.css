@@ -2334,3 +2334,23 @@ img.ap-product-image { display:block; object-fit:cover; }
   .ap-product-price { font-size:13px; }
   .ap-stock-badge { font-size:10px !important; }
 }
+
+
+/* Screenshot comparison corrections — mobile product overview */
+@media (max-width:600px) {
+  .ap-mobile-logo-image { display:block; width:34px; height:36px; flex:0 0 34px; object-fit:contain; }
+  .ap-mobile-user { display:grid; place-items:center; border:2px solid #e8edf8; background:#e7ebf5; color:#14204d; font-size:18px; font-weight:800; }
+  .ap-mobile-user strong { line-height:1; }
+  .ap-mobile-user > span { position:absolute; right:0; bottom:0; width:11px; height:11px; border:2px solid #f8f9ff; border-radius:50%; background:#20b879; }
+  .ap-management-heading { flex-direction:row !important; align-items:center !important; justify-content:space-between !important; gap:8px !important; }
+  .ap-management-heading > div { min-width:0; flex:1 1 auto; }
+  .ap-management-heading .ap-desktop-only { display:none !important; }
+  .ap-management-heading h2 { font-size:27px !important; white-space:nowrap; }
+  .ap-management-heading p { font-size:13px !important; white-space:nowrap; }
+  .ap-management-heading > .ap-button { display:inline-flex; flex:0 0 auto; width:auto !important; min-width:0; min-height:43px; height:43px; padding:0 14px; white-space:nowrap; font-size:13px !important; }
+  .ap-workspace { display:flex; flex-direction:column; }
+  .ap-list-panel { order:1; }
+  .ap-form-panel { order:2; }
+  .ap-empty-state { min-height:116px !important; height:auto !important; display:grid; place-items:center; padding:22px 16px !important; border:1px dashed #dfe4ef !important; border-radius:20px !important; background:#fff !important; color:#9aa3b4 !important; font-size:13px !important; text-align:center; }
+  .ap-category-filters { width:100%; max-width:100%; overflow-x:auto; }
+}
