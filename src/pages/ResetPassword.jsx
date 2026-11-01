@@ -203,6 +203,13 @@ export default function ResetPassword() {
                 width: "100%",
                 padding: 12,
                 borderRadius: 6,
+                backgroundColor: "#ffffff",
+                color: "#171717",
+                WebkitTextFillColor: "#171717",
+                caretColor: "#171717",
+                border: "1px solid #cbd5e1",
+                colorScheme: "light",
+                fontSize: 16,
               }}
             />
 
