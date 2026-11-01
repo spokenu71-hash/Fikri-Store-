@@ -27,8 +27,7 @@ export default function Footer() {
               Smart Choice for Everyday Needs.
             </p>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Laptop second pilihan untuk kuliah, kerja, dan kebutuhan kreatif.
-              Konsultasikan kebutuhanmu sebelum memilih unit.
+              Good finds, pilihan yang pas, dan tempat buat mulai mencari. Saat ini kami mulai dari laptop; ke depannya, akan ada lebih banyak hal untuk kamu temukan.
             </p>
           </div>
 
