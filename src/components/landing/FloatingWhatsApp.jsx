@@ -11,7 +11,7 @@ export default function FloatingWhatsApp() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const waLink = buildWhatsAppLink("Halo Fikri Store, saya mau tanya-tanya soal laptop second yang available.");
+  const waLink = buildWhatsAppLink("Halo Fikri Store, saya ingin bertanya tentang produk yang tersedia. Bisa bantu rekomendasikan sesuai kebutuhan dan budget saya?");
 
   return (
     <a
