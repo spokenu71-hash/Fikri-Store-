@@ -2,7 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LayoutDashboard, Package, Images, Layers, Pencil, Trash2 } from "lucide-react";
+import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -70,6 +70,7 @@ export default function Admin() {
   const [imageFile, setImageFile] = useState(null);
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [openProductMenu, setOpenProductMenu] = useState(null);
   const [activeNav, setActiveNav] = useState("Dashboard");
 
   const [notice, setNotice] = useState("");
@@ -398,7 +399,7 @@ export default function Admin() {
   ).length;
 
   const navItems = [
-    { name: "Dashboard", shortName: "Home", icon: LayoutDashboard },
+    { name: "Dashboard", shortName: "Home", icon: LayoutGrid },
     { name: "Produk", shortName: "Produk", icon: Package },
     { name: "Foto Homepage", shortName: "Foto", icon: Images },
   ];
@@ -906,14 +907,17 @@ export default function Admin() {
                 </button>
               </div>
 
-              <input
-                className="ap-input ap-search ap-reference-search"
-                type="search"
-                value={search}
-                onChange={(event) => setSearch(event.target.value)}
-                placeholder="Cari nama, harga, kategori..."
-                aria-label="Cari produk"
-              />
+              <div className="ap-reference-search-wrap">
+                <Search className="ap-reference-search-icon" size={22} strokeWidth={2} />
+                <input
+                  className="ap-input ap-search ap-reference-search"
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Cari nama produk..."
+                  aria-label="Cari produk"
+                />
+              </div>
 
               <div className="ap-category-filters" aria-label="Filter kategori produk">
                 <button type="button" className={selectedCategory === "all" ? "active" : ""} onClick={() => setSelectedCategory("all")}>Semua</button>
@@ -946,6 +950,25 @@ export default function Admin() {
                 <div className="ap-product-list">
                   {filteredProducts.map((product) => (
                     <article className="ap-product-item" key={product.id}>
+                      <button
+                        type="button"
+                        className="ap-product-kebab"
+                        aria-label={"Menu " + product.name}
+                        aria-expanded={openProductMenu === product.id}
+                        onClick={() => setOpenProductMenu((current) => current === product.id ? null : product.id)}
+                      >
+                        <MoreVertical size={22} strokeWidth={2.2} />
+                      </button>
+                      {openProductMenu === product.id && (
+                        <div className="ap-product-menu">
+                          <button type="button" onClick={() => { setOpenProductMenu(null); editProduct(product); }}>
+                            <Pencil size={15} /> Edit produk
+                          </button>
+                          <button type="button" onClick={() => { setOpenProductMenu(null); removeProduct(product); }}>
+                            <Trash2 size={15} /> Hapus produk
+                          </button>
+                        </div>
+                      )}
                       {product.image_url ? (
                         <img
                           className="ap-product-image"
