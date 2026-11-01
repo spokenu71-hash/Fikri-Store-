@@ -662,7 +662,7 @@ export default function Admin() {
 
           <section className="ap-section-heading">
             <div>
-              <span className="ap-eyebrow">AT A GLANCE</span>
+              <span className="ap-eyebrow">RINGKASAN</span>
               <h2>Ringkasan toko</h2>
             </div>
             <span className="ap-data-label">
@@ -884,7 +884,7 @@ export default function Admin() {
             <article className="ap-panel ap-list-panel">
               <div className="ap-panel-heading ap-list-panel-heading">
                 <div>
-                  <span className="ap-eyebrow">YOUR INVENTORY</span>
+                  <span className="ap-eyebrow">INVENTARIS PRODUK</span>
                   <h3>Daftar produk</h3>
                   <p>
                     {filteredProducts.length} dari {products.length} produk
@@ -979,7 +979,7 @@ export default function Admin() {
             <div className="ap-panel-heading">
               <div className="ap-panel-icon">▧</div>
               <div>
-                <span className="ap-eyebrow">HOMEPAGE CUSTOMIZATION</span>
+                <span className="ap-eyebrow">TAMPILAN WEBSITE</span>
                 <h3>Pengaturan foto homepage</h3>
                 <p>
                   Atur foto Hero, Kuliah, Kerja, Desain & Kreatif, dan Gaming
