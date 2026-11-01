@@ -972,24 +972,7 @@ export default function Admin() {
             </article>
           </section>
 
-          <section
-            className="ap-panel ap-site-images-panel"
-            id="ap-site-images"
-          >
-            <div className="ap-panel-heading">
-              <div className="ap-panel-icon">▧</div>
-              <div>
-                <span className="ap-eyebrow">TAMPILAN WEBSITE</span>
-                <h3>Pengaturan foto homepage</h3>
-                <p>
-                  Atur foto Hero, Kuliah, Kerja, Desain & Kreatif, dan Gaming
-                  Ringan.
-                </p>
-              </div>
-            </div>
-
-            <SiteImagesManager />
-          </section>
+          <SiteImagesManager />
 
           <footer className="ap-footer">
             <span>FIKRI STORE.</span>
