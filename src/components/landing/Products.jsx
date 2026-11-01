@@ -64,7 +64,7 @@ function toProductCard(row) {
     .map((url) => url.trim())
     .filter((url) => /^https?:\/\//i.test(url));
 
-  const category = row.category || "kuliah-kerja";
+  const category = row.category || "laptop";
   const stock = Number(row.stock || 0);
 
   return {
@@ -74,9 +74,9 @@ function toProductCard(row) {
     price: formatPrice(row.price),
     priceNote:
       stock > 0
-        ? `Stok tersedia: ${stock} unit`
-        : "Stok perlu dikonfirmasi",
-    badge: stock > 0 ? "" : "Cek Stok",
+        ? `${stock} unit tersedia`
+        : "Tanya ketersediaan",
+    badge: stock > 0 ? "Ready" : "Cek stok",
     categories: [category],
     images,
     specs:
@@ -137,12 +137,14 @@ export default function Products() {
     };
   }, []);
 
+  const visibleCategories = useMemo(
+    () => CATEGORIES.filter((category) => category.id === "all" || ["laptop", "smartphone", "tablet", "aksesori", "elektronik-lainnya"].includes(category.id) || products.some((product) => product.categories.includes(category.id))),
+    [products]
+  );
+
   const filtered = useMemo(() => {
     if (active === "all") return products;
-
-    return products.filter((product) =>
-      product.categories.includes(active)
-    );
+    return products.filter((product) => product.categories.includes(active));
   }, [active, products]);
 
   return (
@@ -178,7 +180,7 @@ export default function Products() {
           aria-label="Filter kategori kebutuhan"
           className="mt-8 flex flex-wrap gap-2"
         >
-          {CATEGORIES.map((cat) => {
+          {visibleCategories.map((cat) => {
             const isActive = active === cat.id;
 
             return (
@@ -212,9 +214,10 @@ export default function Products() {
         )}
 
         {!loading && filtered.length === 0 && (
-          <p className="mt-10 text-center text-muted-foreground">
-            Belum ada produk di sini. Coba cek lagi nanti, atau hubungi kami untuk tanya ketersediaan.
-          </p>
+          <div className="mt-10 rounded-3xl border border-border bg-card px-6 py-10 text-center">
+            <p className="font-heading text-lg font-bold">Lagi menyiapkan pilihan buat kamu.</p>
+            <p className="mt-2 text-sm text-muted-foreground">Belum ada produk yang ditampilkan di kategori ini. Coba mampir lagi sebentar lagi.</p>
+          </div>
         )}
       </div>
     </section>
