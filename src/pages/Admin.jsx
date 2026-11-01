@@ -697,18 +697,33 @@ export default function Admin() {
 
           <section className="ap-stats-grid">
             <StatCard
-              icon={<Package size={29} strokeWidth={2.2} />
+              icon={<Package size={29} strokeWidth={2.2} />}
+              label="Total Produk"
+              value={products.length}
+              description="Produk dalam katalog"
+              tone="blue"
+            />
             <StatCard
-              icon="▥"
+              icon={<Layers size={29} strokeWidth={2.2} />}
               label="Stok Tersedia"
               value={totalStock.toLocaleString("id-ID")}
               description="Unit seluruh produk"
               tone="mint"
             />
             <StatCard
-              icon={<Layers size={29} strokeWidth={2.2} />
+              icon={<Layers size={29} strokeWidth={2.2} />}
+              label="Kategori"
+              value={categoryCount}
+              description="Kategori yang digunakan"
+              tone="purple"
+            />
             <StatCard
-              icon={<Package size={29} strokeWidth={2.2} />
+              icon={<Package size={29} strokeWidth={2.2} />}
+              label="Stok menipis"
+              value={lowStockCount}
+              description="Produk dengan stok ≤ 5"
+              tone="amber"
+            />
           </section>
 
           <section className="ap-management-heading" id="ap-products">
