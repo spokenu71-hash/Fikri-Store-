@@ -1364,3 +1364,194 @@ html {
   }
   .ap-app { padding-bottom: 96px; }
 }
+
+
+/* FIKRI STORE — RESPONSIVE ADMIN REFINEMENT
+   Desktop keeps the sidebar. Mobile becomes a true single-column workspace. */
+@media (max-width: 900px) {
+  .ap-app {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: clip;
+    padding-bottom: calc(104px + env(safe-area-inset-bottom));
+  }
+
+  .ap-sidebar {
+    display: none !important;
+  }
+
+  .ap-main {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .ap-topbar {
+    min-height: 60px;
+    padding: 0 20px;
+    gap: 10px;
+  }
+
+  .ap-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 22px 20px 28px;
+  }
+
+  .ap-welcome {
+    min-height: 180px;
+    padding: 26px;
+    border-radius: 21px;
+  }
+
+  .ap-welcome-mark {
+    width: 88px;
+    height: 88px;
+    flex-basis: 88px;
+    margin-right: 0;
+  }
+
+  .ap-mark-orbit {
+    width: 82px;
+    height: 82px;
+    border-radius: 25px;
+  }
+
+  .ap-mark-core {
+    width: 60px;
+    height: 60px;
+    border-radius: 19px;
+    font-size: 27px;
+  }
+
+  .ap-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .ap-stat-card {
+    padding: 16px 14px;
+    gap: 10px;
+  }
+
+  .ap-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .ap-management-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .ap-panel {
+    min-width: 0;
+    padding: 19px;
+  }
+
+  .ap-site-images-panel {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ap-topbar {
+    min-height: 56px;
+    padding: 0 16px;
+  }
+
+  .ap-topbar-actions .ap-live-indicator {
+    display: none;
+  }
+
+  .ap-content {
+    padding: 18px 16px 24px;
+  }
+
+  .ap-welcome {
+    min-height: 158px;
+    padding: 23px 20px;
+  }
+
+  .ap-welcome-copy {
+    max-width: 100%;
+  }
+
+  .ap-welcome h1 {
+    font-size: clamp(23px, 6vw, 29px);
+    letter-spacing: -1px;
+  }
+
+  .ap-welcome p {
+    max-width: 100%;
+    font-size: 11px;
+  }
+
+  .ap-welcome-mark {
+    display: none;
+  }
+
+  .ap-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .ap-stat-card {
+    min-height: 112px;
+    padding: 14px 12px;
+    border-radius: 15px;
+  }
+
+  .ap-stat-icon {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .ap-stat-content strong {
+    font-size: 22px;
+  }
+
+  .ap-management-heading {
+    margin-top: 28px;
+  }
+
+  .ap-management-heading .ap-button {
+    width: 100%;
+  }
+
+  .ap-panel {
+    padding: 16px;
+    border-radius: 17px;
+  }
+
+  .ap-form-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ap-product-item {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .ap-product-image {
+    width: 52px;
+    height: 52px;
+    flex-basis: 52px;
+  }
+
+  .ap-product-actions {
+    flex-direction: column;
+  }
+
+  .ap-mobile-bottom-nav {
+    bottom: max(12px, env(safe-area-inset-bottom));
+    width: calc(100% - 28px);
+    min-height: 70px;
+    border-radius: 22px;
+  }
+}
