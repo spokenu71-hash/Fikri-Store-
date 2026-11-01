@@ -42,8 +42,8 @@ export default function SiteImagesManager() {
 
   function chooseFile(key, file) {
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setMessage("Pilih file gambar yang valid.");
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setMessage("Format foto harus JPEG, PNG, atau WebP.");
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
@@ -135,7 +135,7 @@ export default function SiteImagesManager() {
                   id={`site-file-${item.key}`}
                   className="ap-input ap-file-input"
                   type="file"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                   onChange={(event) => chooseFile(item.key, event.target.files?.[0])}
                 />
                 <label className="ap-label" htmlFor={`site-url-${item.key}`}>Atau gunakan URL gambar</label>
