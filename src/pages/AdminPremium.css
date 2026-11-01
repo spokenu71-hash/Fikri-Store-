@@ -2249,3 +2249,88 @@ img.ap-product-image { display:block; object-fit:cover; }
   .ap-product-price { font-size:14px; }
   .ap-stock-badge { padding:5px 9px; border-radius:10px; font-size:10px !important; }
 }
+
+
+/* REFERENCE PIXEL TUNING — 432px phone viewport (864px screenshot at 2x) */
+@media (max-width:600px) {
+  .ap-app { background:#f8f9ff; padding-bottom:82px; }
+  .ap-main { background:#f8f9ff; }
+  .ap-mobile-brandbar { height:54px; padding:5px 18px 2px; background:#f8f9ff; }
+  .ap-mobile-logo-image { display:block; width:32px; height:35px; object-fit:contain; mix-blend-mode:multiply; }
+  .ap-mobile-brand { gap:10px; }
+  .ap-mobile-brand strong { font-size:20px; letter-spacing:-.8px; }
+  .ap-mobile-user { width:42px; height:42px; overflow:hidden; background:#e9edf5; }
+  .ap-mobile-user > img { display:block; width:100%; height:100%; object-fit:cover; border-radius:50%; }
+  .ap-mobile-user > span { z-index:2; }
+  .ap-content { padding:8px 18px 92px; }
+  .ap-welcome { padding:8px 2px 20px; }
+  .ap-welcome h1 { margin:0; font-size:24px; line-height:1.2; letter-spacing:-1.05px; white-space:nowrap; }
+  .ap-welcome p { margin:6px 0 0; font-size:15px; line-height:1.3; }
+  .ap-welcome-wave { margin-left:3px; font-size:21px; }
+  .ap-stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:0 0 27px; }
+  .ap-stat-card { display:flex; min-height:74px; height:74px; align-items:center; gap:9px; padding:9px 13px; border:1px solid #edf0f7; border-radius:20px; box-shadow:0 5px 17px rgba(35,48,93,.055); }
+  .ap-stat-card:nth-child(n+3) { display:none !important; }
+  .ap-stat-icon { display:grid; width:44px; height:44px; flex:0 0 44px; border-radius:50%; font-size:0; }
+  .ap-stat-icon svg { width:23px; height:23px; }
+  .ap-stat-content { min-width:0; }
+  .ap-stat-content p { margin:0; color:#65708b; font-size:12px; font-weight:500; line-height:1.25; white-space:nowrap; }
+  .ap-stat-content strong { margin-top:4px; color:#10183d; font-size:24px; line-height:1; letter-spacing:-.6px; }
+  .ap-stat-content span { display:none; }
+  .ap-management-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 0 16px; }
+  .ap-management-heading h2 { margin:0; color:#0d153e; font-size:27px; line-height:1.1; letter-spacing:-1.15px; }
+  .ap-management-heading p { margin:6px 0 0; color:#626b86; font-size:14px; line-height:1.3; white-space:nowrap; }
+  .ap-management-heading .ap-button { min-height:39px; height:39px; padding:0 14px; gap:6px; border-radius:15px; font-size:14px; line-height:1; box-shadow:0 5px 12px rgba(36,82,231,.16); }
+  .ap-management-heading .ap-button span { font-size:22px; font-weight:400; }
+  .ap-workspace { display:flex; flex-direction:column; gap:14px; }
+  .ap-list-panel { order:1; min-width:0; padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+  .ap-form-panel { order:2; }
+  .ap-list-panel-heading { display:none !important; }
+  .ap-reference-search-wrap { position:relative; margin:0 0 10px; }
+  .ap-reference-search-icon { position:absolute; z-index:2; top:50%; left:15px; width:19px; height:19px; transform:translateY(-50%); color:#59657f; pointer-events:none; }
+  .ap-reference-search { display:block; width:100%; min-height:40px; height:40px; margin:0; padding:0 14px 0 43px; border:1px solid #dfe3ed; border-radius:24px; background:#fff; color:#34415b; font-size:13px; font-weight:400; box-shadow:none; }
+  .ap-reference-search::placeholder { color:#65708a; opacity:1; }
+  .ap-reference-search:focus { border-color:#aab8fa; }
+  .ap-category-filters { display:flex; gap:6px; margin:0 0 15px; padding:0 1px 1px; overflow-x:auto; scrollbar-width:none; }
+  .ap-category-filters::-webkit-scrollbar { display:none; }
+  .ap-category-filters button { min-height:30px; height:30px; padding:0 15px; border:1px solid #dfe3ed; border-radius:18px; background:transparent; color:#28324e; font-size:12px; font-weight:500; line-height:1; white-space:nowrap; }
+  .ap-category-filters button.active { border-color:#2452e7; background:#2452e7; color:white; box-shadow:0 3px 8px rgba(36,82,231,.13); }
+  .ap-product-list { display:flex; flex-direction:column; gap:11px; }
+  .ap-product-item { position:relative; display:flex; min-height:120px; height:auto; align-items:center; gap:12px; padding:10px 12px; border:1px solid #edf0f7; border-radius:19px; background:#fff; box-shadow:0 5px 15px rgba(35,48,93,.06); }
+  .ap-product-image, .ap-no-image { display:block; width:104px; height:96px; flex:0 0 104px; border-radius:13px; object-fit:cover; }
+  .ap-product-details { display:flex; min-width:0; flex:1; flex-direction:column; align-items:flex-start; gap:4px; padding:0; overflow:hidden; }
+  .ap-product-details strong { display:block; max-width:100%; color:#10183d; font-size:15px; font-weight:800; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ap-product-specs { display:block !important; max-width:100%; margin:0 !important; color:#68738d !important; font-size:12px !important; line-height:1.25 !important; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; -webkit-line-clamp:unset !important; }
+  .ap-product-price { display:block; margin:2px 0 0; color:#10183d; font-size:15px; font-weight:800; line-height:1.2; white-space:nowrap; }
+  .ap-stock-badge { display:inline-flex !important; align-items:center; align-self:flex-start; margin:2px 0 0; padding:5px 9px; border-radius:10px; background:#e7f7ef; color:#229665 !important; font-size:11px !important; font-weight:700; line-height:1.2; white-space:nowrap; }
+  .ap-product-kebab { position:absolute; top:10px; right:10px; z-index:4; display:grid; width:23px; height:24px; place-items:center; padding:0; border:0; border-radius:8px; background:transparent; color:#596482; cursor:pointer; }
+  .ap-product-kebab svg { width:20px; height:20px; }
+  .ap-product-menu { position:absolute; z-index:8; top:38px; right:12px; display:flex; min-width:140px; flex-direction:column; padding:5px; border:1px solid #e7ebf4; border-radius:12px; background:#fff; box-shadow:0 10px 28px rgba(25,38,84,.16); }
+  .ap-product-menu button { display:flex; align-items:center; gap:8px; padding:10px; border:0; border-radius:8px; background:#fff; color:#34415b; font-size:12px; text-align:left; }
+  .ap-product-menu button:hover { background:#f3f5ff; }
+  .ap-product-actions { position:absolute; right:12px; bottom:10px; display:flex; flex-direction:row; gap:8px; }
+  .ap-icon-button { display:grid; width:32px; height:32px; place-items:center; padding:0; border:1px solid #e0e4ee; border-radius:11px; background:#fff; color:#111a49; font-size:0; }
+  .ap-icon-button svg { width:19px; height:19px; }
+  .ap-delete-button { color:#111a49; }
+  .ap-mobile-bottom-nav { position:fixed; z-index:60; left:50%; bottom:5px; display:flex; width:calc(100% - 8px); max-width:500px; min-height:51px; height:51px; transform:translateX(-50%); align-items:center; justify-content:space-around; gap:6px; padding:3px 8px; border:1px solid rgba(232,235,244,.96); border-radius:30px; background:rgba(255,255,255,.97); box-shadow:0 6px 22px rgba(25,38,84,.12); backdrop-filter:blur(16px); }
+  .ap-mobile-nav-item { position:relative; display:flex; min-width:0; min-height:43px; height:43px; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:1px; padding:0; border:0; border-radius:15px; background:transparent; color:#707a98; }
+  .ap-mobile-nav-icon svg { display:block; width:20px; height:20px; stroke-width:2.1; }
+  .ap-mobile-nav-label { color:inherit; font-size:11px; line-height:1.15; font-weight:700; }
+  .ap-mobile-nav-item.active { color:#2452df; background:transparent; }
+  .ap-mobile-nav-item.active::after { position:absolute; bottom:-4px; left:9%; width:82%; height:3px; border-radius:8px; background:#2452df; content:""; }
+  .ap-mobile-nav-count { display:none; }
+  .ap-content { padding-bottom:92px; }
+  .ap-site-images-panel { margin-top:18px; }
+}
+@media (max-width:380px) {
+  .ap-content { padding-inline:14px; }
+  .ap-mobile-brandbar { padding-inline:14px; }
+  .ap-stats-grid { gap:8px; }
+  .ap-stat-card { padding-inline:9px; gap:7px; }
+  .ap-stat-icon { width:40px; height:40px; flex-basis:40px; }
+  .ap-management-heading .ap-button { padding-inline:10px; font-size:12px; }
+  .ap-product-image, .ap-no-image { width:88px; height:88px; flex-basis:88px; }
+  .ap-product-details strong { font-size:13px; }
+  .ap-product-specs { font-size:10px !important; }
+  .ap-product-price { font-size:13px; }
+  .ap-stock-badge { font-size:10px !important; }
+}
