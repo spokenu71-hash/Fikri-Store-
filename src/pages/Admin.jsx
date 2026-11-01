@@ -613,7 +613,22 @@ export default function Admin() {
             <strong>{activeNav}</strong>
           </div>
 
+          <div className="ap-topbar-search">
+            <span aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Cari produk..."
+              aria-label="Cari produk dari header"
+            />
+          </div>
+
           <div className="ap-topbar-actions">
+            <div className="ap-topbar-profile">
+              <div className="ap-topbar-avatar">F</div>
+              <div><strong>Fikri Store</strong><small>Administrator</small></div>
+            </div>
             <span className="ap-live-indicator">
               <span className="ap-status-dot" />
               Live workspace
@@ -628,7 +643,7 @@ export default function Admin() {
           <section className="ap-welcome">
             <div className="ap-welcome-copy">
               <span className="ap-eyebrow">RINGKASAN TOKO</span>
-              <h1>Selamat datang kembali, Fikri</h1>
+              <h1>Selamat datang, Fikri</h1>
               <p>
                 Atur produk, perbarui foto homepage, dan pastikan informasi
                 Fikri Store selalu akurat.
