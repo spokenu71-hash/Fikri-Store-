@@ -101,7 +101,7 @@ export default function ProductCard({ product }) {
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95 min-h-[48px]"
           >
             <MessageCircle className="h-4 w-4" />
-            Chat via WhatsApp
+            Tanya produk ini
           </a>
         </div>
       </div>
