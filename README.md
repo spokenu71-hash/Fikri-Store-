@@ -1,40 +1,33 @@
-# Fikri Store - Landing Page Laptop Second
+# Fikri Store
 
-Landing page e-commerce laptop second. Dibangun dengan React + Vite + Tailwind CSS.
+Fikri Store adalah brand retail pilihan produk berkualitas. Saat ini katalog berfokus pada laptop; struktur brand disiapkan untuk berkembang ke kategori elektronik dan kebutuhan lainnya secara bertahap.
 
-## Cara Menjalankan
+Website dibangun menggunakan React, Vite, Tailwind CSS, dan Supabase.
 
+## Menjalankan secara lokal
+
+```bash
 npm install
 npm run dev
+```
 
-Buka http://localhost:5173
+Buka http://localhost:5173.
 
-## Build Production
+## Build production
 
+```bash
 npm run build
+```
 
-Hasil build ada di folder dist/.
+Hasil build tersedia di folder `dist/`.
 
-## Deploy ke Netlify
+## Deployment
 
-### Opsi 1 - Via Git (otomatis)
-1. Push folder ini ke repository GitHub/GitLab
-2. Di Netlify, klik Add new site lalu Import an existing project
-3. Pilih repository Anda
-4. Build command: npm run build (sudah ada di netlify.toml)
-5. Publish directory: dist (sudah ada di netlify.toml)
-6. Klik Deploy
+Project terhubung ke GitHub dan Cloudflare Pages. Branch production: `main`; build command: `npm run build`; output directory: `dist`.
 
-### Opsi 2 - Drag and Drop (manual)
-1. Jalankan npm run build
-2. Buka https://app.netlify.com/drop
-3. Drag folder dist/ ke halaman tersebut
+## Konten dan katalog
 
-File netlify.toml sudah dikonfigurasi: build command, publish directory, dan SPA redirect.
-
-## Edit Konten
-
-Semua data produk, harga, FAQ, use cases, value props, dan nomor WhatsApp ada di:
-src/lib/products.js
-
-Untuk ganti nomor WhatsApp, edit WHATSAPP_NUMBER di file tersebut.
+- Data katalog dikelola melalui dashboard Admin dan disimpan di Supabase.
+- Foto homepage dikelola melalui menu Foto di Admin.
+- Nomor WhatsApp dan helper tautan pesan berada di `src/lib/products.js`.
+- Kategori produk saat ini mengikuti kebutuhan katalog laptop yang sedang aktif. Penambahan kategori elektronik baru perlu disertai penyesuaian skema kategori dan filter Admin agar data tetap konsisten.
