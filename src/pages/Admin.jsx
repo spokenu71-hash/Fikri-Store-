@@ -2,7 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search } from "lucide-react";
+import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search, ShieldCheck, LogOut } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -622,13 +622,24 @@ export default function Admin() {
               <strong>F</strong><span />
             </button>
             {showAccountMenu && (
-              <div className="ap-account-menu" role="menu">
-                <div className="ap-account-menu-heading">
-                  <strong>Fikri Store</strong>
-                  <small>{session?.user?.email || "Administrator"}</small>
+              <div className="ap-account-menu" role="menu" aria-label="Menu akun administrator">
+                <div className="ap-account-menu-top">
+                  <span className="ap-account-menu-avatar">F</span>
+                  <div className="ap-account-menu-identity">
+                    <span className="ap-account-eyebrow">AKUN ADMINISTRATOR</span>
+                    <strong>Fikri Store</strong>
+                    <small>{session?.user?.email || "Administrator"}</small>
+                  </div>
                 </div>
+                <div className="ap-account-menu-status">
+                  <ShieldCheck size={15} strokeWidth={2} />
+                  <span>Sesi administrator aktif</span>
+                  <i />
+                </div>
+                <div className="ap-account-menu-divider" />
                 <button type="button" role="menuitem" onClick={() => { setShowAccountMenu(false); handleSignOut(); }}>
-                  Keluar dari akun <span aria-hidden="true">↗</span>
+                  <LogOut size={16} strokeWidth={2} />
+                  <span>Keluar dari akun</span>
                 </button>
               </div>
             )}
