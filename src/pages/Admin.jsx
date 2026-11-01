@@ -960,14 +960,13 @@ export default function Admin() {
 
                       <div className="ap-product-details">
                         <strong>{product.name}</strong>
+                        {product.description && (
+                          <p className="ap-product-specs">{product.description}</p>
+                        )}
                         <span className="ap-product-price">
                           {formatPrice(product.price)}
                         </span>
-                        <small>{categoryLabel(product.category)}</small>
-                        <small>Stok: {product.stock ?? 0}</small>
-                        {product.description && (
-                          <p>{product.description}</p>
-                        )}
+                        <small className="ap-stock-badge">●&nbsp; Stok: {product.stock ?? 0}</small>
                       </div>
 
                       <div className="ap-product-actions">
