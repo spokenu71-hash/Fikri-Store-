@@ -2115,3 +2115,11 @@ img.ap-product-image { display:block; object-fit:cover; }
   .ap-topbar-search { margin-left:auto; }
   .ap-topbar-actions { flex:0 0 auto; }
 }
+
+
+/* FINAL COMPONENT COVERAGE */
+.ap-list-panel { min-width: 0; }
+.ap-file-input { padding: 9px 10px; background: #fff; }
+.ap-load-error { align-items: center; }
+.ap-load-error p { max-width: 420px; overflow-wrap: anywhere; }
+.ap-load-error .ap-button { margin-top: 4px; }
