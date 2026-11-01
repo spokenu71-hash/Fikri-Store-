@@ -43,7 +43,7 @@ export default function FAQ() {
             Masih ragu? Cek ini dulu
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Pertanyaan yang sering muncul soal laptop second kami.
+            Informasi seputar produk, pemesanan, dan layanan Fikri Store.
           </p>
         </div>
 
