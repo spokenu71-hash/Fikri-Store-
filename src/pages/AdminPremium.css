@@ -2539,3 +2539,36 @@ img.ap-product-image { display:block; object-fit:cover; }
     text-align:left !important;
   }
 }
+
+/* ADMIN DASHBOARD — keep all four inventory metrics visible on mobile */
+@media (max-width: 900px) {
+  .ap-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .ap-stat-card:nth-child(n + 3) {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .ap-stat-card {
+    min-width: 0;
+    min-height: 82px;
+    height: auto;
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .ap-stat-content p {
+    overflow-wrap: anywhere;
+    white-space: normal;
+    font-size: 11px;
+  }
+
+  .ap-stat-content strong {
+    font-size: 22px;
+  }
+}
