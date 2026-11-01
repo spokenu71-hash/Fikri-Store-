@@ -153,7 +153,7 @@ export default function Products() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            Pilihan Laptop
+            Produk Pilihan
           </span>
 
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">
@@ -161,7 +161,7 @@ export default function Products() {
           </h2>
 
           <p className="mt-3 text-muted-foreground">
-            Pilihan laptop second Fikri Store. Hubungi kami untuk
+            Temukan pilihan produk Fikri Store. Hubungi kami untuk
             memastikan kondisi dan ketersediaan unit.
           </p>
         </div>
