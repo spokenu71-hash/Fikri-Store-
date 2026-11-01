@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
 
 const ITEMS = [
@@ -17,6 +17,7 @@ export default function SiteImagesManager() {
   const [previews, setPreviews] = useState({});
   const [busy, setBusy] = useState("");
   const [message, setMessage] = useState("");
+  const previewUrls = useRef(new Set());
 
   useEffect(() => {
     let active = true;
@@ -36,7 +37,8 @@ export default function SiteImagesManager() {
     load();
     return () => {
       active = false;
-      Object.values(previews).forEach((url) => { if (url) URL.revokeObjectURL(url); });
+      previewUrls.current.forEach((url) => URL.revokeObjectURL(url));
+      previewUrls.current.clear();
     };
   }, []);
 
@@ -44,16 +46,37 @@ export default function SiteImagesManager() {
     if (!file) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       setMessage("Format foto harus JPEG, PNG, atau WebP.");
+      setFiles((old) => ({ ...old, [key]: null }));
+      setPreviews((old) => {
+        if (old[key]) {
+          URL.revokeObjectURL(old[key]);
+          previewUrls.current.delete(old[key]);
+        }
+        return { ...old, [key]: "" };
+      });
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
       setMessage("Ukuran foto maksimal 8 MB.");
+      setFiles((old) => ({ ...old, [key]: null }));
+      setPreviews((old) => {
+        if (old[key]) {
+          URL.revokeObjectURL(old[key]);
+          previewUrls.current.delete(old[key]);
+        }
+        return { ...old, [key]: "" };
+      });
       return;
     }
     setFiles((old) => ({ ...old, [key]: file }));
     setPreviews((old) => {
-      if (old[key]) URL.revokeObjectURL(old[key]);
-      return { ...old, [key]: URL.createObjectURL(file) };
+      if (old[key]) {
+        URL.revokeObjectURL(old[key]);
+        previewUrls.current.delete(old[key]);
+      }
+      const nextUrl = URL.createObjectURL(file);
+      previewUrls.current.add(nextUrl);
+      return { ...old, [key]: nextUrl };
     });
     setMessage("");
   }
@@ -75,6 +98,15 @@ export default function SiteImagesManager() {
         url = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
       }
       if (!url) throw new Error("Pilih foto atau masukkan URL gambar terlebih dahulu.");
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(url);
+      } catch {
+        throw new Error("Masukkan URL gambar yang valid.");
+      }
+      if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+        throw new Error("URL gambar harus menggunakan HTTP atau HTTPS.");
+      }
       const { error } = await supabase.from("site_images").upsert(
         { image_key: key, image_url: url, updated_at: new Date().toISOString() },
         { onConflict: "image_key" }
@@ -83,7 +115,10 @@ export default function SiteImagesManager() {
       setImages((old) => ({ ...old, [key]: url }));
       setFiles((old) => ({ ...old, [key]: null }));
       setPreviews((old) => {
-        if (old[key]) URL.revokeObjectURL(old[key]);
+        if (old[key]) {
+          URL.revokeObjectURL(old[key]);
+          previewUrls.current.delete(old[key]);
+        }
         return { ...old, [key]: "" };
       });
       setMessage("Foto berhasil disimpan. Muat ulang website untuk melihat hasilnya.");
