@@ -24,7 +24,7 @@ export default function Footer() {
               Fikri<span className="text-primary"> Store</span>
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Laptop Second, Smart Choice.
+              Smart Choice for Everyday Needs.
             </p>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
               Laptop second pilihan untuk kuliah, kerja, dan kebutuhan kreatif.
