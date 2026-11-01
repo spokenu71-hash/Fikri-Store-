@@ -1341,8 +1341,8 @@ html {
     transition: background .2s ease, color .2s ease, transform .2s ease;
   }
   .ap-mobile-nav-item.active {
-    color: #047857;
-    background: #ecfdf5;
+    color: #304fc9;
+    background: #eef2ff;
   }
   .ap-mobile-nav-item:active { transform: scale(.96); }
   .ap-mobile-nav-icon { display: flex; align-items: center; justify-content: center; }
@@ -1355,7 +1355,7 @@ html {
     height: 16px;
     padding: 0 4px;
     border-radius: 99px;
-    background: #059669;
+    background: #4567e8;
     color: white;
     font-size: 9px;
     font-weight: 800;
@@ -1553,5 +1553,51 @@ html {
     width: calc(100% - 28px);
     min-height: 70px;
     border-radius: 22px;
+  }
+}
+
+
+/* FINAL DETAIL POLISH — consistent brand, typography and mobile navigation */
+.ap-mobile-nav-item:focus-visible {
+  outline: 3px solid rgba(69, 103, 232, 0.24);
+  outline-offset: 2px;
+}
+.ap-mobile-nav-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+}
+.ap-mobile-nav-icon svg {
+  display: block;
+}
+.ap-mobile-bottom-nav {
+  border-color: rgba(69, 103, 232, 0.10);
+  box-shadow: 0 10px 34px rgba(32, 43, 67, 0.13);
+}
+.ap-eyebrow {
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 1.35px;
+}
+.ap-product-item {
+  min-width: 0;
+}
+.ap-product-details {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 600px) {
+  .ap-mobile-bottom-nav {
+    min-height: 68px;
+    padding: 7px;
+    border-radius: 20px;
+  }
+  .ap-mobile-nav-item {
+    min-height: 52px;
+    border-radius: 14px;
+  }
+  .ap-mobile-nav-item.active {
+    color: #304fc9;
+    background: #eef2ff;
   }
 }
