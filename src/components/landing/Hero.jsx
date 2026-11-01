@@ -45,7 +45,7 @@ export default function Hero() {
   }, []);
 
   const waLink = buildWhatsAppLink(
-    "Halo Fikri Store, saya mau tanya-tanya soal laptop second yang available. Ada rekomendasi buat budget saya?"
+    "Halo Fikri Store, saya ingin konsultasi produk yang tersedia dan rekomendasi sesuai kebutuhan serta budget saya."
   );
 
   return (
@@ -63,11 +63,11 @@ export default function Hero() {
           <div className="fs-hero-copy">
             <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary">
               <span className="fs-live-dot" />
-              Laptop Second Berkualitas
+              A Smart Choice for Everyday Needs
             </span>
 
             <h1 className="mt-5 font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
-              Laptop kece,
+              Pilihan tepat,
               <br />
               <span className="fs-neon-text text-primary text-glow-lime">
                 budget tetap aman.
@@ -112,7 +112,7 @@ export default function Hero() {
             <div className="fs-hero-visual relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card">
               <Image
                 src={customHeroImage || HERO_IMG}
-                alt="Laptop second berkualitas dari Fikri Store"
+                alt="Pilihan produk Fikri Store"
                 className="fs-hero-image w-full h-full"
                 fittingType="fill"
               />
