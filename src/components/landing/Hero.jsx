@@ -14,7 +14,7 @@ const HERO_IMG =
   "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/7b34e082f_generated_image.png";
 
 const FEATURES = [
-  { icon: CheckCircle2, label: "Unit Dicek Sebelum Kirim" },
+  { icon: CheckCircle2, label: "Produk Dicek Sebelum Dikirim" },
   { icon: Truck, label: "Pengiriman Seluruh Indonesia" },
   { icon: MessageCircle, label: "Konsultasi Via WhatsApp" },
 ];
