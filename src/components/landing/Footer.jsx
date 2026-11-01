@@ -1,5 +1,6 @@
 import React from "react";
-import { ArrowUp, Instagram, Youtube, Music2 } from "lucide-react";
+import { ArrowUp, MessageCircle } from "lucide-react";
+import { buildWhatsAppLink } from "@/lib/products";
 
 const FOOTER_LINKS = [
   { label: "Produk", href: "#produk" },
@@ -8,20 +9,16 @@ const FOOTER_LINKS = [
   { label: "Kontak", href: "#hero" },
 ];
 
-const SOCIALS = [
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Music2, href: "#", label: "TikTok" },
-  { icon: Youtube, href: "#", label: "YouTube" },
-];
-
 export default function Footer() {
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+  const contactLink = buildWhatsAppLink(
+    "Halo Fikri Store, saya ingin bertanya tentang produk yang tersedia."
+  );
 
   return (
     <footer className="relative border-t border-border pt-14 pb-28 sm:pb-10 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-10">
-          {/* Left */}
           <div className="max-w-xs">
             <p className="font-heading text-xl font-extrabold tracking-tight">
               Fikri<span className="text-primary"> Store</span>
@@ -30,25 +27,24 @@ export default function Footer() {
               Laptop Second, Smart Choice.
             </p>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Laptop second kece buat kuliah, kerja, sampai desain. Budget
-              tetap aman.
+              Laptop second pilihan untuk kuliah, kerja, dan kebutuhan kreatif.
+              Konsultasikan kebutuhanmu sebelum memilih unit.
             </p>
           </div>
 
-          {/* Links */}
           <div className="flex flex-col sm:flex-row gap-8 sm:gap-12">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 Navigasi
               </p>
               <ul className="mt-4 space-y-2.5">
-                {FOOTER_LINKS.map((l) => (
-                  <li key={l.label}>
+                {FOOTER_LINKS.map((link) => (
+                  <li key={link.label}>
                     <a
-                      href={l.href}
+                      href={link.href}
                       className="text-sm text-foreground/80 hover:text-primary transition-colors"
                     >
-                      {l.label}
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -57,20 +53,17 @@ export default function Footer() {
 
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                Sosial
+                Hubungi kami
               </p>
-              <div className="mt-4 flex gap-3">
-                {SOCIALS.map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    aria-label={s.label}
-                    className="h-10 w-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
-                  >
-                    <s.icon className="h-5 w-5" />
-                  </a>
-                ))}
-              </div>
+              <a
+                href={contactLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex min-h-[42px] items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+              >
+                <MessageCircle className="h-4 w-4" />
+                WhatsApp Fikri Store
+              </a>
             </div>
           </div>
         </div>
@@ -80,6 +73,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Fikri Store. All rights reserved.
           </p>
           <button
+            type="button"
             onClick={toTop}
             aria-label="Kembali ke atas"
             className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
