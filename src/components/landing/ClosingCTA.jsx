@@ -4,7 +4,7 @@ import { buildWhatsAppLink } from "@/lib/products";
 
 export default function ClosingCTA() {
   const waLink = buildWhatsAppLink(
-    "Halo Fikri Store, saya masih bingung milih laptop. Bisa bantu rekomendasi yang cocok buat budget & kebutuhan saya?"
+    "Halo Fikri Store, saya masih mencari produk yang cocok. Bisa bantu rekomendasi sesuai kebutuhan dan budget saya?"
   );
 
   return (
