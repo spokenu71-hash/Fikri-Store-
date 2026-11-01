@@ -69,6 +69,7 @@ export default function Admin() {
   const [editingId, setEditingId] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [activeNav, setActiveNav] = useState("Dashboard");
 
   const [notice, setNotice] = useState("");
@@ -374,21 +375,14 @@ export default function Admin() {
 
   const filteredProducts = useMemo(() => {
     const query = search.trim().toLowerCase();
-
-    if (!query) return products;
-
-    return products.filter((product) =>
-      [
-        product.name,
-        product.price,
-        product.category,
-        product.description,
-        product.stock,
-      ].some((value) =>
-        String(value ?? "").toLowerCase().includes(query)
-      )
-    );
-  }, [products, search]);
+    return products.filter((product) => {
+      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+      const matchesSearch = !query || [
+        product.name, product.price, product.category, product.description, product.stock,
+      ].some((value) => String(value ?? "").toLowerCase().includes(query));
+      return matchesCategory && matchesSearch;
+    });
+  }, [products, search, selectedCategory]);
 
   const categoryCount = new Set(
     products.map((product) => product.category).filter(Boolean)
@@ -613,6 +607,13 @@ export default function Admin() {
       </nav>
 
       <section className="ap-main">
+        <div className="ap-mobile-brandbar">
+          <Link to="/" className="ap-mobile-brand">
+            <span className="ap-mobile-brand-mark"><i /><i /><i /></span>
+            <strong>Fikri Store</strong>
+          </Link>
+          <div className="ap-mobile-user" aria-label="Administrator Fikri">F<span /></div>
+        </div>
         <header className="ap-topbar">
           <div className="ap-breadcrumb">
             <span>Workspace</span>
@@ -650,10 +651,9 @@ export default function Admin() {
           <section className="ap-welcome">
             <div className="ap-welcome-copy">
               <span className="ap-eyebrow">RINGKASAN TOKO</span>
-              <h1>Selamat datang, Fikri</h1>
+              <h1>Selamat datang, Fikri <span className="ap-welcome-wave">👋</span></h1>
               <p>
-                Atur produk, perbarui foto homepage, dan pastikan informasi
-                Fikri Store selalu akurat.
+                Kelola inventaris tokomu
               </p>
             </div>
 
@@ -682,7 +682,7 @@ export default function Admin() {
             </div>
           )}
 
-          <section className="ap-section-heading">
+          <section className="ap-section-heading ap-desktop-summary-heading">
             <div>
               <span className="ap-eyebrow">RINGKASAN</span>
               <h2>Ringkasan toko</h2>
@@ -696,7 +696,7 @@ export default function Admin() {
           <section className="ap-stats-grid">
             <StatCard
               icon="◇"
-              label="Total produk"
+              label="Total Produk"
               value={products.length}
               description="Produk dalam katalog"
               tone="blue"
@@ -710,7 +710,7 @@ export default function Admin() {
             />
             <StatCard
               icon="▥"
-              label="Total stok"
+              label="Stok Tersedia"
               value={totalStock.toLocaleString("id-ID")}
               description="Unit seluruh produk"
               tone="mint"
@@ -726,11 +726,9 @@ export default function Admin() {
 
           <section className="ap-management-heading" id="ap-products">
             <div>
-              <span className="ap-eyebrow">CATALOG MANAGEMENT</span>
-              <h2>Manajemen produk</h2>
-              <p>
-                Tambahkan produk baru atau perbarui katalog yang sudah ada.
-              </p>
+              <span className="ap-eyebrow ap-desktop-only">CATALOG MANAGEMENT</span>
+              <h2>Produk</h2>
+              <p>Atur dan kelola produk toko kamu</p>
             </div>
 
             <button
@@ -741,7 +739,7 @@ export default function Admin() {
                 navigateTo("Produk");
               }}
             >
-              <span>＋</span> Tambah produk
+              <span>＋</span> Tambah Produk
             </button>
           </section>
 
@@ -924,13 +922,20 @@ export default function Admin() {
               </div>
 
               <input
-                className="ap-input ap-search"
+                className="ap-input ap-search ap-reference-search"
                 type="search"
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Cari nama, harga, kategori..."
                 aria-label="Cari produk"
               />
+
+              <div className="ap-category-filters" aria-label="Filter kategori produk">
+                <button type="button" className={selectedCategory === "all" ? "active" : ""} onClick={() => setSelectedCategory("all")}>Semua</button>
+                {CATEGORIES.map((category) => (
+                  <button type="button" key={category.value} className={selectedCategory === category.value ? "active" : ""} onClick={() => setSelectedCategory(category.value)}>{category.label}</button>
+                ))}
+              </div>
 
               {productsLoading ? (
                 <p className="ap-empty-state">Memuat katalog produk...</p>
