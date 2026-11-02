@@ -733,7 +733,8 @@
 }
 
 #main-content:focus {
-  outline: none;
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 4px;
 }
 
 .skeleton-shimmer {
