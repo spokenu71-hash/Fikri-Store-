@@ -8,6 +8,8 @@ export default function ProductCard({ product }) {
   const touchStart = useRef(null);
   const hasImages = Array.isArray(product.images) && product.images.length > 0;
   const imageCount = hasImages ? product.images.length : 0;
+  // Keep the selected image valid when refreshed product data changes the gallery length.
+  const currentImageIndex = imageCount > 0 ? imgIndex % imageCount : 0;
 
   const nextImg = () => {
     if (imageCount > 1) setImgIndex((index) => (index + 1) % imageCount);
@@ -65,8 +67,8 @@ export default function ProductCard({ product }) {
         {hasImages ? (
           <>
             <Image
-              src={product.images[imgIndex]}
-              alt={`${product.name} — foto ${imgIndex + 1} dari ${imageCount}`}
+              src={product.images[currentImageIndex]}
+              alt={`${product.name} — foto ${currentImageIndex + 1} dari ${imageCount}`}
               className="w-full h-full"
               fittingType="fit"
             />
@@ -95,7 +97,7 @@ export default function ProductCard({ product }) {
                       type="button"
                       onClick={() => setImgIndex(index)}
                       aria-label={`Tampilkan foto ${index + 1}`}
-                      aria-pressed={index === imgIndex}
+                      aria-pressed={index === currentImageIndex}
                       className={`h-2.5 rounded-full transition-all ${index === imgIndex ? "w-5 bg-primary" : "w-2.5 bg-foreground/50"}`}
                     />
                   ))}
