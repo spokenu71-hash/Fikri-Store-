@@ -63,7 +63,7 @@ function toProductCard(row) {
     .map((url) => url.trim())
     .filter((url) => /^https?:\/\//i.test(url));
 
-  const category = row.category || "laptop";
+  const category = row.category || "elektronik-lainnya";
   const stock = Number(row.stock || 0);
 
   return {
