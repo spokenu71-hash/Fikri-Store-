@@ -96,11 +96,15 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let mounted = true;
 
     async function loadProducts() {
+      setLoading(true);
+      setLoadError(false);
+
       if (!supabase) {
         if (mounted) {
           setProducts([]);
@@ -137,7 +141,7 @@ export default function Products() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [retryCount]);
 
   const visibleCategories = useMemo(
     () => CATEGORIES.filter((category) => category.id === "all" || ["laptop", "smartphone", "tablet", "aksesori", "elektronik-lainnya"].includes(category.id) || products.some((product) => product.categories.includes(category.id))),
@@ -170,11 +174,19 @@ export default function Products() {
         </div>
 
         {loadError && (
-          <p className="mt-4 text-sm text-amber-600">
-            Katalog sedang tidak dapat dimuat. Informasi stok dan harga
-            belum tersedia. Silakan coba kembali beberapa saat lagi atau
-            hubungi kami melalui WhatsApp.
-          </p>
+          <div className="mt-4 flex flex-col items-start gap-3 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4" role="alert">
+            <p className="text-sm text-amber-600">
+              Katalog sedang tidak dapat dimuat. Informasi stok dan harga
+              belum tersedia. Silakan coba lagi atau hubungi kami melalui WhatsApp.
+            </p>
+            <button
+              type="button"
+              onClick={() => setRetryCount((count) => count + 1)}
+              className="min-h-[40px] rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary/40"
+            >
+              Coba muat ulang
+            </button>
+          </div>
         )}
 
         <div
@@ -215,7 +227,7 @@ export default function Products() {
           </div>
         )}
 
-        {!loading && filtered.length === 0 && (
+        {!loading && !loadError && filtered.length === 0 && (
           <div className="mt-10 rounded-3xl border border-border bg-card px-6 py-10 text-center">
             <p className="font-heading text-lg font-bold">Lagi menyiapkan pilihan buat kamu.</p>
             <p className="mt-2 text-sm text-muted-foreground">Belum ada produk yang ditampilkan di kategori ini. Coba mampir lagi sebentar lagi.</p>
