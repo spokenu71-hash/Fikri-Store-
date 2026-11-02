@@ -85,12 +85,12 @@ export const PRODUCTS = [
 ];
 
 export const USE_CASES = [
-{
-  index: "01",
-  title: "Kuliah",
-  desc: "Tugas, presentasi, multitasking.",
-  image: "/images/kuliah-niqab-belakang.jpg",
-},
+  {
+    index: "01",
+    title: "Kuliah",
+    desc: "Tugas, presentasi, multitasking.",
+    image: "/images/kuliah-niqab-belakang.jpg",
+  },
   {
     index: "02",
     title: "Kerja",
@@ -106,11 +106,11 @@ export const USE_CASES = [
       "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/3399fede3_generated_image.png",
   },
   {
-  index: "04",
-  title: "Gaming Ringan",
-  desc: "Go, Valorant, Minecraft, dan lainnya.",
-  image: "/images/gaming-pria.jpg",
-},
+    index: "04",
+    title: "Gaming Ringan",
+    desc: "Go, Valorant, Minecraft, dan lainnya.",
+    image: "/images/gaming-pria.jpg",
+  },
 ];
 
 export const VALUE_PROPS = [
@@ -134,19 +134,19 @@ export const VALUE_PROPS = [
 export const FAQS = [
   {
     q: "Produk apa saja yang tersedia di Fikri Store?",
-    a: "Saat ini Fikri Store berfokus pada laptop second pilihan. Ke depannya, kategori produk akan terus berkembang. Setiap produk yang tersedia akan dilengkapi informasi kondisi dan detail yang jelas.",
+    a: "Fikri Store menyediakan pilihan produk elektronik, seperti laptop, smartphone, tablet, aksesori, dan kategori lainnya sesuai stok yang tersedia. Katalog diperbarui mengikuti produk yang aktif.",
   },
   {
-    q: "Kenapa harganya ditulis 'jutaan'?",
-    a: "Kami pakai kisaran harga supaya fleksibel mengikuti kondisi tiap unit. Harga pasti dan kemungkinan nego bisa langsung ditanya via WhatsApp, kami kasih info real-time.",
+    q: "Bagaimana cara mengetahui harga dan stok terbaru?",
+    a: "Informasi harga dan stok pada katalog mengikuti data produk yang ditampilkan. Untuk memastikan ketersediaan unit, harga terbaru, atau opsi pembelian, hubungi kami melalui WhatsApp.",
   },
   {
     q: "Bisa minta foto atau detail produk?",
-    a: "Bisa banget. Hubungi kami melalui WhatsApp untuk meminta foto, video, atau detail kondisi terbaru dari produk yang kamu minati.",
+    a: "Bisa. Hubungi kami melalui WhatsApp untuk meminta foto, video, spesifikasi, atau informasi kondisi terbaru dari produk yang kamu minati.",
   },
   {
     q: "Bagaimana cara order?",
-    a: "Pilih produk yang kamu minati, klik tombol WhatsApp, lalu kirim pesan otomatis yang sudah disiapkan. Tim kami akan membantu mengecek ketersediaan dan proses pemesanan.",
+    a: "Pilih produk yang kamu minati, klik tombol WhatsApp, lalu kirim pesan yang sudah disiapkan. Tim Fikri Store akan membantu konfirmasi detail produk dan proses pemesanan.",
   },
 ];
 
