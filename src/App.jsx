@@ -104,6 +104,30 @@ export default function App() {
             path="/admin"
             element={<Admin />}
           />
+          <Route
+            path="*"
+            element={
+              <main className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
+                <section className="w-full max-w-md">
+                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                    404 · FIKRI STORE
+                  </p>
+                  <h1 className="mt-4 font-heading text-3xl font-extrabold tracking-tight">
+                    Halaman tidak ditemukan
+                  </h1>
+                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                    Alamat yang kamu buka mungkin sudah berubah atau tidak tersedia.
+                  </p>
+                  <a
+                    href="/"
+                    className="mt-8 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
+                  >
+                    Kembali ke halaman utama
+                  </a>
+                </section>
+              </main>
+            }
+          />
         </Routes>
       </Router>
     </ErrorBoundary>
