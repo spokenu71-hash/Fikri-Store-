@@ -712,3 +712,595 @@
   }
 }
 
+
+
+/* =========================================================
+   FIKRI STORE — FIGMA-INSPIRED VISUAL & MOTION SYSTEM
+   Editorial contrast · Lime accents · Lightweight motion
+========================================================= */
+
+.fs-experience {
+  --fs-ink: #101411;
+  --fs-ink-soft: #1b211c;
+  --fs-paper: #f0f2ed;
+  --fs-paper-deep: #e5e9e1;
+  --fs-paper-white: #fafbf8;
+  --fs-muted: #687168;
+  --fs-line: #d9ded5;
+  --fs-lime: #c8ed50;
+  --fs-lime-dark: #6d8e21;
+  --primary: 78 82% 62%;
+  --primary-foreground: 90 10% 8%;
+  color: #f6f7f3;
+  background: #090c0a;
+}
+
+.fs-scroll-progress {
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.fs-scroll-progress span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #a9d936, #e0ff83);
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform;
+  box-shadow: 0 0 14px rgba(200, 237, 80, .5);
+}
+
+/* Navigation stays legible over the dark hero */
+.fs-experience header {
+  color: #f7f8f4;
+}
+
+.fs-experience header nav > a:first-child {
+  color: #fff;
+}
+
+.fs-experience header .text-muted-foreground {
+  color: rgba(245, 247, 240, .68);
+}
+
+.fs-experience header[ class*="bg-background" ] {
+  background: rgba(8, 11, 9, .88);
+  border-color: rgba(255, 255, 255, .12);
+}
+
+.fs-experience header button {
+  border-color: rgba(255, 255, 255, .2);
+}
+
+/* Hero: industrial product spotlight, without the blue/purple neon */
+.fs-experience .fs-hero {
+  color: #f7f8f3;
+  background:
+    radial-gradient(ellipse at 82% 24%, rgba(200, 237, 80, .10), transparent 36%),
+    linear-gradient(135deg, #090c0a 0%, #111713 54%, #080a09 100%);
+}
+
+.fs-experience .fs-hero-grid {
+  opacity: .12;
+  background-image:
+    linear-gradient(rgba(231, 239, 220, .10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(231, 239, 220, .10) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
+}
+
+.fs-experience .fs-aura-blue,
+.fs-experience .fs-aura-purple {
+  background: #b8e84a;
+  opacity: .09;
+}
+
+.fs-experience .fs-light-streak {
+  background: linear-gradient(90deg, transparent, #c8ed50, transparent);
+  box-shadow: 0 0 18px rgba(200, 237, 80, .45);
+  opacity: .25;
+}
+
+.fs-experience .fs-hero-copy h1 {
+  max-width: 760px;
+  font-family: "Arial Black", Impact, "Arial Narrow", ui-sans-serif, sans-serif;
+  font-size: clamp(2.8rem, 5.6vw, 5rem);
+  line-height: .99;
+  letter-spacing: -.055em;
+  text-wrap: balance;
+}
+
+.fs-experience .fs-hero-copy > span {
+  border-color: rgba(200, 237, 80, .42);
+  background: rgba(200, 237, 80, .10);
+  color: #d4f47a;
+}
+
+.fs-experience .fs-neon-text {
+  color: var(--fs-lime);
+  text-shadow: none;
+  animation: none;
+}
+
+.fs-experience .fs-hero-copy > p {
+  color: rgba(239, 243, 233, .72);
+  max-width: 540px;
+}
+
+.fs-experience .fs-hero-button {
+  color: #11170d;
+  background: var(--fs-lime);
+  box-shadow: 0 10px 28px rgba(173, 218, 65, .17);
+  border-radius: 14px;
+}
+
+.fs-experience .fs-hero-button:hover {
+  box-shadow: 0 15px 34px rgba(173, 218, 65, .27);
+}
+
+.fs-experience .fs-secondary-button {
+  color: #f7f8f3;
+  border-color: rgba(255, 255, 255, .24);
+  background: rgba(255, 255, 255, .035);
+  border-radius: 14px;
+}
+
+.fs-experience .fs-secondary-button:hover {
+  border-color: rgba(200, 237, 80, .65);
+  background: rgba(200, 237, 80, .08);
+}
+
+.fs-experience .fs-trust-row {
+  color: rgba(239, 243, 233, .62);
+  gap: 10px 20px;
+}
+
+.fs-experience .fs-hero-visual {
+  border-color: rgba(255, 255, 255, .16);
+  border-radius: 26px;
+  box-shadow: 0 28px 90px rgba(0, 0, 0, .42);
+  transform: perspective(1200px) rotateY(-1.5deg);
+}
+
+.fs-experience .fs-hero-visual-wrap:hover .fs-hero-visual {
+  transform: perspective(1200px) rotateY(0) translateY(-3px);
+  box-shadow: 0 34px 100px rgba(0, 0, 0, .5);
+}
+
+.fs-experience .fs-orbit {
+  border-color: rgba(200, 237, 80, .13);
+}
+
+.fs-experience .fs-orbit-two {
+  border-color: rgba(255, 255, 255, .10);
+}
+
+.fs-experience .fs-floating-chip {
+  color: #171c13;
+  background: rgba(247, 249, 242, .94);
+  border: 1px solid rgba(20, 30, 15, .08);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .24);
+  backdrop-filter: blur(14px);
+}
+
+.fs-experience .fs-chip-top > span {
+  color: #6d8e21;
+}
+
+.fs-experience .fs-chip-bottom {
+  color: #20271c;
+}
+
+.fs-experience .fs-live-badge {
+  color: #fff;
+  background: rgba(8, 11, 8, .72);
+  border-color: rgba(255, 255, 255, .22);
+}
+
+.fs-experience .fs-live-badge i,
+.fs-experience .fs-live-dot {
+  background: var(--fs-lime);
+  box-shadow: 0 0 12px rgba(200, 237, 80, .7);
+}
+
+.fs-experience .fs-feature-card {
+  color: #f4f6f0;
+  background: rgba(255, 255, 255, .045);
+  border-color: rgba(255, 255, 255, .13);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.fs-experience .fs-feature-card:hover {
+  border-color: rgba(200, 237, 80, .44);
+  background: rgba(255, 255, 255, .075);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, .2);
+}
+
+.fs-experience .fs-feature-card > div {
+  background: rgba(200, 237, 80, .12);
+}
+
+.fs-experience .fs-feature-card svg {
+  color: var(--fs-lime);
+}
+
+/* Product catalogue: bright editorial surface with clean cards */
+.fs-experience #produk {
+  color: var(--fs-ink);
+  background: var(--fs-paper);
+  border-top: 1px solid rgba(15, 22, 14, .08);
+  --foreground: 120 8% 9%;
+  --card: 0 0% 100%;
+  --card-foreground: 120 8% 9%;
+  --secondary: 90 12% 92%;
+  --muted: 100 10% 93%;
+  --muted-foreground: 130 5% 42%;
+  --border: 100 9% 86%;
+  --primary: 78 62% 36%;
+  --primary-foreground: 90 10% 8%;
+}
+
+.fs-experience #produk h2,
+.fs-experience #produk h3 {
+  color: var(--fs-ink);
+}
+
+.fs-experience #produk .text-muted-foreground {
+  color: var(--fs-muted);
+}
+
+.fs-experience #produk .text-primary {
+  color: var(--fs-lime-dark);
+}
+
+.fs-experience #produk .bg-primary {
+  background: var(--fs-lime);
+}
+
+.fs-experience #produk .text-primary-foreground {
+  color: #11170d;
+}
+
+.fs-experience #produk .border-border {
+  border-color: var(--fs-line);
+}
+
+.fs-experience #produk [role="tab"] {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .72);
+  color: #4e574d;
+  border-color: #d8ded2;
+  transition: color .22s ease, background .22s ease, border-color .22s ease, transform .22s ease;
+}
+
+.fs-experience #produk [role="tab"]:hover {
+  color: #151b13;
+  border-color: #9fbd65;
+  transform: translateY(-1px);
+}
+
+.fs-experience #produk [role="tab"][aria-selected="true"] {
+  color: #11170d;
+  background: var(--fs-lime);
+  border-color: var(--fs-lime);
+  box-shadow: 0 6px 18px rgba(137, 173, 55, .18);
+}
+
+.fs-experience #produk article {
+  color: var(--fs-ink);
+  background: #fff;
+  border-color: #dce1d8;
+  border-radius: 22px;
+  box-shadow: 0 8px 28px rgba(24, 34, 20, .045);
+  transition: transform .38s cubic-bezier(.2, .75, .25, 1), box-shadow .38s ease, border-color .28s ease;
+}
+
+.fs-experience #produk article:hover {
+  transform: translateY(-7px);
+  border-color: rgba(126, 160, 54, .48);
+  box-shadow: 0 22px 48px rgba(24, 34, 20, .11);
+}
+
+.fs-experience #produk article > div:first-child {
+  background: #e7eae3;
+}
+
+.fs-experience #produk article img {
+  transition: transform .65s cubic-bezier(.2, .75, .25, 1);
+}
+
+.fs-experience #produk article:hover img {
+  transform: scale(1.045);
+}
+
+.fs-experience #produk article .text-2xl {
+  color: #171c15;
+  letter-spacing: -.045em;
+}
+
+.fs-experience #produk article .bg-primary {
+  background: var(--fs-lime);
+}
+
+.fs-experience #produk article a {
+  border-radius: 13px;
+  box-shadow: 0 6px 18px rgba(137, 173, 55, .12);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.fs-experience #produk article a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(137, 173, 55, .22);
+}
+
+.fs-experience #produk .glow-lime {
+  box-shadow: 0 7px 20px rgba(137, 173, 55, .16);
+}
+
+/* Use cases: visual cards and lighter neutral canvas */
+.fs-experience #use-cases {
+  color: var(--fs-ink);
+  background: var(--fs-paper-deep);
+  border-color: #d8ded5;
+  --light-fg: 120 8% 10%;
+  --light-muted: 130 5% 41%;
+  --light-border: 100 8% 83%;
+}
+
+.fs-experience #use-cases h2 {
+  color: var(--fs-ink);
+}
+
+.fs-experience #use-cases .text-light-muted {
+  color: var(--fs-muted);
+}
+
+.fs-experience #use-cases .group {
+  border-radius: 20px;
+  border-color: rgba(255, 255, 255, .42);
+  box-shadow: 0 12px 28px rgba(22, 31, 18, .08);
+  transition: transform .4s cubic-bezier(.2, .75, .25, 1), box-shadow .4s ease;
+}
+
+.fs-experience #use-cases .group:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 22px 42px rgba(22, 31, 18, .16);
+}
+
+/* Value proposition cards */
+.fs-experience main > section:not(#hero):not(#produk):not(#use-cases):not(#tentang):not(#faq):not(#kontak) {
+  color: var(--fs-ink);
+  background: var(--fs-paper-white);
+  border-color: #e0e4dc;
+  --foreground: 120 8% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 120 8% 10%;
+  --muted-foreground: 130 5% 42%;
+  --border: 100 8% 86%;
+  --primary: 78 62% 36%;
+}
+
+.fs-experience main > section:not(#hero):not(#produk):not(#use-cases):not(#tentang):not(#faq):not(#kontak) h2,
+.fs-experience main > section:not(#hero):not(#produk):not(#use-cases):not(#tentang):not(#faq):not(#kontak) h3 {
+  color: var(--fs-ink);
+}
+
+.fs-experience main > section:not(#hero):not(#produk):not(#use-cases):not(#tentang):not(#faq):not(#kontak) .bg-card {
+  background: #fff;
+  border-color: #dfe4da;
+  box-shadow: 0 8px 26px rgba(24, 34, 20, .045);
+  transition: transform .32s ease, box-shadow .32s ease, border-color .32s ease;
+}
+
+.fs-experience main > section:not(#hero):not(#produk):not(#use-cases):not(#tentang):not(#faq):not(#kontak) .bg-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(126, 160, 54, .45);
+  box-shadow: 0 16px 34px rgba(24, 34, 20, .09);
+}
+
+/* Brand story stays cinematic and image-led */
+.fs-experience #tentang {
+  color: #f6f7f3;
+  background: #090c0a;
+}
+
+.fs-experience #tentang h2 {
+  letter-spacing: -.05em;
+}
+
+.fs-experience #tentang .text-muted-foreground {
+  color: rgba(239, 243, 233, .75);
+}
+
+.fs-experience #tentang a {
+  border-radius: 13px;
+  border-color: rgba(255, 255, 255, .24);
+  background: rgba(10, 14, 10, .55);
+}
+
+.fs-experience #tentang a:hover {
+  border-color: rgba(200, 237, 80, .6);
+}
+
+/* FAQ: bright and calm, with a clear accordion rhythm */
+.fs-experience #faq {
+  color: var(--fs-ink);
+  background: var(--fs-paper);
+  border-color: #dce1d8;
+  --foreground: 120 8% 10%;
+  --card: 0 0% 100%;
+  --card-foreground: 120 8% 10%;
+  --muted-foreground: 130 5% 42%;
+  --border: 100 8% 86%;
+  --primary: 78 62% 36%;
+}
+
+.fs-experience #faq h2 {
+  color: var(--fs-ink);
+}
+
+.fs-experience #faq .text-muted-foreground {
+  color: var(--fs-muted);
+}
+
+.fs-experience #faq .rounded-2xl.border {
+  background: #fff;
+  border-color: #dce1d8;
+  border-radius: 16px;
+  box-shadow: 0 5px 18px rgba(24, 34, 20, .035);
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+
+.fs-experience #faq .rounded-2xl.border:has(button[aria-expanded="true"]) {
+  border-color: rgba(126, 160, 54, .55);
+  box-shadow: 0 10px 26px rgba(24, 34, 20, .07);
+}
+
+/* Contact CTA: one confident dark panel on the light canvas */
+.fs-experience #kontak {
+  color: var(--fs-ink);
+  background: var(--fs-paper);
+  border-color: #dce1d8;
+}
+
+.fs-experience #kontak > div > div {
+  color: #f7f8f3;
+  background: #111713;
+  border-color: rgba(200, 237, 80, .3);
+  border-radius: 26px;
+  box-shadow: 0 24px 60px rgba(20, 28, 18, .14);
+}
+
+.fs-experience #kontak h2 {
+  color: #fff;
+  letter-spacing: -.05em;
+}
+
+.fs-experience #kontak .text-muted-foreground {
+  color: rgba(239, 243, 233, .7);
+}
+
+.fs-experience #kontak .bg-primary {
+  color: #11170d;
+  background: var(--fs-lime);
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(173, 218, 65, .18);
+}
+
+/* Footer and fixed mobile action */
+.fs-experience footer {
+  color: #f4f6ef;
+  background: #090c0a;
+  border-color: rgba(255, 255, 255, .13);
+}
+
+.fs-experience footer .text-muted-foreground {
+  color: rgba(239, 243, 233, .58);
+}
+
+.fs-experience .fixed.bottom-0 {
+  background: rgba(250, 251, 248, .94);
+  border-color: rgba(16, 24, 14, .10);
+  box-shadow: 0 -8px 26px rgba(20, 28, 18, .08);
+}
+
+.fs-experience .fixed.bottom-0 a {
+  color: #11170d;
+  background: var(--fs-lime);
+  border-radius: 14px;
+  box-shadow: 0 7px 20px rgba(137, 173, 55, .18);
+}
+
+/* Scroll reveal: elements remain visible when JS/motion is unavailable */
+.fs-experience .fs-motion-pending {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0) scale(.99);
+  filter: blur(4px);
+  transition:
+    opacity .72s cubic-bezier(.2, .75, .25, 1),
+    transform .72s cubic-bezier(.2, .75, .25, 1),
+    filter .72s ease;
+  transition-delay: var(--fs-motion-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.fs-experience .fs-motion-pending.fs-is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.fs-experience a,
+.fs-experience button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fs-experience a:focus-visible,
+.fs-experience button:focus-visible {
+  outline: 2px solid #9fc93c;
+  outline-offset: 4px;
+}
+
+@media (max-width: 640px) {
+  .fs-experience .fs-hero-copy h1 {
+    font-size: clamp(2.65rem, 12vw, 3.6rem);
+    line-height: 1;
+  }
+
+  .fs-experience .fs-hero-visual {
+    border-radius: 20px;
+    transform: none;
+  }
+
+  .fs-experience .fs-hero-visual-wrap:hover .fs-hero-visual {
+    transform: translateY(-2px);
+  }
+
+  .fs-experience .fs-chip-top {
+    right: 3px;
+  }
+
+  .fs-experience .fs-chip-bottom {
+    left: 3px;
+  }
+
+  .fs-experience #produk,
+  .fs-experience #use-cases,
+  .fs-experience #faq,
+  .fs-experience #kontak {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .fs-experience #produk article {
+    border-radius: 19px;
+  }
+
+  .fs-experience #kontak > div > div {
+    border-radius: 21px;
+    padding: 30px 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-experience .fs-motion-pending,
+  .fs-experience .fs-motion-pending.fs-is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    will-change: auto;
+  }
+
+  .fs-scroll-progress span {
+    transition: none;
+  }
+}
