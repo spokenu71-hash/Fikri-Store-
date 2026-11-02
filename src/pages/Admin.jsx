@@ -12,7 +12,7 @@ const BUCKET = "product-images";
 const EMPTY_FORM = {
   name: "",
   price: "",
-  category: "laptop",
+  category: "elektronik-lainnya",
   description: "",
   image_url: "",
   stock: "1",
@@ -57,6 +57,7 @@ function formatPrice(value) {
 function categoryLabel(value) {
   return (
     CATEGORIES.find((category) => category.value === value)?.label ||
+    LEGACY_CATEGORIES.find((category) => category.value === value)?.label ||
     value ||
     "Tanpa kategori"
   );
@@ -918,7 +919,7 @@ export default function Admin() {
                   onChange={(event) =>
                     setForm({ ...form, name: event.target.value })
                   }
-                  placeholder="Contoh: Laptop Pro 14"
+                  placeholder="Contoh: ThinkPad T450s atau Samsung Galaxy"
                   required
                 />
 
@@ -1085,7 +1086,7 @@ export default function Admin() {
 
               <div className="ap-category-filters" aria-label="Filter kategori produk">
                 <button type="button" className={selectedCategory === "all" ? "active" : ""} onClick={() => setSelectedCategory("all")}>Semua</button>
-                {CATEGORIES.map((category) => (
+                {categoryOptions.map((category) => (
                   <button type="button" key={category.value} className={selectedCategory === category.value ? "active" : ""} onClick={() => setSelectedCategory(category.value)}>{category.label}</button>
                 ))}
               </div>
