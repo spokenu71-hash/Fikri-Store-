@@ -1,4 +1,3 @@
-
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Cpu,
@@ -111,23 +110,26 @@ export default function Products() {
         return;
       }
 
-      const { data, error } = await supabase
-        .from("products")
-        .select("*")
-        .order("created_at", { ascending: false });
+      try {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .order("created_at", { ascending: false });
 
-      if (!mounted) return;
+        if (error) throw error;
+        if (!mounted) return;
 
-      if (error) {
-        console.error("Gagal memuat produk Supabase:", error);
-        setProducts([]);
-        setLoadError(true);
-      } else {
         setProducts((data || []).map(toProductCard));
         setLoadError(false);
+      } catch (error) {
+        console.error("Gagal memuat produk Supabase:", error);
+        if (mounted) {
+          setProducts([]);
+          setLoadError(true);
+        }
+      } finally {
+        if (mounted) setLoading(false);
       }
-
-      setLoading(false);
     }
 
     loadProducts();
