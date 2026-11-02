@@ -1,54 +1,102 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { MessageCircle, ChevronLeft, ChevronRight, Monitor } from "lucide-react";
 import { productWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 
 export default function ProductCard({ product }) {
   const [imgIndex, setImgIndex] = useState(0);
-  const hasImages = product.images.length > 0;
+  const touchStart = useRef(null);
+  const hasImages = Array.isArray(product.images) && product.images.length > 0;
+  const imageCount = hasImages ? product.images.length : 0;
 
-  const nextImg = (e) => {
-    e.preventDefault();
-    setImgIndex((i) => (i + 1) % product.images.length);
+  const nextImg = () => {
+    if (imageCount > 1) setImgIndex((index) => (index + 1) % imageCount);
   };
-  const prevImg = (e) => {
-    e.preventDefault();
-    setImgIndex((i) => (i - 1 + product.images.length) % product.images.length);
+
+  const prevImg = () => {
+    if (imageCount > 1) setImgIndex((index) => (index - 1 + imageCount) % imageCount);
+  };
+
+  const handleTouchStart = (event) => {
+    const touch = event.touches[0];
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (event) => {
+    if (!touchStart.current || imageCount < 2) return;
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStart.current.x;
+    const deltaY = touch.clientY - touchStart.current.y;
+    touchStart.current = null;
+
+    // Hanya tangani swipe horizontal; scroll vertikal tetap milik browser.
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
+    if (deltaX < 0) nextImg();
+    else prevImg();
+  };
+
+  const handleCarouselKeyDown = (event) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      nextImg();
+    } else if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      prevImg();
+    }
   };
 
   return (
     <article className="group flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_rgba(212,255,0,0.3)]">
-      {/* Image */}
-      <div className="relative aspect-[4/3] bg-secondary overflow-hidden">
+      <div
+        className="relative aspect-[4/3] bg-secondary overflow-hidden"
+        style={{ touchAction: "pan-y" }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => {
+          touchStart.current = null;
+        }}
+        onKeyDown={imageCount > 1 ? handleCarouselKeyDown : undefined}
+        role={imageCount > 1 ? "group" : undefined}
+        aria-roledescription={imageCount > 1 ? "carousel" : undefined}
+        aria-label={imageCount > 1 ? `Galeri foto ${product.name}` : undefined}
+        tabIndex={imageCount > 1 ? 0 : undefined}
+      >
         {hasImages ? (
           <>
             <Image
               src={product.images[imgIndex]}
-              alt={`${product.name} — foto unit asli`}
+              alt={`${product.name} — foto ${imgIndex + 1} dari ${imageCount}`}
               className="w-full h-full"
               fittingType="fit"
             />
-            {product.images.length > 1 && (
+            {imageCount > 1 && (
               <>
                 <button
+                  type="button"
                   onClick={prevImg}
                   aria-label="Foto sebelumnya"
-                  className="absolute left-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft aria-hidden="true" className="h-5 w-5" />
                 </button>
                 <button
+                  type="button"
                   onClick={nextImg}
                   aria-label="Foto berikutnya"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 rounded-full bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/70 backdrop-blur flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight aria-hidden="true" className="h-5 w-5" />
                 </button>
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-                  {product.images.map((_, i) => (
-                    <span
-                      key={i}
-                      className={`h-1.5 rounded-full transition-all ${i === imgIndex ? "w-5 bg-primary" : "w-1.5 bg-foreground/40"}`}
+                  {product.images.map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setImgIndex(index)}
+                      aria-label={`Tampilkan foto ${index + 1}`}
+                      aria-pressed={index === imgIndex}
+                      className={`h-2.5 rounded-full transition-all ${index === imgIndex ? "w-5 bg-primary" : "w-2.5 bg-foreground/50"}`}
                     />
                   ))}
                 </div>
@@ -73,17 +121,16 @@ export default function ProductCard({ product }) {
         )}
       </div>
 
-      {/* Body */}
       <div className="flex flex-col flex-1 p-5">
         <h3 className="font-heading text-lg font-bold tracking-tight">{product.name}</h3>
         <p className="text-sm text-muted-foreground mt-1">{product.tagline}</p>
 
         <ul className="mt-4 space-y-2.5 flex-1">
-          {product.specs.map((s, i) => (
-            <li key={i} className="flex items-center gap-2.5 text-sm">
-              <s.icon className="h-4 w-4 text-primary shrink-0" />
-              <span className="text-muted-foreground">{s.label}:</span>
-              <span className="text-foreground font-medium">{s.value}</span>
+          {product.specs.map((spec, index) => (
+            <li key={index} className="flex items-center gap-2.5 text-sm">
+              <spec.icon aria-hidden="true" className="h-4 w-4 text-primary shrink-0" />
+              <span className="text-muted-foreground">{spec.label}:</span>
+              <span className="text-foreground font-medium">{spec.value}</span>
             </li>
           ))}
         </ul>
@@ -100,7 +147,7 @@ export default function ProductCard({ product }) {
             rel="noopener noreferrer"
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95 min-h-[48px]"
           >
-            <MessageCircle className="h-4 w-4" />
+            <MessageCircle aria-hidden="true" className="h-4 w-4" />
             Tanya produk ini
           </a>
         </div>
