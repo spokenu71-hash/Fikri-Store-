@@ -51,7 +51,7 @@ export default function UseCases() {
           </span>
 
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-light-foreground">
-            Laptop buat segala aktivitasmu
+            Perangkat untuk segala aktivitasmu
           </h2>
 
           <p className="mt-3 text-light-muted">
