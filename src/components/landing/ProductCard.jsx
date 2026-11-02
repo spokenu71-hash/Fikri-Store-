@@ -98,7 +98,7 @@ export default function ProductCard({ product }) {
                       onClick={() => setImgIndex(index)}
                       aria-label={`Tampilkan foto ${index + 1}`}
                       aria-pressed={index === currentImageIndex}
-                      className={`h-2.5 rounded-full transition-all ${index === imgIndex ? "w-5 bg-primary" : "w-2.5 bg-foreground/50"}`}
+                      className={`h-2.5 rounded-full transition-all ${index === currentImageIndex ? "w-5 bg-primary" : "w-2.5 bg-foreground/50"}`}
                     />
                   ))}
                 </div>
