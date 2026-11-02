@@ -1,5 +1,9 @@
-node_modules
-dist
+node_modules/
+dist/
 .DS_Store
 *.log
-.vite
+.vite/
+.wrangler/
+.env
+.env.*
+!.env.example
