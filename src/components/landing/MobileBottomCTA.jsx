@@ -3,7 +3,9 @@ import { MessageCircle } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/products";
 
 export default function MobileBottomCTA() {
-  const waLink = buildWhatsAppLink("Halo, Fikri Store. Saya tertarik untuk mencari laptop second. Boleh dibantu rekomendasikan beberapa pilihan yang sesuai dengan budget saya dan kebutuhan penggunaan sehari-hari?");
+  const waLink = buildWhatsAppLink(
+    "Halo Fikri Store, saya ingin konsultasi produk yang tersedia. Bisa bantu rekomendasikan pilihan sesuai kebutuhan dan budget saya?"
+  );
 
   return (
     <div className="sm:hidden fixed bottom-0 inset-x-0 z-30 border-t border-border bg-background/90 backdrop-blur-lg px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">

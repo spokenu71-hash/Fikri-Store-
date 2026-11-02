@@ -6,13 +6,13 @@ const FOOTER_LINKS = [
   { label: "Produk", href: "#produk" },
   { label: "Tentang", href: "#tentang" },
   { label: "FAQ", href: "#faq" },
-  { label: "Kontak", href: "#hero" },
+  { label: "Kontak", href: "#kontak" },
 ];
 
 export default function Footer() {
   const toTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
   const contactLink = buildWhatsAppLink(
-    "Halo Fikri Store, saya ingin bertanya tentang produk yang tersedia."
+    "Halo Fikri Store, saya ingin bertanya tentang produk elektronik yang tersedia."
   );
 
   return (
@@ -27,7 +27,7 @@ export default function Footer() {
               Good Finds. Better Choices.
             </p>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Good finds, pilihan yang pas, dan tempat buat mulai mencari. Saat ini kami mulai dari laptop; ke depannya, akan ada lebih banyak hal untuk kamu temukan.
+              Temukan pilihan elektronik dengan informasi produk yang jelas dan konsultasi yang mudah.
             </p>
           </div>
 
