@@ -3,7 +3,7 @@ import { MessageCircle, ChevronLeft, ChevronRight, Monitor } from "lucide-react"
 import { productWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onViewDetails }) {
   const [imgIndex, setImgIndex] = useState(0);
   const touchStart = useRef(null);
   const hasImages = Array.isArray(product.images) && product.images.length > 0;
@@ -146,6 +146,15 @@ export default function ProductCard({ product }) {
           </div>
           <p className="text-xs text-muted-foreground mt-0.5">{product.priceNote}</p>
 
+          {onViewDetails && (
+            <button
+              type="button"
+              onClick={onViewDetails}
+              className="mb-2 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+            >
+              Lihat detail
+            </button>
+          )}
           <a
             href={productWhatsAppLink(product)}
             target="_blank"
