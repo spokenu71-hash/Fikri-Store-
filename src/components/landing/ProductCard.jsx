@@ -25,12 +25,15 @@ export default function ProductCard({ product }) {
   };
 
   const handleTouchEnd = (event) => {
-    if (!touchStart.current || imageCount < 2) return;
+    if (!touchStart.current) return;
+
+    const start = touchStart.current;
+    touchStart.current = null;
+    if (imageCount < 2 || !event.changedTouches[0]) return;
 
     const touch = event.changedTouches[0];
-    const deltaX = touch.clientX - touchStart.current.x;
-    const deltaY = touch.clientY - touchStart.current.y;
-    touchStart.current = null;
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
 
     // Hanya tangani swipe horizontal; scroll vertikal tetap milik browser.
     if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
@@ -108,7 +111,7 @@ export default function ProductCard({ product }) {
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center text-center p-6 gap-3">
             <div className="h-14 w-14 rounded-2xl bg-secondary flex items-center justify-center">
-              <Monitor className="h-7 w-7 text-muted-foreground" />
+              <Monitor aria-hidden="true" className="h-7 w-7 text-muted-foreground" />
             </div>
             <p className="text-sm text-muted-foreground max-w-[16rem]">
               Foto produk belum tersedia. Hubungi kami untuk melihat foto dan detail terbarunya.
