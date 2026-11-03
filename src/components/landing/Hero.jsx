@@ -40,7 +40,23 @@ export default function Hero() {
   );
 
   return (
-    <section id="hero" className="fs-hero relative pt-28 sm:pt-36 pb-16 sm:pb-24">
+    <section
+      id="hero"
+      className="fs-hero relative pt-28 sm:pt-36 pb-16 sm:pb-24"
+      onPointerMove={(event) => {
+        if (event.pointerType !== "mouse") return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+        const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+        event.currentTarget.style.setProperty("--fs-pointer-x", `${x}%`);
+        event.currentTarget.style.setProperty("--fs-pointer-y", `${y}%`);
+      }}
+      onPointerLeave={(event) => {
+        event.currentTarget.style.setProperty("--fs-pointer-x", "72%");
+        event.currentTarget.style.setProperty("--fs-pointer-y", "28%");
+      }}
+    >
+      <div className="fs-hero-atmosphere" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
           <div className="fs-hero-copy max-w-2xl">
