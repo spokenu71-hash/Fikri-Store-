@@ -57,12 +57,11 @@ export default function UseCases() {
           </span>
 
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-light-foreground">
-            Perangkat untuk segala aktivitasmu
+            Laptop untuk aktivitas sehari-hari
           </h2>
 
           <p className="mt-3 text-light-muted">
-            Mau kuliah, kerja, desain, atau gaming ringan — ada unit yang pas
-            buat kamu.
+            Untuk kuliah, kerja, desain, dan kebutuhan produktivitas lainnya.
           </p>
         </div>
 
