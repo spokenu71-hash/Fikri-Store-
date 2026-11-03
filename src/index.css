@@ -1019,3 +1019,80 @@ footer .text-primary { color:#2864dc !important; }
   .fs-hero-copy, .fs-hero-visual-wrap { animation:none !important; }
   .fs-hero-visual, #produk article { transition:none !important; }
 }
+
+
+/* =========================================
+   INTERACTIVE GRADIENT PREVIEW
+   Lightweight CSS prototype inspired by GetLayers' free gradient approach.
+   No external runtime, canvas, or paid source assets.
+========================================= */
+.fs-hero {
+  --fs-pointer-x: 72%;
+  --fs-pointer-y: 28%;
+  position: relative;
+}
+.fs-hero-atmosphere {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(460px circle at var(--fs-pointer-x) var(--fs-pointer-y),
+      rgba(87, 139, 255, .16), transparent 68%),
+    radial-gradient(540px circle at 14% 76%,
+      rgba(169, 190, 255, .18), transparent 70%);
+  opacity: .95;
+  transition: opacity .5s ease;
+}
+.fs-hero-atmosphere::before,
+.fs-hero-atmosphere::after {
+  content: "";
+  position: absolute;
+  width: min(52vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(78px);
+  will-change: transform;
+}
+.fs-hero-atmosphere::before {
+  top: -34%;
+  right: -12%;
+  background: radial-gradient(circle, rgba(111, 158, 255, .17), rgba(111, 158, 255, 0) 68%);
+  animation: fs-gradient-drift-a 18s ease-in-out infinite alternate;
+}
+.fs-hero-atmosphere::after {
+  bottom: -48%;
+  left: 12%;
+  background: radial-gradient(circle, rgba(190, 202, 255, .2), rgba(190, 202, 255, 0) 68%);
+  animation: fs-gradient-drift-b 22s ease-in-out infinite alternate;
+}
+.fs-hero > .relative.max-w-7xl {
+  z-index: 1;
+}
+@keyframes fs-gradient-drift-a {
+  from { transform: translate3d(0, 0, 0) scale(.92); }
+  to { transform: translate3d(-36px, 24px, 0) scale(1.08); }
+}
+@keyframes fs-gradient-drift-b {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(48px, -28px, 0) scale(.9); }
+}
+@media (max-width: 640px) {
+  .fs-hero-atmosphere {
+    background:
+      radial-gradient(320px circle at 78% 20%, rgba(87, 139, 255, .13), transparent 70%),
+      radial-gradient(360px circle at 12% 78%, rgba(169, 190, 255, .14), transparent 70%);
+  }
+  .fs-hero-atmosphere::before,
+  .fs-hero-atmosphere::after {
+    width: 90vw;
+    filter: blur(64px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fs-hero-atmosphere::before,
+  .fs-hero-atmosphere::after {
+    animation: none !important;
+  }
+}
