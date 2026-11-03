@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { MessageCircle, ChevronLeft, ChevronRight, Monitor } from "lucide-react";
 import { productWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
+import Reveal from "@/components/ui/reveal";
 
 export default function ProductCard({ product, onViewDetails }) {
   const [imgIndex, setImgIndex] = useState(0);
@@ -52,7 +53,7 @@ export default function ProductCard({ product, onViewDetails }) {
   };
 
   return (
-    <article className="fs-product-card group flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300">
+    <Reveal as="article" className="fs-product-card group flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300">
       <div
         className="fs-product-media relative aspect-[4/3] bg-secondary overflow-hidden"
         style={{ touchAction: "pan-y" }}
@@ -166,6 +167,6 @@ export default function ProductCard({ product, onViewDetails }) {
           </a>
         </div>
       </div>
-    </article>
+    </Reveal>
   );
 }
