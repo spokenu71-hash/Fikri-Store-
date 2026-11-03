@@ -57,7 +57,11 @@ export function toProductCard(row) {
   return {
     id: row.id,
     name: row.name || "Produk Fikri Store",
-    tagline: specs[0]?.value || specs[0]?.label || "Pilihan produk Fikri Store",
+    tagline: specs[0]?.label === "Info"
+      ? specs[0].value
+      : specs[0]?.label && specs[0]?.value
+        ? `${specs[0].label}: ${specs[0].value}`
+        : "Pilihan produk Fikri Store",
     price: formatProductPrice(row.price),
     priceNote: stock > 0 ? stock + " unit tersedia" : "Tanya ketersediaan",
     badge: stock > 0 ? "Ready" : "Cek stok",
