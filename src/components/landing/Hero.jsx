@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ArrowRight, CheckCircle2, Truck, MessageCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, Truck, MessageCircle, Sparkles } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 import { supabase } from "@/lib/supabase";
@@ -12,8 +12,18 @@ const FEATURES = [
   { icon: MessageCircle, label: "Konsultasi langsung via WhatsApp" },
 ];
 
+const MOODS = [
+  { id: "blue", label: "Ocean", color: "#3977ed", glow: "rgba(57,119,237,.20)" },
+  { id: "violet", label: "Violet", color: "#8065df", glow: "rgba(128,101,223,.20)" },
+  { id: "mint", label: "Mint", color: "#269d83", glow: "rgba(38,157,131,.18)" },
+];
+
 export default function Hero() {
   const [customHeroImage, setCustomHeroImage] = useState("");
+  const [mood, setMood] = useState(MOODS[0]);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [bursts, setBursts] = useState([]);
+  const [isTouching, setIsTouching] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -39,22 +49,38 @@ export default function Hero() {
     "Halo Fikri Store, saya ingin konsultasi produk yang tersedia dan rekomendasi sesuai kebutuhan serta budget saya."
   );
 
+  const handlePointerMove = (event) => {
+    if (event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width;
+    const y = (event.clientY - bounds.top) / bounds.height;
+    setTilt({ x: (0.5 - y) * 11, y: (x - 0.5) * 13 });
+    event.currentTarget.style.setProperty("--fs-pointer-x", `${x * 100}%`);
+    event.currentTarget.style.setProperty("--fs-pointer-y", `${y * 100}%`);
+  };
+
+  const handlePointerLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setIsTouching(false);
+  };
+
+  const scatterParticles = (event) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - bounds.left;
+    const y = event.clientY - bounds.top;
+    const id = Date.now() + Math.random();
+    setBursts((current) => [...current.slice(-2), { id, x, y }]);
+    window.setTimeout(() => {
+      setBursts((current) => current.filter((item) => item.id !== id));
+    }, 900);
+  };
+
   return (
     <section
       id="hero"
-      className="fs-hero relative pt-28 sm:pt-36 pb-16 sm:pb-24"
-      onPointerMove={(event) => {
-        if (event.pointerType !== "mouse") return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-        const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-        event.currentTarget.style.setProperty("--fs-pointer-x", `${x}%`);
-        event.currentTarget.style.setProperty("--fs-pointer-y", `${y}%`);
-      }}
-      onPointerLeave={(event) => {
-        event.currentTarget.style.setProperty("--fs-pointer-x", "72%");
-        event.currentTarget.style.setProperty("--fs-pointer-y", "28%");
-      }}
+      className={`fs-hero fs-soda-hero relative pt-28 sm:pt-36 pb-16 sm:pb-24 fs-mood-${mood.id}`}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
     >
       <div className="fs-hero-atmosphere" aria-hidden="true" />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
@@ -83,18 +109,76 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="fs-hero-visual-wrap">
-            <div className="fs-hero-visual relative aspect-[5/4] overflow-hidden rounded-[2rem] bg-[#e9edf3]">
-              <Image
-                src={customHeroImage || HERO_IMG}
-                alt="Pilihan produk elektronik Fikri Store"
-                className="fs-hero-image h-full w-full"
-                fittingType="fill"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent p-6 sm:p-8">
+          <div className="fs-hero-visual-wrap fs-soda-stage-wrap">
+            <div
+              className={`fs-hero-visual fs-soda-stage relative aspect-[5/4] overflow-hidden rounded-[2rem]${isTouching ? " is-touching" : ""}`}
+              style={{
+                "--fs-tilt-x": `${tilt.x}deg`,
+                "--fs-tilt-y": `${tilt.y}deg`,
+                "--fs-mood-color": mood.color,
+                "--fs-mood-glow": mood.glow,
+              }}
+              onPointerDown={(event) => {
+                setIsTouching(true);
+                scatterParticles(event);
+              }}
+              onPointerUp={() => setIsTouching(false)}
+            >
+              <div className="fs-soda-halo" aria-hidden="true" />
+              <div className="fs-soda-orbit fs-soda-orbit-one" aria-hidden="true" />
+              <div className="fs-soda-orbit fs-soda-orbit-two" aria-hidden="true" />
+              <div className="fs-soda-product">
+                <Image
+                  src={customHeroImage || HERO_IMG}
+                  alt="Pilihan produk elektronik Fikri Store"
+                  className="fs-hero-image h-full w-full"
+                  fittingType="fill"
+                />
+              </div>
+              <div className="fs-soda-spec fs-soda-spec-top" aria-hidden="true">
+                <Sparkles className="h-3.5 w-3.5" />
+                <span>CURATED TECH</span>
+              </div>
+              <div className="fs-soda-spec fs-soda-spec-bottom" aria-hidden="true">
+                <span className="fs-soda-spec-dot" />
+                <span>Made for your everyday</span>
+              </div>
+              {bursts.map((burst) => (
+                <span
+                  key={burst.id}
+                  className="fs-soda-particle-burst"
+                  style={{ left: burst.x, top: burst.y }}
+                  aria-hidden="true"
+                >
+                  {Array.from({ length: 7 }).map((_, index) => (
+                    <i key={index} style={{ "--particle-index": index }} />
+                  ))}
+                </span>
+              ))}
+              <div className="fs-soda-overlay">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">Discover your next essential</p>
                 <p className="mt-2 max-w-sm text-2xl font-semibold leading-tight tracking-tight text-white sm:text-3xl">Teknologi yang mengikuti caramu berkarya.</p>
               </div>
+            </div>
+            <div className="fs-soda-controls" aria-label="Pilih warna suasana animasi">
+              <span className="fs-soda-controls-label">Pilih mood</span>
+              <div className="fs-soda-moods">
+                {MOODS.map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={`fs-soda-mood-button${mood.id === option.id ? " is-active" : ""}`}
+                    onClick={() => setMood(option)}
+                    aria-label={`Gunakan warna ${option.label}`}
+                    aria-pressed={mood.id === option.id}
+                    style={{ "--swatch": option.color }}
+                  >
+                    <span />
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+              <span className="fs-soda-hint">Gerakkan kursor atau sentuh visualnya</span>
             </div>
             <div className="fs-image-caption">
               <span>01</span><span>Dipilih untuk kebutuhan sehari-hari</span><span className="fs-caption-line" />
