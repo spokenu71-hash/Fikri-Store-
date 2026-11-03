@@ -69,19 +69,9 @@ export default function Products() {
     return () => { mounted = false; };
   }, [retryCount]);
 
-  const visibleCategories = useMemo(
-    () => CATEGORIES.filter((category) =>
-      category.id === "all" ||
-      ["laptop", "smartphone", "tablet", "aksesori", "elektronik-lainnya"].includes(category.id) ||
-      products.some((product) => product.categories.includes(category.id))
-    ),
-    [products]
-  );
-
-  const filtered = useMemo(
-    () => filterProducts(products, { category: active, availableOnly, search }),
-    [active, products, search, availableOnly]
-  );
+  const laptopProducts = useMemo(() => products.filter((product) => product.categories.includes("laptop")), [products]);
+  const visibleCategories = useMemo(() => CATEGORIES.filter((category) => category.id === "all" || category.id === "laptop"), []);
+  const filtered = useMemo(() => filterProducts(laptopProducts, { category: active, availableOnly, search }), [active, laptopProducts, search, availableOnly]);
 
   function handleTabKeyDown(event, currentIndex) {
     let nextIndex = currentIndex;
@@ -102,7 +92,7 @@ export default function Products() {
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">Produk Pilihan</span>
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">Lagi cari apa?</h2>
-          <p className="mt-3 text-muted-foreground">Cari produk berdasarkan nama atau spesifikasi, lalu lihat detail dan stoknya.</p>
+          <p className="mt-3 text-muted-foreground">Jelajahi pilihan laptop untuk kuliah, kerja, dan kebutuhan harian. Tanyakan detail unit dan ketersediaan langsung kepada kami.</p>
         </div>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -138,7 +128,7 @@ export default function Products() {
         {!loading && !loadError && (
           <div className="mt-6 flex flex-wrap items-center justify-between gap-3" aria-live="polite">
             <p className="text-sm text-muted-foreground">
-              Menampilkan <span className="font-semibold text-foreground">{filtered.length}</span> dari <span className="font-semibold text-foreground">{products.length}</span> produk
+              Menampilkan <span className="font-semibold text-foreground">{filtered.length}</span> dari <span className="font-semibold text-foreground">{laptopProducts.length}</span> laptop
             </p>
             {(search || availableOnly || active !== "all") && (
               <button
@@ -165,8 +155,8 @@ export default function Products() {
           )}
           {!loading && !loadError && filtered.length === 0 && (
             <div className="rounded-3xl border border-border bg-card px-6 py-10 text-center">
-              <p className="font-heading text-lg font-bold">{products.length ? "Belum ada produk yang cocok." : "Lagi menyiapkan pilihan buat kamu."}</p>
-              <p className="mt-2 text-sm text-muted-foreground">Coba ubah kata kunci, kategori, atau filter stok tersedia.</p>
+              <p className="font-heading text-lg font-bold">{laptopProducts.length ? "Belum ada laptop yang cocok." : "Pilihan laptop sedang disiapkan."}</p>
+              <p className="mt-2 text-sm text-muted-foreground">Coba ubah kata kunci atau filter stok tersedia.</p>
               {(search || availableOnly || active !== "all") && <button type="button" onClick={() => { setSearch(""); setAvailableOnly(false); setActive("all"); }} className="mt-4 min-h-10 rounded-full border border-border px-4 text-sm font-semibold hover:border-primary/50">Hapus filter</button>}
             </div>
           )}
