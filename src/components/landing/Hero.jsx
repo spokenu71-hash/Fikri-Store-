@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowRight, MessageCircle, CheckCircle2, Truck, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Truck, ShieldCheck } from "lucide-react";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppLink } from "@/lib/products";
 
 const SCENES = [
@@ -10,7 +11,7 @@ const SCENES = [
 const FEATURES = [
   { icon: CheckCircle2, label: "Unit dicek sebelum dikirim" },
   { icon: Truck, label: "Pengiriman seluruh Indonesia" },
-  { icon: MessageCircle, label: "Konsultasi via WhatsApp" },
+  { icon: WhatsAppIcon, label: "Konsultasi via WhatsApp" },
 ];
 
 export default function Hero() {
