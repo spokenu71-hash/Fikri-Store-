@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { MessageCircle, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppLink } from "@/lib/products";
 
 const NAV_LINKS = [
@@ -48,7 +49,7 @@ export default function Navbar() {
         </div>
         <div className="flex items-center gap-2">
           <a href={waLink} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-white/90 transition-colors min-h-[40px]">
-            <MessageCircle className="h-4 w-4" />
+            <WhatsAppIcon className="h-4 w-4" />
             Chat WhatsApp
           </a>
           <button type="button" onClick={() => setOpen((o) => !o)} aria-label={open ? "Tutup menu navigasi" : "Buka menu navigasi"} aria-expanded={open} aria-controls="mobile-navigation" className="md:hidden h-10 w-10 rounded-full border border-border flex items-center justify-center">
@@ -63,7 +64,7 @@ export default function Navbar() {
               <a key={l.href} href={l.href} onClick={() => setOpen(false)} className="rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors">{l.label}</a>
             ))}
             <a href={waLink} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-3 text-sm font-semibold text-black min-h-[44px]">
-              <MessageCircle className="h-4 w-4" />
+              <WhatsAppIcon className="h-4 w-4" />
               Chat WhatsApp
             </a>
           </div>
