@@ -871,3 +871,49 @@
 .fs-creative-palette i{width:13px;height:13px;border-radius:50%;background:#e4a65e}
 .fs-creative-palette i:nth-child(2){background:#dc6b55}.fs-creative-palette i:nth-child(3){background:#435b68}.fs-creative-palette i:nth-child(4){background:#d4ff00}.fs-creative-palette i:nth-child(5){background:#eee8dc}
 @media(max-width:480px){.fs-screen-visual{gap:4px}.fs-study-play{width:19px;height:19px;font-size:8px}.fs-creative-toolbar{gap:5px}.fs-creative-toolbar i{width:7px;height:7px}.fs-creative-palette{gap:4px}.fs-creative-palette i{width:9px;height:9px}}
+
+
+/* Premium screen artwork refinement: richer depth, contrast and interface detail */
+.fs-screen-scene{isolation:isolate}
+.fs-screen-scene:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 82% 76%,rgba(212,255,0,.09),transparent 42%),linear-gradient(135deg,rgba(255,255,255,.025),transparent 55%)}
+.fs-screen-visual{position:relative;isolation:isolate;border-radius:7px;filter:drop-shadow(0 7px 9px rgba(0,0,0,.2))}
+.fs-screen-visual:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;border:1px solid rgba(255,255,255,.14);border-radius:7px;box-shadow:inset 0 1px rgba(255,255,255,.13),inset 0 -12px 22px rgba(0,0,0,.08)}
+.fs-screen-visual-1{background:linear-gradient(135deg,#17241b,#101711 70%);padding:5px;gap:5px}
+.fs-workspace-sidebar{background:linear-gradient(180deg,#26362a,#17231b);border-color:rgba(212,255,0,.13);box-shadow:inset 0 1px rgba(255,255,255,.08)}
+.fs-workspace-sidebar i{height:5px;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.fs-workspace-sidebar i:first-child{box-shadow:0 0 9px rgba(212,255,0,.38)}
+.fs-workspace-dashboard{position:relative;background:linear-gradient(145deg,#293b2b,#17231c 68%,#111b16);border-color:rgba(212,255,0,.22);box-shadow:inset 0 1px rgba(255,255,255,.09),0 3px 8px rgba(0,0,0,.18)}
+.fs-workspace-dashboard:before{content:"OVERVIEW  /  THIS WEEK";display:block;color:rgba(240,246,226,.55);font:600 5px ui-monospace,monospace;letter-spacing:.12em;margin-bottom:5px}
+.fs-workspace-stats{height:24%;gap:5px}
+.fs-workspace-stats span{position:relative;border-radius:4px;background:linear-gradient(145deg,rgba(212,255,0,.25),rgba(212,255,0,.035));box-shadow:inset 0 1px rgba(255,255,255,.12)}
+.fs-workspace-chart{position:relative;background:repeating-linear-gradient(to bottom,transparent 0 11px,rgba(255,255,255,.055) 12px);border-bottom-color:rgba(255,255,255,.24)}
+.fs-workspace-chart:before{content:"ACTIVITY";position:absolute;top:3px;left:2px;color:rgba(255,255,255,.35);font:5px ui-monospace,monospace;letter-spacing:.1em}
+.fs-workspace-chart i{box-shadow:0 0 8px rgba(212,255,0,.13)}
+.fs-workspace-agenda{position:relative;background:linear-gradient(160deg,#273329,#18221b);border-color:rgba(255,255,255,.1)}
+.fs-workspace-agenda:before{content:"UP NEXT";color:rgba(255,255,255,.55);font:600 5px ui-monospace,monospace;letter-spacing:.12em}
+.fs-workspace-agenda i{position:relative;height:5px;background:linear-gradient(90deg,rgba(255,255,255,.24),rgba(255,255,255,.07))}
+.fs-workspace-agenda i:nth-child(2){box-shadow:0 0 8px rgba(212,255,0,.12)}
+.fs-screen-visual-2{background:linear-gradient(135deg,#142d38,#101c28 70%);padding:5px;gap:5px}
+.fs-study-course{background:linear-gradient(145deg,#326778,#1b3d4b 58%,#142a35);box-shadow:inset 0 1px rgba(255,255,255,.2),0 3px 8px rgba(0,0,0,.22)}
+.fs-study-course:before{content:"LESSON  /  08:24";position:absolute;top:7px;left:8px;color:rgba(255,255,255,.65);font:600 5px ui-monospace,monospace;letter-spacing:.1em}
+.fs-study-course:after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.09) 50%,transparent 66%);pointer-events:none}
+.fs-study-play{box-shadow:0 3px 12px rgba(0,0,0,.3),0 0 18px rgba(212,255,0,.2);border:1px solid rgba(255,255,255,.35)}
+.fs-study-notes{background:linear-gradient(145deg,#f2efe5,#d8d8ca);box-shadow:inset 0 1px rgba(255,255,255,.8),0 3px 8px rgba(0,0,0,.18)}
+.fs-study-notes:before{content:"CATATAN KULIAH";display:block;color:#52646a;font:700 5px ui-monospace,monospace;letter-spacing:.1em;margin-bottom:5px}
+.fs-study-notes b{background:linear-gradient(90deg,#244c59,#54747b);box-shadow:0 2px 0 rgba(36,76,89,.1)}
+.fs-study-notes i{background:repeating-linear-gradient(90deg,rgba(38,60,66,.32) 0 34%,transparent 34% 39%);height:3px}
+.fs-study-book{background:linear-gradient(145deg,#bd9157,#775132 75%);box-shadow:inset 0 1px rgba(255,255,255,.25),0 3px 8px rgba(0,0,0,.2)}
+.fs-study-book span{position:relative;box-shadow:inset 3px 0 rgba(112,74,39,.18),0 2px 5px rgba(0,0,0,.2)}
+.fs-study-book span:after{content:"READ";position:absolute;inset:40% 0 auto;text-align:center;color:#795a38;font:700 5px ui-monospace,monospace;letter-spacing:.18em}
+.fs-screen-visual-3{background:linear-gradient(135deg,#28232d,#17151d 70%);padding:5px;gap:5px}
+.fs-creative-toolbar{background:linear-gradient(180deg,#393541,#24212c);border-color:rgba(255,255,255,.15);box-shadow:inset 0 1px rgba(255,255,255,.12)}
+.fs-creative-toolbar i{box-shadow:0 1px 3px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.15)}
+.fs-creative-canvas{background:linear-gradient(145deg,#f4eee3,#d9d2c5);box-shadow:inset 0 1px rgba(255,255,255,.9),0 3px 8px rgba(0,0,0,.2)}
+.fs-creative-canvas span{inset:10%;background:linear-gradient(135deg,#f0b86d 0 25%,#e8785f 25% 47%,#4c7180 47% 72%,#e4d28c 72%);box-shadow:0 3px 9px rgba(32,30,34,.2)}
+.fs-creative-canvas i{box-shadow:0 3px 9px rgba(32,30,34,.2);background:linear-gradient(145deg,#3a505c,#1c2b34)}
+.fs-creative-canvas b{box-shadow:0 3px 9px rgba(32,30,34,.24),inset 0 1px rgba(255,255,255,.45);background:linear-gradient(145deg,#e2ff56,#9dbb00)}
+.fs-creative-palette{background:linear-gradient(180deg,#393541,#24212c);border-color:rgba(255,255,255,.15)}
+.fs-creative-palette i{border:1px solid rgba(255,255,255,.28);box-shadow:0 2px 4px rgba(0,0,0,.3)}
+.fs-screen-scene.is-active .fs-screen-visual{animation:fs-art-arrive .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes fs-art-arrive{from{filter:drop-shadow(0 2px 2px rgba(0,0,0,.08));transform:translateY(5px) scale(.985)}to{filter:drop-shadow(0 7px 9px rgba(0,0,0,.2));transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.fs-screen-scene.is-active .fs-screen-visual{animation:none}}
