@@ -64,25 +64,37 @@ export default function Hero() {
                     <div className="fs-screen-content">
                       {SCENES.map((item, index) => <div key={item.label} className={"fs-screen-scene " + (scene === index ? "is-active" : "")} aria-hidden={scene !== index}>
                         <div className="fs-screen-eyebrow">{item.label}</div><div className="fs-screen-heading">{item.title}</div><div className="fs-screen-detail">{item.detail}</div>
-                        <div className={"fs-screen-visual fs-screen-visual-" + (index + 1)}>
-                          {index === 0 && <>
-                            <div className="fs-workspace-sidebar"><i /><i /><i /><i /></div>
-                            <div className="fs-workspace-dashboard">
-                              <div className="fs-workspace-stats"><span /><span /><span /></div>
-                              <div className="fs-workspace-chart"><i /><i /><i /><i /><i /><i /><i /></div>
-                            </div>
-                            <div className="fs-workspace-agenda"><i /><i /><i /><i /></div>
-                          </>}
-                          {index === 1 && <>
-                            <div className="fs-study-course"><span className="fs-study-play">▶</span><i /><i /><i /></div>
-                            <div className="fs-study-notes"><b /><i /><i /><i /><i /><i /></div>
-                            <div className="fs-study-book"><span /><i /><i /><i /></div>
-                          </>}
-                          {index === 2 && <>
-                            <div className="fs-creative-toolbar"><i /><i /><i /><i /><i /></div>
-                            <div className="fs-creative-canvas"><span /><i /><b /></div>
-                            <div className="fs-creative-palette"><i /><i /><i /><i /><i /></div>
-                          </>}
+                        <div className={"fs-screen-visual fs-screen-art fs-screen-art-" + (index + 1)}>
+                          {index === 0 && <svg viewBox="0 0 620 190" role="img" aria-label="Dashboard workspace" preserveAspectRatio="xMidYMid meet">
+                            <rect width="620" height="190" rx="12" fill="#101b16"/><rect x="12" y="12" width="54" height="166" rx="7" fill="#26382b"/><circle cx="39" cy="31" r="10" fill="#d4ff00"/>
+                            <path d="M28 61h22M28 76h22M28 91h22M28 106h22M28 121h22" stroke="#91a18d" strokeWidth="5" strokeLinecap="round"/>
+                            <text x="83" y="30" fill="#d4ff00" fontSize="10" fontWeight="700">WORKSPACE OVERVIEW</text><text x="83" y="52" fill="#f3f5ed" fontSize="19" fontWeight="700">Good morning, Fikri</text>
+                            <rect x="83" y="67" width="100" height="39" rx="6" fill="#26372b"/><rect x="195" y="67" width="100" height="39" rx="6" fill="#26372b"/><rect x="307" y="67" width="94" height="39" rx="6" fill="#26372b"/>
+                            <text x="94" y="82" fill="#aab7a4" fontSize="7">PROJECTS</text><text x="94" y="97" fill="#fff" fontSize="13">12</text><text x="206" y="82" fill="#aab7a4" fontSize="7">TASKS</text><text x="206" y="97" fill="#fff" fontSize="13">08</text><text x="318" y="82" fill="#aab7a4" fontSize="7">PROGRESS</text><text x="318" y="97" fill="#fff" fontSize="13">94%</text>
+                            <rect x="83" y="116" width="318" height="62" rx="7" fill="#1c2b21"/><text x="95" y="130" fill="#aab7a4" fontSize="7">WEEKLY ACTIVITY</text>
+                            <path d="M100 165l25 -15 25 8 25 -23 25 11 25 -27 25 13 25 -31 25 15 25 -22 25 10" fill="none" stroke="#d4ff00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                            <rect x="413" y="67" width="194" height="111" rx="7" fill="#26372b"/><text x="427" y="84" fill="#fff" fontSize="9">UP NEXT</text>
+                            <path d="M431 101h4m8 0h132M431 119h4m8 0h108M431 137h4m8 0h125M431 155h4m8 0h91" stroke="#91a18d" strokeWidth="5" strokeLinecap="round"/>
+                          </svg>}
+                          {index === 1 && <svg viewBox="0 0 620 190" role="img" aria-label="Study space with lesson video and notes" preserveAspectRatio="xMidYMid meet">
+                            <rect width="620" height="190" rx="12" fill="#10232c"/><text x="18" y="25" fill="#8bd4df" fontSize="10" fontWeight="700">STUDY SPACE / COURSE 04</text>
+                            <rect x="18" y="39" width="330" height="137" rx="9" fill="#245064"/><rect x="30" y="51" width="306" height="113" rx="6" fill="#183847"/>
+                            <path d="M30 133L95 91L145 119L208 67L270 105L336 78V164H30Z" fill="#2c7180"/><circle cx="184" cy="105" r="23" fill="#d4ff00"/><path d="M178 92l19 13-19 13z" fill="#19343b"/>
+                            <text x="368" y="49" fill="#fff" fontSize="13" fontWeight="700">Catatan kuliah</text><text x="368" y="64" fill="#91b4b7" fontSize="8">MODUL 04 · 24 MENIT</text>
+                            <rect x="365" y="76" width="242" height="100" rx="8" fill="#f0eee4"/><rect x="381" y="91" width="118" height="7" rx="3" fill="#2b515c"/>
+                            <path d="M381 108h205M381 120h205M381 132h173M381 144h193M381 156h142" stroke="#aebdb8" strokeWidth="4" strokeLinecap="round"/>
+                            <rect x="529" y="89" width="61" height="72" rx="5" fill="#dfc18a"/><path d="M539 104h41M539 114h35M539 124h38M539 134h27" stroke="#8c704d" strokeWidth="3" strokeLinecap="round"/>
+                          </svg>}
+                          {index === 2 && <svg viewBox="0 0 620 190" role="img" aria-label="Creative design canvas and color palette" preserveAspectRatio="xMidYMid meet">
+                            <rect width="620" height="190" rx="12" fill="#211e2b"/><rect x="13" y="13" width="594" height="164" rx="8" fill="#302b3a"/><rect x="24" y="24" width="38" height="142" rx="5" fill="#201d28"/>
+                            <path d="M36 38h14M36 58h14M36 78h14M36 98h14M36 118h14M36 138h14" stroke="#91899d" strokeWidth="7" strokeLinecap="round"/><text x="79" y="42" fill="#d8d1e2" fontSize="9" fontWeight="700">CREATIVE CANVAS / ARTBOARD 01</text>
+                            <rect x="80" y="53" width="390" height="103" rx="5" fill="#eee8dc"/><rect x="94" y="65" width="362" height="79" rx="3" fill="#e8d5b6"/>
+                            <path d="M94 132L164 78L223 119L294 68L367 120L456 82V144H94Z" fill="#526f7b"/><circle cx="353" cy="91" r="25" fill="#e77e5f"/><path d="M94 125Q169 91 232 134T366 126T456 119V144H94Z" fill="#d5a45d"/>
+                            <path d="M244 144Q269 98 295 106Q323 113 333 144" fill="#313c48"/><circle cx="282" cy="101" r="12" fill="#d4ff00"/>
+                            <rect x="481" y="53" width="111" height="103" rx="6" fill="#24212d"/><text x="494" y="69" fill="#c9c2d2" fontSize="8">COLOR PALETTE</text>
+                            <circle cx="503" cy="91" r="7" fill="#e77e5f"/><circle cx="520" cy="91" r="7" fill="#d4ff00"/><circle cx="537" cy="91" r="7" fill="#526f7b"/><circle cx="554" cy="91" r="7" fill="#d5a45d"/><circle cx="571" cy="91" r="7" fill="#eee8dc"/>
+                            <rect x="494" y="112" width="82" height="5" rx="2" fill="#6f6879"/><rect x="494" y="124" width="62" height="5" rx="2" fill="#6f6879"/>
+                          </svg>}
                         </div>
                       </div>)}
                     </div>
