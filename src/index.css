@@ -926,3 +926,32 @@
 .fs-screen-art-1{box-shadow:0 8px 20px rgba(112,155,70,.12)}
 .fs-screen-art-2{box-shadow:0 8px 20px rgba(64,153,174,.14)}
 .fs-screen-art-3{box-shadow:0 8px 20px rgba(194,119,94,.14)}
+
+
+/* Screen artwork: give each rotating laptop scene more visual presence */
+.fs-screen-visual{
+  height:47%;
+  min-height:76px;
+  margin-top:clamp(8px,1.8vw,15px);
+  border-radius:9px;
+  transform:translateZ(1px);
+}
+.fs-screen-art{
+  border-radius:9px;
+  border-color:rgba(212,255,0,.2);
+  box-shadow:0 10px 24px rgba(0,0,0,.32),0 0 22px rgba(212,255,0,.055);
+}
+.fs-screen-art svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+.fs-screen-scene.is-active .fs-screen-art{
+  animation:fs-art-arrive .9s cubic-bezier(.2,.8,.2,1) both;
+}
+@media(max-width:640px){
+  .fs-screen-visual{height:43%;min-height:58px;margin-top:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .fs-screen-scene.is-active .fs-screen-art{animation:none}
+}
