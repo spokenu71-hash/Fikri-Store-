@@ -10,6 +10,7 @@ import ClosingCTA from "@/components/landing/ClosingCTA";
 import Footer from "@/components/landing/Footer";
 import FloatingWhatsApp from "@/components/landing/FloatingWhatsApp";
 import MobileBottomCTA from "@/components/landing/MobileBottomCTA";
+import Reveal from "@/components/ui/reveal";
 
 export default function Home() {
   return (
@@ -19,13 +20,13 @@ export default function Home() {
       </a>
       <Navbar />
       <main id="main-content" tabIndex={-1}>
-        <Hero />
-        <Products />
-        <UseCases />
-        <ValueProps />
-        <Story />
-        <FAQ />
-        <ClosingCTA />
+        <Reveal as="div" className="fs-section-reveal"><Hero /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><Products /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><UseCases /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><ValueProps /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><Story /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><FAQ /></Reveal>
+        <Reveal as="div" className="fs-section-reveal"><ClosingCTA /></Reveal>
       </main>
       <Footer />
 
