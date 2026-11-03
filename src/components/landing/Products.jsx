@@ -135,7 +135,24 @@ export default function Products() {
           })}
         </div>
 
-        <div id="product-category-panel" role="tabpanel" aria-labelledby={`category-tab-${active}`} aria-busy={loading} tabIndex={0} className="mt-8 outline-offset-4">
+        {!loading && !loadError && (
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3" aria-live="polite">
+            <p className="text-sm text-muted-foreground">
+              Menampilkan <span className="font-semibold text-foreground">{filtered.length}</span> dari <span className="font-semibold text-foreground">{products.length}</span> produk
+            </p>
+            {(search || availableOnly || active !== "all") && (
+              <button
+                type="button"
+                onClick={() => { setSearch(""); setAvailableOnly(false); setActive("all"); }}
+                className="min-h-10 rounded-full border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                Reset pencarian & filter
+              </button>
+            )}
+          </div>
+        )}
+
+        <div id="product-category-panel" role="tabpanel" aria-labelledby={`category-tab-${active}`} aria-busy={loading} tabIndex={0} className="mt-4 outline-offset-4">
           {loading ? (
             <div role="status" aria-live="polite">
               <span className="sr-only">Memuat katalog produk...</span>
