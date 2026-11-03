@@ -133,16 +133,16 @@ export const VALUE_PROPS = [
 
 export const FAQS = [
   {
-    q: "Produk apa saja yang tersedia di Fikri Store?",
-    a: "Fikri Store menyediakan pilihan produk elektronik, seperti laptop, smartphone, tablet, aksesori, dan kategori lainnya sesuai stok yang tersedia. Katalog diperbarui mengikuti produk yang aktif.",
+    q: "Laptop apa saja yang tersedia di Fikri Store?",
+    a: "Pilihan laptop mengikuti unit yang sedang aktif di katalog. Kamu bisa melihat detail yang tersedia, lalu menghubungi kami untuk memastikan kondisi dan ketersediaan terbaru.",
   },
   {
-    q: "Bagaimana cara mengetahui harga dan stok terbaru?",
-    a: "Informasi harga dan stok pada katalog mengikuti data produk yang ditampilkan. Untuk memastikan ketersediaan unit, harga terbaru, atau opsi pembelian, hubungi kami melalui WhatsApp.",
+    q: "Bagaimana cara memastikan harga dan stok laptop?",
+    a: "Harga dan stok dapat berubah mengikuti ketersediaan unit. Hubungi Fikri Store melalui WhatsApp untuk konfirmasi harga, kondisi, dan stok terbaru sebelum memesan.",
   },
   {
-    q: "Bisa minta foto atau detail produk?",
-    a: "Bisa. Hubungi kami melalui WhatsApp untuk meminta foto, video, spesifikasi, atau informasi kondisi terbaru dari produk yang kamu minati.",
+    q: "Bisa minta foto atau detail laptop?",
+    a: "Bisa. Hubungi kami melalui WhatsApp untuk meminta foto, video, spesifikasi, atau informasi kondisi terbaru dari laptop yang kamu minati.",
   },
   {
     q: "Bagaimana cara order?",
