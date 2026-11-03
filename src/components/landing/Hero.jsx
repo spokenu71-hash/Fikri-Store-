@@ -65,35 +65,95 @@ export default function Hero() {
                       {SCENES.map((item, index) => <div key={item.label} className={"fs-screen-scene " + (scene === index ? "is-active" : "")} aria-hidden={scene !== index}>
                         <div className="fs-screen-eyebrow">{item.label}</div><div className="fs-screen-heading">{item.title}</div><div className="fs-screen-detail">{item.detail}</div>
                         <div className={"fs-screen-visual fs-screen-art fs-screen-art-" + (index + 1)}>
-                          {index === 0 && <svg viewBox="0 0 620 190" role="img" aria-label="Dashboard workspace" preserveAspectRatio="xMidYMid meet">
-                            <rect width="620" height="190" rx="12" fill="#101b16"/><rect x="12" y="12" width="54" height="166" rx="7" fill="#26382b"/><circle cx="39" cy="31" r="10" fill="#d4ff00"/>
-                            <path d="M28 61h22M28 76h22M28 91h22M28 106h22M28 121h22" stroke="#91a18d" strokeWidth="5" strokeLinecap="round"/>
-                            <text x="83" y="30" fill="#d4ff00" fontSize="10" fontWeight="700">WORKSPACE OVERVIEW</text><text x="83" y="52" fill="#f3f5ed" fontSize="19" fontWeight="700">Good morning, Fikri</text>
-                            <rect x="83" y="67" width="100" height="39" rx="6" fill="#26372b"/><rect x="195" y="67" width="100" height="39" rx="6" fill="#26372b"/><rect x="307" y="67" width="94" height="39" rx="6" fill="#26372b"/>
-                            <text x="94" y="82" fill="#aab7a4" fontSize="7">PROJECTS</text><text x="94" y="97" fill="#fff" fontSize="13">12</text><text x="206" y="82" fill="#aab7a4" fontSize="7">TASKS</text><text x="206" y="97" fill="#fff" fontSize="13">08</text><text x="318" y="82" fill="#aab7a4" fontSize="7">PROGRESS</text><text x="318" y="97" fill="#fff" fontSize="13">94%</text>
-                            <rect x="83" y="116" width="318" height="62" rx="7" fill="#1c2b21"/><text x="95" y="130" fill="#aab7a4" fontSize="7">WEEKLY ACTIVITY</text>
-                            <path d="M100 165l25 -15 25 8 25 -23 25 11 25 -27 25 13 25 -31 25 15 25 -22 25 10" fill="none" stroke="#d4ff00" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-                            <rect x="413" y="67" width="194" height="111" rx="7" fill="#26372b"/><text x="427" y="84" fill="#fff" fontSize="9">UP NEXT</text>
-                            <path d="M431 101h4m8 0h132M431 119h4m8 0h108M431 137h4m8 0h125M431 155h4m8 0h91" stroke="#91a18d" strokeWidth="5" strokeLinecap="round"/>
+                          {index === 0 && <svg viewBox="0 0 760 270" role="img" aria-label="Dashboard workspace dengan grafik performa, proyek, dan aktivitas" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                              <linearGradient id="dashBg" x2="1" y2="1"><stop stopColor="#263b2b"/><stop offset="1" stopColor="#09130f"/></linearGradient>
+                              <linearGradient id="dashCard" x2="0" y2="1"><stop stopColor="#304a35"/><stop offset="1" stopColor="#17271d"/></linearGradient>
+                              <linearGradient id="dashLine" x2="1"><stop stopColor="#d4ff00"/><stop offset="1" stopColor="#55d6a0"/></linearGradient>
+                              <filter id="dashGlow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                            </defs>
+                            <rect width="760" height="270" rx="16" fill="url(#dashBg)"/>
+                            <circle cx="650" cy="40" r="110" fill="#b9ff00" opacity=".055"/><circle cx="650" cy="40" r="70" fill="#b9ff00" opacity=".035"/>
+                            <rect x="14" y="14" width="76" height="242" rx="11" fill="#101d16" stroke="#d4ff00" strokeOpacity=".14"/>
+                            <rect x="27" y="28" width="49" height="39" rx="10" fill="#d4ff00"/><path d="M40 49l8-9 8 6 8-11" fill="none" stroke="#142318" strokeWidth="3" strokeLinecap="round"/>
+                            <g fill="#829889"><rect x="30" y="88" width="9" height="9" rx="2"/><rect x="30" y="122" width="9" height="9" rx="2"/><rect x="30" y="156" width="9" height="9" rx="2"/><rect x="30" y="190" width="9" height="9" rx="2"/></g>
+                            <g fill="#d5e2d5" fontSize="10" fontFamily="Arial,sans-serif"><text x="46" y="97">Home</text><text x="46" y="131">Tasks</text><text x="46" y="165">Team</text><text x="46" y="199">Files</text></g>
+                            <text x="112" y="34" fill="#caff59" fontSize="10" fontWeight="700" letterSpacing="2">YOUR WORKSPACE  /  OVERVIEW</text>
+                            <text x="112" y="65" fill="#f5f8ef" fontSize="25" fontWeight="700">Make today count.</text>
+                            <text x="112" y="84" fill="#9caf9e" fontSize="11">A clear view of everything moving forward.</text>
+                            <rect x="112" y="103" width="185" height="67" rx="10" fill="url(#dashCard)" stroke="#d4ff00" strokeOpacity=".22"/>
+                            <text x="128" y="124" fill="#a6b8a7" fontSize="9" letterSpacing="1">PROJECTS COMPLETED</text><text x="128" y="153" fill="#fff" fontSize="27" fontWeight="700">24</text><text x="174" y="151" fill="#baff43" fontSize="10">↗ 18% this month</text>
+                            <rect x="309" y="103" width="185" height="67" rx="10" fill="url(#dashCard)" stroke="#ffffff" strokeOpacity=".1"/>
+                            <text x="325" y="124" fill="#a6b8a7" fontSize="9" letterSpacing="1">FOCUS HOURS</text><text x="325" y="153" fill="#fff" fontSize="27" fontWeight="700">32.5</text><text x="398" y="151" fill="#8bd8b1" fontSize="10">This week</text>
+                            <rect x="506" y="103" width="238" height="153" rx="10" fill="url(#dashCard)" stroke="#ffffff" strokeOpacity=".1"/>
+                            <text x="524" y="125" fill="#f0f6eb" fontSize="11" fontWeight="700">Weekly performance</text><text x="524" y="140" fill="#8fa394" fontSize="8">PRODUCTIVITY SCORE</text>
+                            <path d="M525 222H725M525 192H725M525 162H725" stroke="#d8e5d5" strokeOpacity=".1" strokeDasharray="3 5"/>
+                            <path d="M528 211 C550 200 559 207 575 183 S605 190 622 169 S653 174 669 157 S700 164 722 145" fill="none" stroke="url(#dashLine)" strokeWidth="4" strokeLinecap="round" filter="url(#dashGlow)"/>
+                            <path d="M528 211 C550 200 559 207 575 183 S605 190 622 169 S653 174 669 157 S700 164 722 145V236H528Z" fill="#baff43" opacity=".09"/>
+                            <circle cx="722" cy="145" r="5" fill="#d4ff00" stroke="#f4ffd1" strokeWidth="2"/>
+                            <rect x="112" y="183" width="382" height="73" rx="10" fill="#14251b" stroke="#ffffff" strokeOpacity=".1"/>
+                            <text x="128" y="204" fill="#f2f6ed" fontSize="10" fontWeight="700">Recent activity</text>
+                            <circle cx="133" cy="224" r="5" fill="#d4ff00"/><text x="146" y="228" fill="#aebdaf" fontSize="9">Website redesign approved</text>
+                            <circle cx="304" cy="224" r="5" fill="#69d5ae"/><text x="317" y="228" fill="#aebdaf" fontSize="9">New task assigned</text>
+                            <circle cx="133" cy="243" r="5" fill="#8f9cff"/><text x="146" y="247" fill="#aebdaf" fontSize="9">Weekly report is ready</text>
                           </svg>}
-                          {index === 1 && <svg viewBox="0 0 620 190" role="img" aria-label="Study space with lesson video and notes" preserveAspectRatio="xMidYMid meet">
-                            <rect width="620" height="190" rx="12" fill="#10232c"/><text x="18" y="25" fill="#8bd4df" fontSize="10" fontWeight="700">STUDY SPACE / COURSE 04</text>
-                            <rect x="18" y="39" width="330" height="137" rx="9" fill="#245064"/><rect x="30" y="51" width="306" height="113" rx="6" fill="#183847"/>
-                            <path d="M30 133L95 91L145 119L208 67L270 105L336 78V164H30Z" fill="#2c7180"/><circle cx="184" cy="105" r="23" fill="#d4ff00"/><path d="M178 92l19 13-19 13z" fill="#19343b"/>
-                            <text x="368" y="49" fill="#fff" fontSize="13" fontWeight="700">Catatan kuliah</text><text x="368" y="64" fill="#91b4b7" fontSize="8">MODUL 04 · 24 MENIT</text>
-                            <rect x="365" y="76" width="242" height="100" rx="8" fill="#f0eee4"/><rect x="381" y="91" width="118" height="7" rx="3" fill="#2b515c"/>
-                            <path d="M381 108h205M381 120h205M381 132h173M381 144h193M381 156h142" stroke="#aebdb8" strokeWidth="4" strokeLinecap="round"/>
-                            <rect x="529" y="89" width="61" height="72" rx="5" fill="#dfc18a"/><path d="M539 104h41M539 114h35M539 124h38M539 134h27" stroke="#8c704d" strokeWidth="3" strokeLinecap="round"/>
+                          {index === 1 && <svg viewBox="0 0 760 270" role="img" aria-label="Ruang belajar digital dengan video pembelajaran, catatan, dan progres materi" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                              <linearGradient id="studyBg" x2="1" y2="1"><stop stopColor="#173d4a"/><stop offset="1" stopColor="#101a2b"/></linearGradient>
+                              <linearGradient id="studySky" x2="0" y2="1"><stop stopColor="#7dc6dc"/><stop offset=".55" stopColor="#527f9b"/><stop offset="1" stopColor="#243e55"/></linearGradient>
+                              <linearGradient id="studyAccent" x2="1"><stop stopColor="#d4ff00"/><stop offset="1" stopColor="#64e2b2"/></linearGradient>
+                            </defs>
+                            <rect width="760" height="270" rx="16" fill="url(#studyBg)"/>
+                            <circle cx="650" cy="24" r="115" fill="#6fd6d2" opacity=".07"/>
+                            <text x="24" y="30" fill="#9be3d5" fontSize="10" fontWeight="700" letterSpacing="2">STUDY SPACE  /  LEARNING PATH</text>
+                            <text x="24" y="58" fill="#f5fbf8" fontSize="24" fontWeight="700">Learn something great.</text>
+                            <text x="24" y="77" fill="#a4c0c4" fontSize="10">Small steps. Big progress.</text>
+                            <rect x="24" y="94" width="430" height="151" rx="12" fill="#0e2634" stroke="#8bd9d4" strokeOpacity=".25"/>
+                            <rect x="34" y="104" width="410" height="131" rx="8" fill="url(#studySky)"/>
+                            <circle cx="362" cy="132" r="27" fill="#fff3cf" opacity=".9"/>
+                            <path d="M34 199L114 145L165 177L239 117L315 177L378 139L444 185V235H34Z" fill="#315c70"/>
+                            <path d="M34 210L121 175L185 202L259 154L331 198L394 167L444 198V235H34Z" fill="#21475a"/>
+                            <path d="M184 177l55-60 35 39-25-8-13 13-13-5-18 21z" fill="#e5f0e9" opacity=".9"/>
+                            <path d="M239 117l18 20-16-5-13 8z" fill="#fff"/>
+                            <rect x="34" y="214" width="410" height="21" rx="0 0 8 8" fill="#071b27" opacity=".7"/>
+                            <circle cx="52" cy="224" r="5" fill="#d4ff00"/><rect x="64" y="221" width="270" height="5" rx="3" fill="#91b0b4" opacity=".45"/><rect x="64" y="221" width="146" height="5" rx="3" fill="url(#studyAccent)"/><text x="390" y="228" fill="#e4f2e8" fontSize="8">08:24 / 24:00</text>
+                            <rect x="470" y="94" width="266" height="151" rx="12" fill="#f1f0e7"/>
+                            <text x="490" y="119" fill="#24424a" fontSize="10" fontWeight="700" letterSpacing="1">YOUR NOTES</text>
+                            <text x="490" y="144" fill="#18343e" fontSize="15" fontWeight="700">Design thinking</text>
+                            <text x="490" y="160" fill="#6c8583" fontSize="9">Module 04 · Key takeaways</text>
+                            <rect x="490" y="174" width="12" height="12" rx="3" fill="#4d9c7e"/><path d="M493 180l3 3 5-7" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+                            <text x="510" y="184" fill="#38565a" fontSize="9">Understand the problem</text>
+                            <rect x="490" y="194" width="12" height="12" rx="3" fill="#4d9c7e"/><path d="M493 200l3 3 5-7" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+                            <text x="510" y="204" fill="#38565a" fontSize="9">Explore new perspectives</text>
+                            <rect x="490" y="216" width="226" height="6" rx="3" fill="#d2ded6"/><rect x="490" y="216" width="154" height="6" rx="3" fill="#4d9c7e"/>
                           </svg>}
-                          {index === 2 && <svg viewBox="0 0 620 190" role="img" aria-label="Creative design canvas and color palette" preserveAspectRatio="xMidYMid meet">
-                            <rect width="620" height="190" rx="12" fill="#211e2b"/><rect x="13" y="13" width="594" height="164" rx="8" fill="#302b3a"/><rect x="24" y="24" width="38" height="142" rx="5" fill="#201d28"/>
-                            <path d="M36 38h14M36 58h14M36 78h14M36 98h14M36 118h14M36 138h14" stroke="#91899d" strokeWidth="7" strokeLinecap="round"/><text x="79" y="42" fill="#d8d1e2" fontSize="9" fontWeight="700">CREATIVE CANVAS / ARTBOARD 01</text>
-                            <rect x="80" y="53" width="390" height="103" rx="5" fill="#eee8dc"/><rect x="94" y="65" width="362" height="79" rx="3" fill="#e8d5b6"/>
-                            <path d="M94 132L164 78L223 119L294 68L367 120L456 82V144H94Z" fill="#526f7b"/><circle cx="353" cy="91" r="25" fill="#e77e5f"/><path d="M94 125Q169 91 232 134T366 126T456 119V144H94Z" fill="#d5a45d"/>
-                            <path d="M244 144Q269 98 295 106Q323 113 333 144" fill="#313c48"/><circle cx="282" cy="101" r="12" fill="#d4ff00"/>
-                            <rect x="481" y="53" width="111" height="103" rx="6" fill="#24212d"/><text x="494" y="69" fill="#c9c2d2" fontSize="8">COLOR PALETTE</text>
-                            <circle cx="503" cy="91" r="7" fill="#e77e5f"/><circle cx="520" cy="91" r="7" fill="#d4ff00"/><circle cx="537" cy="91" r="7" fill="#526f7b"/><circle cx="554" cy="91" r="7" fill="#d5a45d"/><circle cx="571" cy="91" r="7" fill="#eee8dc"/>
-                            <rect x="494" y="112" width="82" height="5" rx="2" fill="#6f6879"/><rect x="494" y="124" width="62" height="5" rx="2" fill="#6f6879"/>
+                          {index === 2 && <svg viewBox="0 0 760 270" role="img" aria-label="Creative design studio dengan artboard ilustrasi, tools, dan palet warna" preserveAspectRatio="xMidYMid slice">
+                            <defs>
+                              <linearGradient id="creativeBg" x2="1" y2="1"><stop stopColor="#30253c"/><stop offset="1" stopColor="#111522"/></linearGradient>
+                              <linearGradient id="canvasBg" x2="1" y2="1"><stop stopColor="#f4d5a6"/><stop offset=".55" stopColor="#e98b70"/><stop offset="1" stopColor="#8d5a78"/></linearGradient>
+                              <linearGradient id="sunset" x2="0" y2="1"><stop stopColor="#ffd77b"/><stop offset="1" stopColor="#ef8c68"/></linearGradient>
+                            </defs>
+                            <rect width="760" height="270" rx="16" fill="url(#creativeBg)"/>
+                            <circle cx="690" cy="35" r="120" fill="#e77ec2" opacity=".07"/>
+                            <text x="22" y="30" fill="#e9b8ff" fontSize="10" fontWeight="700" letterSpacing="2">CREATIVE CANVAS  /  ARTBOARD 01</text>
+                            <text x="22" y="58" fill="#fff6f1" fontSize="24" fontWeight="700">Make it unmistakably yours.</text>
+                            <rect x="22" y="78" width="50" height="166" rx="9" fill="#171824" stroke="#ffffff" strokeOpacity=".12"/>
+                            <g fill="#c9bed4"><rect x="40" y="96" width="14" height="14" rx="3"/><circle cx="47" cy="133" r="7"/><path d="M39 158h16v12H39z"/><path d="M39 190l8-8 8 8-8 8z"/><rect x="40" y="215" width="14" height="10" rx="3"/></g>
+                            <rect x="86" y="78" width="440" height="166" rx="10" fill="#171824" stroke="#ffffff" strokeOpacity=".12"/>
+                            <rect x="97" y="89" width="418" height="144" rx="5" fill="url(#canvasBg)"/>
+                            <circle cx="405" cy="130" r="49" fill="url(#sunset)"/>
+                            <path d="M97 193L183 127L240 168L321 108L385 169L458 129L515 173V233H97Z" fill="#526e82"/>
+                            <path d="M97 207L184 168L243 191L325 145L387 191L460 160L515 191V233H97Z" fill="#34475e"/>
+                            <path d="M97 215Q171 181 245 216T390 205T515 211V233H97Z" fill="#23384c"/>
+                            <path d="M254 233Q272 185 302 177Q333 171 354 233" fill="#182b3c"/>
+                            <path d="M278 196q23-31 48 0" fill="none" stroke="#d4ff00" strokeWidth="4" strokeLinecap="round"/>
+                            <circle cx="302" cy="177" r="8" fill="#d4ff00"/>
+                            <rect x="540" y="78" width="196" height="166" rx="10" fill="#201d2b" stroke="#ffffff" strokeOpacity=".12"/>
+                            <text x="558" y="101" fill="#e7dbea" fontSize="10" fontWeight="700" letterSpacing="1">COLOR STORY</text>
+                            <g stroke="#fff" strokeOpacity=".28" strokeWidth="1"><circle cx="575" cy="132" r="12" fill="#f2b66d"/><circle cx="610" cy="132" r="12" fill="#ed8068"/><circle cx="645" cy="132" r="12" fill="#536f85"/><circle cx="680" cy="132" r="12" fill="#d4ff00"/><circle cx="715" cy="132" r="12" fill="#f1e8d7"/></g>
+                            <text x="558" y="172" fill="#a99db4" fontSize="8">LAYERS</text>
+                            <rect x="558" y="183" width="160" height="17" rx="4" fill="#383244"/><circle cx="569" cy="191" r="3" fill="#d4ff00"/><rect x="580" y="189" width="78" height="4" rx="2" fill="#c8bbd0"/>
+                            <rect x="558" y="205" width="160" height="17" rx="4" fill="#302b3c"/><circle cx="569" cy="213" r="3" fill="#e98b70"/><rect x="580" y="211" width="58" height="4" rx="2" fill="#9c91a8"/>
                           </svg>}
                         </div>
                       </div>)}
