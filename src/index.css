@@ -1319,3 +1319,49 @@ footer .text-primary { color:#2864dc !important; }
   }
   .fs-soda-stage { transform: none !important; transition: none !important; }
 }
+
+
+/* SODA PREVIEW HOTFIX — override legacy hero transform reset */
+.fs-soda-hero .fs-soda-stage.fs-hero-visual {
+  transform: perspective(1400px) rotateX(var(--fs-tilt-x, 0deg)) rotateY(var(--fs-tilt-y, 0deg)) !important;
+  transition: transform .18s ease-out, background .65s ease, box-shadow .45s ease !important;
+}
+.fs-soda-hero .fs-soda-stage.fs-hero-visual:hover {
+  transform: perspective(1400px) rotateX(var(--fs-tilt-x, 0deg)) rotateY(var(--fs-tilt-y, 0deg)) translateY(-5px) !important;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-product {
+  animation: fs-soda-float-strong 4.2s ease-in-out infinite !important;
+  will-change: transform;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-orbit-one {
+  animation: fs-soda-orbit 12s linear infinite !important;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-orbit-two {
+  animation: fs-soda-orbit-reverse 17s linear infinite !important;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-halo {
+  animation: fs-soda-halo 3.8s ease-in-out infinite alternate !important;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-spec-top {
+  animation: fs-soda-chip-float 3.2s ease-in-out infinite !important;
+}
+.fs-soda-hero .fs-soda-stage .fs-soda-spec-bottom {
+  animation: fs-soda-chip-float 3.8s ease-in-out -1.2s infinite !important;
+}
+@keyframes fs-soda-float-strong {
+  0%, 100% { transform: translate3d(0, 0, 54px) rotate(-2deg) scale(.98); }
+  50% { transform: translate3d(0, -22px, 78px) rotate(2deg) scale(1.025); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fs-soda-hero .fs-soda-stage.fs-hero-visual,
+  .fs-soda-hero .fs-soda-stage .fs-soda-product,
+  .fs-soda-hero .fs-soda-stage .fs-soda-orbit-one,
+  .fs-soda-hero .fs-soda-stage .fs-soda-orbit-two,
+  .fs-soda-hero .fs-soda-stage .fs-soda-halo,
+  .fs-soda-hero .fs-soda-stage .fs-soda-spec-top,
+  .fs-soda-hero .fs-soda-stage .fs-soda-spec-bottom {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
