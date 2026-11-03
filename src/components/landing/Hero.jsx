@@ -50,9 +50,9 @@ export default function Hero() {
             <p className="mt-5 text-[15px] sm:text-base text-muted-foreground leading-[1.7] max-w-lg">Untuk kuliah, kerja, dan berkarya. Lihat pilihan laptop yang tersedia atau konsultasikan kebutuhanmu bersama Fikri Store.</p>
             <div className="fs-hero-actions">
               <a href="#produk" className="fs-hero-button mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground min-h-[46px]">Lihat Laptop <ArrowRight className="h-4 w-4" /></a>
-              <a href={waLink} target="_blank" rel="noopener noreferrer" className="fs-secondary-button mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold min-h-[46px]"><MessageCircle className="h-4 w-4" /> Konsultasi</a>
+              <a href={waLink} target="_blank" rel="noopener noreferrer" className="fs-secondary-button mt-7 inline-flex items-center justify-center gap-2 rounded-full border border-border px-5 py-3 text-sm font-semibold min-h-[46px]"><WhatsAppIcon className="h-4 w-4" /> Konsultasi</a>
             </div>
-            <div className="fs-laptop-trust"><span><ShieldCheck className="h-4 w-4 text-primary" /> Unit diperiksa</span><span><MessageCircle className="h-4 w-4 text-primary" /> Tanya langsung</span></div>
+            <div className="fs-laptop-trust"><span><ShieldCheck className="h-4 w-4 text-primary" /> Unit diperiksa</span><span><WhatsAppIcon className="h-4 w-4 text-primary" /> Tanya langsung</span></div>
           </div>
           <div className="fs-laptop-stage-wrap">
             <div ref={stageRef} className="fs-laptop-stage" onPointerMove={handlePointerMove} onPointerLeave={resetPointer} onPointerCancel={resetPointer}>
