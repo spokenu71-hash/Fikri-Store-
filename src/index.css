@@ -917,3 +917,12 @@
 .fs-screen-scene.is-active .fs-screen-visual{animation:fs-art-arrive .8s cubic-bezier(.2,.8,.2,1) both}
 @keyframes fs-art-arrive{from{filter:drop-shadow(0 2px 2px rgba(0,0,0,.08));transform:translateY(5px) scale(.985)}to{filter:drop-shadow(0 7px 9px rgba(0,0,0,.2));transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.fs-screen-scene.is-active .fs-screen-visual{animation:none}}
+
+
+/* Full-frame vector illustrations for the laptop screen scenes */
+.fs-screen-art{display:block!important;padding:0!important;min-height:0;background:#111!important;overflow:hidden;border:1px solid rgba(255,255,255,.16);box-shadow:0 8px 18px rgba(0,0,0,.28)}
+.fs-screen-art svg{display:block;width:100%;height:100%;min-height:0;object-fit:cover}
+.fs-screen-art:before{inset:0;border-radius:7px;box-shadow:inset 0 1px rgba(255,255,255,.2),inset 0 -14px 20px rgba(0,0,0,.1)}
+.fs-screen-art-1{box-shadow:0 8px 20px rgba(112,155,70,.12)}
+.fs-screen-art-2{box-shadow:0 8px 20px rgba(64,153,174,.14)}
+.fs-screen-art-3{box-shadow:0 8px 20px rgba(194,119,94,.14)}
