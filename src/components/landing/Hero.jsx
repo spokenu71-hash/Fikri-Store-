@@ -64,9 +64,25 @@ export default function Hero() {
                     <div className="fs-screen-content">
                       {SCENES.map((item, index) => <div key={item.label} className={"fs-screen-scene " + (scene === index ? "is-active" : "")} aria-hidden={scene !== index}>
                         <div className="fs-screen-eyebrow">{item.label}</div><div className="fs-screen-heading">{item.title}</div><div className="fs-screen-detail">{item.detail}</div>
-                        <div className={"fs-screen-layout fs-screen-layout-" + (index + 1)}>
-                          <div className="fs-screen-main-panel"><div className="fs-screen-panel-line wide" /><div className="fs-screen-panel-line" /><div className="fs-screen-bars"><i /><i /><i /><i /><i /></div></div>
-                          <div className="fs-screen-side-panel"><span /><span /><span /></div>
+                        <div className={"fs-screen-visual fs-screen-visual-" + (index + 1)}>
+                          {index === 0 && <>
+                            <div className="fs-workspace-sidebar"><i /><i /><i /><i /></div>
+                            <div className="fs-workspace-dashboard">
+                              <div className="fs-workspace-stats"><span /><span /><span /></div>
+                              <div className="fs-workspace-chart"><i /><i /><i /><i /><i /><i /><i /></div>
+                            </div>
+                            <div className="fs-workspace-agenda"><i /><i /><i /><i /></div>
+                          </>}
+                          {index === 1 && <>
+                            <div className="fs-study-course"><span className="fs-study-play">▶</span><i /><i /><i /></div>
+                            <div className="fs-study-notes"><b /><i /><i /><i /><i /><i /></div>
+                            <div className="fs-study-book"><span /><i /><i /><i /></div>
+                          </>}
+                          {index === 2 && <>
+                            <div className="fs-creative-toolbar"><i /><i /><i /><i /><i /></div>
+                            <div className="fs-creative-canvas"><span /><i /><b /></div>
+                            <div className="fs-creative-palette"><i /><i /><i /><i /><i /></div>
+                          </>}
                         </div>
                       </div>)}
                     </div>
