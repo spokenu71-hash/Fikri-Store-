@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import {
   ArrowRight,
@@ -26,19 +25,25 @@ export default function Hero() {
     let active = true;
 
     async function loadHeroImage() {
-      const { data } = await supabase
-        .from("site_images")
-        .select("image_url")
-        .eq("image_key", "hero")
-        .maybeSingle();
+      if (!supabase) return;
 
-      if (active && data?.image_url) {
-        setCustomHeroImage(data.image_url);
+      try {
+        const { data, error } = await supabase
+          .from("site_images")
+          .select("image_url")
+          .eq("image_key", "hero")
+          .maybeSingle();
+
+        if (error) throw error;
+        if (active && data?.image_url) {
+          setCustomHeroImage(data.image_url);
+        }
+      } catch (error) {
+        console.error("Gagal memuat gambar Hero:", error);
       }
     }
 
     loadHeroImage();
-
     return () => {
       active = false;
     };

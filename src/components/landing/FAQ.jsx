@@ -1,31 +1,37 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { FAQS } from "@/lib/products";
 
 function FaqItem({ item }) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const triggerId = useId();
+
   return (
     <div className="rounded-2xl border border-border bg-card overflow-hidden">
       <button
-        onClick={() => setOpen((o) => !o)}
+        type="button"
+        id={triggerId}
+        onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
+        aria-controls={panelId}
         className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left min-h-[56px]"
       >
         <span className="font-semibold text-sm sm:text-base">{item.q}</span>
         <ChevronDown
+          aria-hidden="true"
           className={`h-5 w-5 shrink-0 text-primary transition-transform duration-300 ${open ? "rotate-180" : ""}`}
         />
       </button>
       <div
-        className={`grid transition-all duration-300 ${
-          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
+        id={panelId}
+        role="region"
+        aria-labelledby={triggerId}
+        hidden={!open}
       >
-        <div className="overflow-hidden">
-          <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
-            {item.a}
-          </p>
-        </div>
+        <p className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+          {item.a}
+        </p>
       </div>
     </div>
   );

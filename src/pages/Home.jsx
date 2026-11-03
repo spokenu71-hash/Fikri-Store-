@@ -14,8 +14,11 @@ import MobileBottomCTA from "@/components/landing/MobileBottomCTA";
 export default function Home() {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+      <a className="skip-link" href="#main-content">
+        Lewati ke konten utama
+      </a>
       <Navbar />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <Products />
         <UseCases />

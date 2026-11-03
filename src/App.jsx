@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -6,8 +6,9 @@ import {
 } from "react-router-dom";
 
 import Home from "./pages/Home";
-import Admin from "./pages/Admin";
-import ResetPassword from "./pages/ResetPassword";
+
+const Admin = lazy(() => import("./pages/Admin"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -82,6 +83,18 @@ class ErrorBoundary extends React.Component {
   }
 }
 
+function RouteLoading() {
+  return (
+    <main
+      role="status"
+      aria-live="polite"
+      className="grid min-h-screen place-items-center bg-background px-4 text-foreground"
+    >
+      Memuat halaman...
+    </main>
+  );
+}
+
 export default function App() {
   const isPasswordRecovery =
     window.location.hash.includes("type=recovery");
@@ -89,46 +102,48 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              isPasswordRecovery ? <ResetPassword /> : <Home />
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={<ResetPassword />}
-          />
-          <Route
-            path="/admin"
-            element={<Admin />}
-          />
-          <Route
-            path="*"
-            element={
-              <main className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
-                <section className="w-full max-w-md">
-                  <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
-                    404 · FIKRI STORE
-                  </p>
-                  <h1 className="mt-4 font-heading text-3xl font-extrabold tracking-tight">
-                    Halaman tidak ditemukan
-                  </h1>
-                  <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                    Alamat yang kamu buka mungkin sudah berubah atau tidak tersedia.
-                  </p>
-                  <a
-                    href="/"
-                    className="mt-8 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
-                  >
-                    Kembali ke halaman utama
-                  </a>
-                </section>
-              </main>
-            }
-          />
-        </Routes>
+        <Suspense fallback={<RouteLoading />}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                isPasswordRecovery ? <ResetPassword /> : <Home />
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={<ResetPassword />}
+            />
+            <Route
+              path="/admin"
+              element={<Admin />}
+            />
+            <Route
+              path="*"
+              element={
+                <main className="grid min-h-screen place-items-center bg-background px-4 text-center text-foreground">
+                  <section className="w-full max-w-md">
+                    <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary">
+                      404 · FIKRI STORE
+                    </p>
+                    <h1 className="mt-4 font-heading text-3xl font-extrabold tracking-tight">
+                      Halaman tidak ditemukan
+                    </h1>
+                    <p className="mt-3 text-sm leading-7 text-muted-foreground">
+                      Alamat yang kamu buka mungkin sudah berubah atau tidak tersedia.
+                    </p>
+                    <a
+                      href="/"
+                      className="mt-8 inline-flex min-h-[48px] items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
+                    >
+                      Kembali ke halaman utama
+                    </a>
+                  </section>
+                </main>
+              }
+            />
+          </Routes>
+        </Suspense>
       </Router>
     </ErrorBoundary>
   );

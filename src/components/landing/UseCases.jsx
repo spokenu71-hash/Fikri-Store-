@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { USE_CASES } from "@/lib/products";
 import { Image } from "@/components/ui/image";
@@ -18,22 +17,29 @@ export default function UseCases() {
     let active = true;
 
     async function loadImages() {
-      const { data, error } = await supabase
-        .from("site_images")
-        .select("image_key,image_url");
+      if (!supabase) return;
 
-      if (!active || error || !data) return;
+      try {
+        const { data, error } = await supabase
+          .from("site_images")
+          .select("image_key,image_url");
 
-      const result = {};
-      data.forEach((item) => {
-        result[item.image_key] = item.image_url;
-      });
+        if (error) throw error;
+        if (!active || !Array.isArray(data)) return;
 
-      setCustomImages(result);
+        const result = {};
+        data.forEach((item) => {
+          if (item?.image_key && item?.image_url) {
+            result[item.image_key] = item.image_url;
+          }
+        });
+        setCustomImages(result);
+      } catch (error) {
+        console.error("Gagal memuat gambar use case:", error);
+      }
     }
 
     loadImages();
-
     return () => {
       active = false;
     };
@@ -61,18 +67,18 @@ export default function UseCases() {
         </div>
 
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {USE_CASES.map((uc) => {
-            const key = IMAGE_KEYS[uc.title];
-            const imageSrc = (key && customImages[key]) || uc.image;
+          {USE_CASES.map((useCase) => {
+            const key = IMAGE_KEYS[useCase.title];
+            const imageSrc = (key && customImages[key]) || useCase.image;
 
             return (
               <div
-                key={uc.index}
+                key={useCase.index}
                 className="group relative overflow-hidden rounded-3xl border border-light-border bg-white aspect-[3/4]"
               >
                 <Image
                   src={imageSrc}
-                  alt={uc.title}
+                  alt={useCase.title}
                   className="w-full h-full"
                   fittingType="fill"
                 />
@@ -81,14 +87,12 @@ export default function UseCases() {
 
                 <div className="absolute inset-0 p-5 flex flex-col justify-end">
                   <span className="font-heading text-3xl font-extrabold text-primary text-glow-lime">
-                    {uc.index}
+                    {useCase.index}
                   </span>
-
                   <h3 className="mt-1 font-heading text-xl font-bold text-white">
-                    {uc.title}
+                    {useCase.title}
                   </h3>
-
-                  <p className="mt-1 text-sm text-white/80">{uc.desc}</p>
+                  <p className="mt-1 text-sm text-white/80">{useCase.desc}</p>
                 </div>
               </div>
             );
