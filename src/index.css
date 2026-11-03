@@ -846,7 +846,6 @@ h3 {
    FIKRI STORE — APPLE-INSPIRED VISUAL SYSTEM
    Editorial typography, calm surfaces, clear hierarchy
 ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
@@ -881,6 +880,7 @@ h3 {
   }
 
   html { scroll-padding-top: 5rem; }
+  .font-heading, .font-display { font-family: var(--font-heading); }
   body {
     background: hsl(var(--background));
     color: hsl(var(--foreground));
