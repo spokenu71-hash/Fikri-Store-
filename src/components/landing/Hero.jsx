@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  ArrowRight,
-  CheckCircle2,
-  Truck,
-  MessageCircle,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Truck, MessageCircle } from "lucide-react";
 import { buildWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 import { supabase } from "@/lib/supabase";
 
-const HERO_IMG =
-  "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/7b34e082f_generated_image.png";
+const HERO_IMG = "https://media.base44.com/images/public/6acf25a8d877b5aac6c96735/7b34e082f_generated_image.png";
 
 const FEATURES = [
-  { icon: CheckCircle2, label: "Produk Dicek Sebelum Dikirim" },
-  { icon: Truck, label: "Pengiriman Seluruh Indonesia" },
-  { icon: MessageCircle, label: "Konsultasi Via WhatsApp" },
+  { icon: CheckCircle2, label: "Produk dicek sebelum dikirim" },
+  { icon: Truck, label: "Pengiriman ke seluruh Indonesia" },
+  { icon: MessageCircle, label: "Konsultasi langsung via WhatsApp" },
 ];
 
 export default function Hero() {
@@ -23,30 +17,22 @@ export default function Hero() {
 
   useEffect(() => {
     let active = true;
-
     async function loadHeroImage() {
       if (!supabase) return;
-
       try {
         const { data, error } = await supabase
           .from("site_images")
           .select("image_url")
           .eq("image_key", "hero")
           .maybeSingle();
-
         if (error) throw error;
-        if (active && data?.image_url) {
-          setCustomHeroImage(data.image_url);
-        }
+        if (active && data?.image_url) setCustomHeroImage(data.image_url);
       } catch (error) {
         console.error("Gagal memuat gambar Hero:", error);
       }
     }
-
     loadHeroImage();
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, []);
 
   const waLink = buildWhatsAppLink(
@@ -54,119 +40,60 @@ export default function Hero() {
   );
 
   return (
-    <section
-      id="hero"
-      className="fs-hero relative pt-24 sm:pt-28 pb-12 sm:pb-20 overflow-hidden"
-    >
-      <div className="fs-hero-grid" aria-hidden="true" />
-      <div className="fs-aura fs-aura-blue" aria-hidden="true" />
-      <div className="fs-aura fs-aura-purple" aria-hidden="true" />
-      <div className="fs-light-streak" aria-hidden="true" />
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
-          <div className="fs-hero-copy">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-primary">
-              <span className="fs-live-dot" />
-              GOOD FINDS. BETTER CHOICES.
+    <section id="hero" className="fs-hero relative pt-28 sm:pt-36 pb-16 sm:pb-24">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div className="grid items-center gap-12 lg:grid-cols-[0.92fr_1.08fr] lg:gap-16">
+          <div className="fs-hero-copy max-w-2xl">
+            <span className="fs-eyebrow">
+              <span className="fs-eyebrow-dot" />
+              FIKRI STORE <span className="fs-eyebrow-divider">/</span> GOOD FINDS, BETTER CHOICES
             </span>
-
-            <h1 className="mt-5 font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.05]">
-              Cari yang kamu butuh,
-              <br />
-              <span className="fs-neon-text text-primary text-glow-lime">
-                temukan yang cocok.
-              </span>
+            <h1 className="mt-7 font-heading text-[2.75rem] font-semibold leading-[1.04] tracking-[-0.055em] sm:text-6xl lg:text-[4.6rem]">
+              Temukan perangkat yang <span className="fs-neon-text">tepat untukmu.</span>
             </h1>
-
-            <p className="mt-5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg">
-              Lagi cari perangkat buat kuliah, kerja, atau sekadar upgrade barang andalan? Mulai cari yang cocok di sini. Kalau masih bingung, ngobrol dulu aja sama kami.
+            <p className="mt-7 max-w-xl text-base leading-8 text-muted-foreground sm:text-lg">
+              Pilihan laptop dan elektronik untuk belajar, bekerja, dan berkarya. Lihat detailnya dengan jelas, bandingkan kebutuhanmu, lalu pilih dengan lebih yakin.
             </p>
-
-            <div className="fs-hero-actions">
-              <a
-                href={waLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="fs-hero-button mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground min-h-[48px]"
-              >
-                Chat Sekarang
-                <ArrowRight className="h-4 w-4" />
+            <div className="fs-hero-actions mt-9 flex flex-wrap items-center gap-3">
+              <a href="#produk" className="fs-hero-button inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground">
+                Jelajahi produk <ArrowRight className="h-4 w-4" />
               </a>
-
-              <a
-                href="#produk"
-                className="fs-secondary-button mt-8 inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3.5 text-sm font-semibold min-h-[48px]"
-              >
-                Lihat Produk ↘
+              <a href={waLink} target="_blank" rel="noopener noreferrer" className="fs-secondary-button inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-border bg-white/70 px-6 text-sm font-semibold text-foreground">
+                <MessageCircle className="h-4 w-4" /> Konsultasi
               </a>
             </div>
-
-            <div className="fs-trust-row">
-              <span>✦ Unit dicek</span>
-              <span>✦ Harga bersahabat</span>
-              <span>✦ Konsultasi langsung</span>
+            <div className="fs-trust-row mt-10">
+              <span>Kurasi produk</span><span>Informasi transparan</span><span>Bantuan personal</span>
             </div>
           </div>
 
           <div className="fs-hero-visual-wrap">
-            <div className="fs-orbit fs-orbit-one" />
-            <div className="fs-orbit fs-orbit-two" />
-
-            <div className="fs-hero-visual relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-card">
+            <div className="fs-hero-visual relative aspect-[5/4] overflow-hidden rounded-[2rem] bg-[#e9edf3]">
               <Image
                 src={customHeroImage || HERO_IMG}
-                alt="Pilihan produk Fikri Store"
-                className="fs-hero-image w-full h-full"
+                alt="Pilihan produk elektronik Fikri Store"
+                className="fs-hero-image h-full w-full"
                 fittingType="fill"
               />
-
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/10" />
-              <div className="fs-scanline" />
-              <div className="fs-corner fs-corner-top" />
-              <div className="fs-corner fs-corner-bottom" />
-
-              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between">
-                <div>
-                  <span className="block mb-2 text-[8px] font-bold tracking-[.2em] text-white/60">
-                    FIKRI STORE / GOOD FINDS
-                  </span>
-                  <p className="font-heading text-xl sm:text-2xl font-extrabold tracking-tight text-white leading-tight">
-                    Good Finds,
-                    <br />
-                    Better Choices.
-                  </p>
-                </div>
-
-                <span className="fs-live-badge">
-                  <i /> LIVE CATALOG
-                </span>
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent p-6 sm:p-8">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">Discover your next essential</p>
+                <p className="mt-2 max-w-sm text-2xl font-semibold leading-tight tracking-tight text-white sm:text-3xl">Teknologi yang mengikuti caramu berkarya.</p>
               </div>
             </div>
-
-            <div className="fs-floating-chip fs-chip-top">
-              <span>✦</span> Selected for you
-            </div>
-            <div className="fs-floating-chip fs-chip-bottom">
-              <span className="fs-live-dot" /> Ready to explore
+            <div className="fs-image-caption">
+              <span>01</span><span>Dipilih untuk kebutuhan sehari-hari</span><span className="fs-caption-line" />
             </div>
           </div>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="fs-feature-strip mt-16 grid grid-cols-1 divide-y divide-border border-y border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {FEATURES.map((feature, index) => (
-            <div
-              key={feature.label}
-              style={{ "--delay": `${index * 120}ms` }}
-              className="fs-feature-card flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3.5"
-            >
-              <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                <feature.icon className="h-5 w-5 text-primary" />
-              </div>
-              <span className="text-xs sm:text-sm font-medium">
-                {feature.label}
+            <div key={feature.label} className="flex items-center gap-3 py-5 sm:px-6 sm:first:pl-0">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-primary shadow-sm">
+                <feature.icon className="h-[18px] w-[18px]" />
               </span>
-              <span className="fs-feature-arrow">↗</span>
+              <span className="text-sm font-medium text-foreground">{feature.label}</span>
+              <span className="ml-auto text-xs text-muted-foreground">0{index + 1}</span>
             </div>
           ))}
         </div>
