@@ -52,9 +52,9 @@ export default function ProductCard({ product, onViewDetails }) {
   };
 
   return (
-    <article className="group flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-primary/40 hover:shadow-[0_0_40px_-12px_rgba(212,255,0,0.3)]">
+    <article className="fs-product-card group flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-all duration-300">
       <div
-        className="relative aspect-[4/3] bg-secondary overflow-hidden"
+        className="fs-product-media relative aspect-[4/3] bg-secondary overflow-hidden"
         style={{ touchAction: "pan-y" }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -126,7 +126,7 @@ export default function ProductCard({ product, onViewDetails }) {
         )}
       </div>
 
-      <div className="flex flex-col flex-1 p-5">
+      <div className="fs-product-content flex flex-col flex-1 p-5">
         <h3 className="font-heading text-lg font-bold tracking-tight">{product.name}</h3>
         <p className="text-sm text-muted-foreground mt-1">{product.tagline}</p>
 
@@ -150,7 +150,7 @@ export default function ProductCard({ product, onViewDetails }) {
             <button
               type="button"
               onClick={onViewDetails}
-              className="mb-2 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              className="fs-product-details mb-2 inline-flex min-h-[44px] w-full items-center justify-center rounded-xl border border-border px-4 py-3 text-sm font-semibold text-foreground transition-colors"
             >
               Lihat detail
             </button>
@@ -159,7 +159,7 @@ export default function ProductCard({ product, onViewDetails }) {
             href={productWhatsAppLink(product)}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95 min-h-[48px]"
+            className="fs-product-ask mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform min-h-[48px]"
           >
             <MessageCircle aria-hidden="true" className="h-4 w-4" />
             Tanya produk ini
