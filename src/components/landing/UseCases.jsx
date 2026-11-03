@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { USE_CASES } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 import { supabase } from "@/lib/supabase";
+import Reveal from "@/components/ui/reveal";
 
 const IMAGE_KEYS = {
   Kuliah: "kuliah",
