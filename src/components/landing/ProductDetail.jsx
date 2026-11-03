@@ -66,7 +66,7 @@ export default function ProductDetail({ product, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center sm:p-6"
+      className="fs-product-detail fixed inset-0 z-[60] flex items-end justify-center bg-black/70 backdrop-blur-sm sm:items-center sm:p-6"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
@@ -76,7 +76,7 @@ export default function ProductDetail({ product, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="fs-modal-in fs-modal-surface relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-y-auto rounded-t-3xl border border-border sm:rounded-3xl"
+        className="fs-modal-in fs-modal-surface fs-product-dialog relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-y-auto rounded-t-3xl border border-border sm:rounded-3xl"
       >
         <button
           ref={closeRef}
@@ -89,7 +89,7 @@ export default function ProductDetail({ product, onClose }) {
         </button>
 
         <div className="grid sm:grid-cols-2">
-          <div className="bg-secondary">
+          <div className="fs-product-gallery bg-secondary">
             <div className="relative aspect-[4/3]">
               {images.length > 0 ? (
                 <Image
@@ -127,7 +127,7 @@ export default function ProductDetail({ product, onClose }) {
             )}
           </div>
 
-          <div className="flex flex-col p-6 sm:p-7">
+          <div className="fs-product-info flex flex-col p-6 sm:p-7">
             {product.badge && (
               <span className="mb-3 w-fit rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground">
                 {product.badge}
@@ -160,7 +160,7 @@ export default function ProductDetail({ product, onClose }) {
                 href={productWhatsAppLink(product)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95"
+                className="fs-product-ask mt-4 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform"
               >
                 <MessageCircle className="h-4 w-4" aria-hidden="true" />
                 Tanya produk ini
