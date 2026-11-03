@@ -76,7 +76,7 @@ export default function ProductDetail({ product, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="fs-modal-in relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-y-auto rounded-t-3xl border border-border bg-card sm:rounded-3xl"
+        className="fs-modal-in fs-modal-surface relative flex max-h-[92vh] w-full max-w-3xl flex-col overflow-y-auto rounded-t-3xl border border-border sm:rounded-3xl"
       >
         <button
           ref={closeRef}
