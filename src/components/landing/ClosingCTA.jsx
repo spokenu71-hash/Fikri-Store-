@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageCircle } from "lucide-react";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppLink } from "@/lib/products";
 
 export default function ClosingCTA() {
@@ -28,7 +28,7 @@ export default function ClosingCTA() {
               rel="noopener noreferrer"
               className="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-bold text-primary-foreground glow-lime transition-transform hover:scale-[1.03] active:scale-95 min-h-[48px]"
             >
-              <MessageCircle className="h-4 w-4" />
+              <WhatsAppIcon className="h-4 w-4" />
               Chat via WhatsApp
             </a>
           </div>
