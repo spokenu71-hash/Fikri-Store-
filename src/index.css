@@ -807,3 +807,25 @@
 @keyframes fs-shadow-breathe{0%,100%{opacity:.65;transform:rotateX(65deg) translateZ(-45px) scaleX(1)}50%{opacity:.38;transform:rotateX(65deg) translateZ(-45px) scaleX(.88)}}
 @media(max-width:640px){.fs-laptop-stage{min-height:270px}.fs-laptop-device{width:94%}.fs-laptop-lid{padding:8px 8px 7px;border-radius:10px 10px 5px 5px}.fs-laptop-base{height:12px}.fs-screen-topbar{height:16px}.fs-screen-content{height:calc(100% - 31px)}.fs-screen-bottom{height:15px}.fs-laptop-trust{gap:12px;margin-top:20px;font-size:11px}.fs-stage-caption,.fs-stage-index{bottom:5%}}
 @media(prefers-reduced-motion:reduce){.fs-laptop-copy,.fs-laptop-stage-wrap,.fs-laptop-device,.fs-laptop-shadow{animation:none!important}.fs-screen-scene{transition:none}.fs-screen-scene:not(.is-active){display:none}}
+
+
+/* Global landing-page motion: reveal sections and polished micro-interactions */
+.fs-section-reveal { width: 100%; }
+.fs-reveal { opacity: 1; transform: none; filter: none; transition: opacity .7s cubic-bezier(.2,.75,.25,1), transform .7s cubic-bezier(.2,.75,.25,1), filter .7s ease; }
+.fs-reveal-hidden { opacity: 0; transform: translate3d(0, 26px, 0); filter: blur(3px); }
+#produk article, #use-cases article, .fs-feature-card,
+#faq [role="region"], #tentang a, #kontak a {
+  transition: transform .32s cubic-bezier(.2,.75,.25,1), box-shadow .32s ease, border-color .32s ease, background-color .32s ease;
+}
+#produk article:hover, #use-cases article:hover { transform: translateY(-5px); }
+#produk article img, #use-cases article img { transition: transform .6s cubic-bezier(.2,.75,.25,1), filter .6s ease; }
+#produk article:hover img, #use-cases article:hover img { transform: scale(1.035); }
+#faq [role="region"] { animation: fs-faq-open .28s ease both; }
+@keyframes fs-faq-open { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .fs-reveal, .fs-reveal-hidden, #produk article, #use-cases article,
+  #produk article img, #use-cases article img, #faq [role="region"] {
+    opacity: 1 !important; transform: none !important; filter: none !important;
+    animation: none !important; transition: none !important;
+  }
+}
