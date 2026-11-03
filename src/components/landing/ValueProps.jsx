@@ -1,5 +1,6 @@
 import React from "react";
 import { VALUE_PROPS } from "@/lib/products";
+import Reveal from "@/components/ui/reveal";
 
 export default function ValueProps() {
   return (
