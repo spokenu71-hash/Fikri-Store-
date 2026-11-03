@@ -1096,3 +1096,226 @@ footer .text-primary { color:#2864dc !important; }
     animation: none !important;
   }
 }
+
+
+/* =========================================
+   SODA-INSPIRED INTERACTIVE HERO MOTION
+   Original React/CSS implementation for Fikri Store.
+   Inspired by the floating, cursor-reactive Soda template.
+========================================= */
+.fs-soda-hero {
+  --fs-mood-color: #3977ed;
+  --fs-mood-glow: rgba(57,119,237,.20);
+  --fs-pointer-x: 72%;
+  --fs-pointer-y: 28%;
+  --fs-soda-surface: #eaf0fb;
+}
+.fs-soda-hero.fs-mood-violet { --fs-soda-surface: #f0edfb; }
+.fs-soda-hero.fs-mood-mint { --fs-soda-surface: #e9f5f1; }
+.fs-soda-hero .fs-eyebrow-dot,
+.fs-soda-hero .fs-soda-spec-dot { background: var(--fs-mood-color); }
+.fs-soda-hero .fs-neon-text { color: var(--fs-mood-color) !important; }
+.fs-soda-hero .fs-hero-atmosphere {
+  background:
+    radial-gradient(480px circle at var(--fs-pointer-x) var(--fs-pointer-y), var(--fs-mood-glow), transparent 68%),
+    radial-gradient(560px circle at 14% 76%, rgba(169,190,255,.15), transparent 70%);
+}
+.fs-soda-stage-wrap { perspective: 1400px; }
+.fs-soda-stage {
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% 46%, color-mix(in srgb, var(--fs-mood-color) 14%, white), transparent 56%),
+    linear-gradient(145deg, var(--fs-soda-surface), #fff 72%);
+  border: 1px solid rgba(255,255,255,.9) !important;
+  box-shadow: 0 32px 80px rgba(28,39,61,.13), inset 0 1px 0 rgba(255,255,255,.9);
+  transform: perspective(1400px) rotateX(var(--fs-tilt-x, 0deg)) rotateY(var(--fs-tilt-y, 0deg));
+  transform-style: preserve-3d;
+  transition: background .65s ease, box-shadow .45s ease, transform .18s ease-out;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.fs-soda-stage:active { cursor: grabbing; }
+.fs-soda-stage::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: .32;
+  background-image: radial-gradient(rgba(60,75,100,.17) .7px, transparent .7px);
+  background-size: 17px 17px;
+  mask-image: linear-gradient(transparent, black 28%, transparent 92%);
+}
+.fs-soda-halo {
+  position: absolute;
+  z-index: 0;
+  width: 70%;
+  aspect-ratio: 1;
+  left: 50%;
+  top: 46%;
+  border-radius: 50%;
+  transform: translate(-50%,-50%);
+  background: var(--fs-mood-glow);
+  filter: blur(48px);
+  animation: fs-soda-halo 6s ease-in-out infinite alternate;
+}
+.fs-soda-product {
+  position: absolute;
+  z-index: 2;
+  inset: 7% 5% 12%;
+  transform: translateZ(54px);
+  animation: fs-soda-float 5.8s ease-in-out infinite;
+  filter: drop-shadow(0 28px 28px rgba(30,42,68,.16));
+}
+.fs-soda-product img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  mix-blend-mode: multiply;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+.fs-soda-orbit {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 45%;
+  width: 76%;
+  height: 35%;
+  border: 1px solid color-mix(in srgb, var(--fs-mood-color) 24%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%,-50%) rotate(-19deg) translateZ(18px);
+  pointer-events: none;
+}
+.fs-soda-orbit-one { animation: fs-soda-orbit 18s linear infinite; }
+.fs-soda-orbit-two {
+  width: 88%;
+  height: 48%;
+  transform: translate(-50%,-50%) rotate(28deg);
+  border-style: dashed;
+  opacity: .42;
+  animation: fs-soda-orbit-reverse 26s linear infinite;
+}
+.fs-soda-spec {
+  position: absolute;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 999px;
+  background: rgba(255,255,255,.76);
+  padding: 10px 13px;
+  color: #596273;
+  box-shadow: 0 8px 28px rgba(30,45,75,.08);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  transform: translateZ(76px);
+}
+.fs-soda-spec-top { top: 9%; right: 7%; animation: fs-soda-chip-float 4.8s ease-in-out infinite; }
+.fs-soda-spec-top svg { color: var(--fs-mood-color); }
+.fs-soda-spec-bottom {
+  left: 6%;
+  bottom: 24%;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  animation: fs-soda-chip-float 5.6s ease-in-out -1.5s infinite;
+}
+.fs-soda-spec-dot { width: 7px; height: 7px; border-radius: 50%; box-shadow: 0 0 0 4px var(--fs-mood-glow); }
+.fs-soda-overlay {
+  position: absolute;
+  z-index: 5;
+  inset: auto 0 0;
+  padding: 42px 28px 25px;
+  background: linear-gradient(transparent, rgba(13,20,34,.78));
+  transform: translateZ(92px);
+  pointer-events: none;
+}
+.fs-soda-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 14px 2px 0;
+}
+.fs-soda-controls-label,
+.fs-soda-hint { color: #858c98; font-size: 10px; }
+.fs-soda-controls-label { font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.fs-soda-moods { display: flex; align-items: center; gap: 7px; }
+.fs-soda-mood-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #687080;
+  background: transparent;
+  font-size: 10px;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+}
+.fs-soda-mood-button:hover { transform: translateY(-1px); background: #fff; }
+.fs-soda-mood-button.is-active { color: #242a35; background: #fff; border-color: #e1e6ef; box-shadow: 0 3px 12px rgba(30,45,75,.06); }
+.fs-soda-mood-button > span { width: 9px; height: 9px; border-radius: 50%; background: var(--swatch); box-shadow: 0 0 0 3px color-mix(in srgb, var(--swatch) 13%, transparent); }
+.fs-soda-hint { margin-left: auto; }
+.fs-soda-particle-burst {
+  position: absolute;
+  z-index: 6;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.fs-soda-particle-burst i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fs-mood-color);
+  box-shadow: 0 2px 8px var(--fs-mood-glow);
+  animation: fs-soda-particle .78s cubic-bezier(.12,.72,.3,1) both;
+  animation-delay: calc(var(--particle-index) * 12ms);
+}
+.fs-soda-particle-burst i:nth-child(2n) { width: 5px; height: 5px; background: #fff; }
+.fs-soda-particle-burst i:nth-child(1) { --particle-angle: 0deg; }
+.fs-soda-particle-burst i:nth-child(2) { --particle-angle: 52deg; }
+.fs-soda-particle-burst i:nth-child(3) { --particle-angle: 104deg; }
+.fs-soda-particle-burst i:nth-child(4) { --particle-angle: 156deg; }
+.fs-soda-particle-burst i:nth-child(5) { --particle-angle: 208deg; }
+.fs-soda-particle-burst i:nth-child(6) { --particle-angle: 260deg; }
+.fs-soda-particle-burst i:nth-child(7) { --particle-angle: 312deg; }
+@keyframes fs-soda-float {
+  0%,100% { transform: translate3d(0,0,54px) rotate(-1deg); }
+  50% { transform: translate3d(0,-13px,68px) rotate(1deg); }
+}
+@keyframes fs-soda-halo {
+  from { transform: translate(-50%,-50%) scale(.88); opacity: .7; }
+  to { transform: translate(-50%,-50%) scale(1.12); opacity: 1; }
+}
+@keyframes fs-soda-orbit { to { transform: translate(-50%,-50%) rotate(341deg) translateZ(18px); } }
+@keyframes fs-soda-orbit-reverse { to { transform: translate(-50%,-50%) rotate(-332deg); } }
+@keyframes fs-soda-chip-float {
+  0%,100% { translate: 0 0; }
+  50% { translate: 0 -7px; }
+}
+@keyframes fs-soda-particle {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.3) rotate(var(--particle-angle)) translateX(0); }
+  18% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1) rotate(var(--particle-angle)) translateX(42px); }
+}
+@media (hover: none), (max-width: 640px) {
+  .fs-soda-stage { transform: none; }
+  .fs-soda-product { animation-duration: 7s; }
+  .fs-soda-hint { width: 100%; margin-left: 0; }
+  .fs-soda-spec-bottom { bottom: 27%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fs-soda-product, .fs-soda-halo, .fs-soda-orbit,
+  .fs-soda-orbit-two, .fs-soda-spec, .fs-soda-particle-burst i {
+    animation: none !important;
+  }
+  .fs-soda-stage { transform: none !important; transition: none !important; }
+}
