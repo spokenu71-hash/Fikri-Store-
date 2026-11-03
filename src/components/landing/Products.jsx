@@ -4,43 +4,15 @@ import { CATEGORIES } from "@/lib/products";
 import { supabase } from "@/lib/supabase";
 import ProductCard from "@/components/landing/ProductCard";
 import ProductDetail from "@/components/landing/ProductDetail";
+import { toProductCard, filterProducts } from "@/lib/catalog";
 
-function formatPrice(price) {
-  if (price === null || price === undefined || price === "") return "Tanya harga";
-  const number = Number(price);
-  if (!Number.isFinite(number)) return String(price);
-  return "Rp " + number.toLocaleString("id-ID");
-}
+const SPEC_COMPONENTS = { cpu: Cpu, memory: MemoryStick, storage: HardDrive, monitor: Monitor };
 
-function toProductCard(row) {
-  const description = String(row.description || "");
-  const lines = description.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const icons = {
-    prosesor: Cpu, cpu: Cpu, ram: MemoryStick, memory: MemoryStick,
-    storage: HardDrive, ssd: HardDrive, hdd: HardDrive, layar: Monitor, monitor: Monitor,
-  };
-  const specs = lines.map((line) => {
-    const separator = line.indexOf(":");
-    if (separator > 0) {
-      const label = line.slice(0, separator).trim();
-      return { icon: icons[label.toLowerCase()] || Monitor, label, value: line.slice(separator + 1).trim() };
-    }
-    return { icon: Monitor, label: "Info", value: line };
-  });
-  const images = String(row.image_url || "").split(/[\n,]/).map((url) => url.trim()).filter((url) => /^https?:\/\//i.test(url));
-  const category = row.category || "elektronik-lainnya";
-  const stock = Number(row.stock || 0);
+function mapDatabaseProduct(row) {
+  const product = toProductCard(row);
   return {
-    id: row.id,
-    name: row.name || "Produk Fikri Store",
-    tagline: lines[0] || "Pilihan produk Fikri Store",
-    price: formatPrice(row.price),
-    priceNote: stock > 0 ? `${stock} unit tersedia` : "Tanya ketersediaan",
-    badge: stock > 0 ? "Ready" : "Cek stok",
-    stock,
-    categories: [category],
-    images,
-    specs: specs.length ? specs : [{ icon: Monitor, label: "Kategori", value: category }],
+    ...product,
+    specs: product.specs.map((spec) => ({ ...spec, icon: SPEC_COMPONENTS[spec.icon] || Monitor })),
   };
 }
 
@@ -85,7 +57,7 @@ export default function Products() {
       try {
         const { data, error } = await supabase.from("products").select("*").order("created_at", { ascending: false });
         if (error) throw error;
-        if (mounted) setProducts(Array.isArray(data) ? data.map(toProductCard) : []);
+        if (mounted) setProducts(Array.isArray(data) ? data.map(mapDatabaseProduct) : []);
       } catch (error) {
         console.error("Gagal memuat produk Supabase:", error);
         if (mounted) { setProducts([]); setLoadError(true); }
@@ -106,15 +78,10 @@ export default function Products() {
     [products]
   );
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLocaleLowerCase("id-ID");
-    return products.filter((product) => {
-      const matchesCategory = active === "all" || product.categories.includes(active);
-      const matchesAvailability = !availableOnly || product.stock > 0;
-      const searchable = [product.name, product.tagline, ...product.specs.map((spec) => `${spec.label} ${spec.value}`)].join(" ").toLocaleLowerCase("id-ID");
-      return matchesCategory && matchesAvailability && (!query || searchable.includes(query));
-    });
-  }, [active, products, search, availableOnly]);
+  const filtered = useMemo(
+    () => filterProducts(products, { category: active, availableOnly, search }),
+    [active, products, search, availableOnly]
+  );
 
   function handleTabKeyDown(event, currentIndex) {
     let nextIndex = currentIndex;
@@ -168,7 +135,24 @@ export default function Products() {
           })}
         </div>
 
-        <div id="product-category-panel" role="tabpanel" aria-labelledby={`category-tab-${active}`} aria-busy={loading} tabIndex={0} className="mt-8 outline-offset-4">
+        {!loading && !loadError && (
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-3" aria-live="polite">
+            <p className="text-sm text-muted-foreground">
+              Menampilkan <span className="font-semibold text-foreground">{filtered.length}</span> dari <span className="font-semibold text-foreground">{products.length}</span> produk
+            </p>
+            {(search || availableOnly || active !== "all") && (
+              <button
+                type="button"
+                onClick={() => { setSearch(""); setAvailableOnly(false); setActive("all"); }}
+                className="min-h-10 rounded-full border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/50 hover:text-primary"
+              >
+                Reset pencarian & filter
+              </button>
+            )}
+          </div>
+        )}
+
+        <div id="product-category-panel" role="tabpanel" aria-labelledby={`category-tab-${active}`} aria-busy={loading} tabIndex={0} className="mt-4 outline-offset-4">
           {loading ? (
             <div role="status" aria-live="polite">
               <span className="sr-only">Memuat katalog produk...</span>
