@@ -777,8 +777,8 @@
 }
 
 :where(button, a):active {
-  transform: scale(0.97);
-  transition: transform 100ms ease-out;
+  scale: 0.97;
+  transition: scale 100ms ease-out;
 }
 
 body {
