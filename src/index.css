@@ -769,3 +769,74 @@
     transform: none;
   }
 }
+
+
+/* Apple Design refinement: immediate press feedback, material hierarchy and adaptive preferences */
+:where(button, a, input, select, textarea) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, a):active {
+  transform: scale(0.97);
+  transition: transform 100ms ease-out;
+}
+
+body {
+  font-optical-sizing: auto;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  letter-spacing: -0.025em;
+}
+
+.fs-modal-surface {
+  background: hsl(var(--card) / 0.92);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  box-shadow: 0 24px 80px rgb(0 0 0 / 0.42);
+  transform-origin: center bottom;
+  animation: fs-modal-materialize 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fs-modal-materialize {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .fs-modal-surface {
+    background: hsl(var(--card));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --border: 0 0% 48%;
+    --muted-foreground: 0 0% 78%;
+  }
+
+  .fs-modal-surface {
+    background: hsl(var(--card));
+    border: 2px solid hsl(var(--foreground));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-modal-surface {
+    animation: none;
+    transform: none;
+  }
+}
