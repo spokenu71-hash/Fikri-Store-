@@ -40,7 +40,7 @@ export default function Hero() {
   }
   const waLink = buildWhatsAppLink("Halo Fikri Store, saya sedang mencari laptop. Bisa bantu rekomendasikan unit sesuai kebutuhan dan budget saya?");
   return (
-    <section id="hero" className="fs-hero fs-laptop-hero relative pt-24 sm:pt-28 pb-12 sm:pb-16 overflow-hidden">
+    <section id="hero" className="fs-hero fs-laptop-hero relative pt-24 sm:pt-28 pb-5 sm:pb-16 overflow-hidden">
       <div className="fs-laptop-hero-glow" aria-hidden="true" />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
