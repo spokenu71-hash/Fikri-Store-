@@ -3,7 +3,7 @@ import { VALUE_PROPS } from "@/lib/products";
 
 export default function ValueProps() {
   return (
-    <section className="relative py-14 sm:py-24 border-t border-border">
+    <section className="relative pt-12 pb-9 sm:py-24 border-t border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
@@ -14,7 +14,7 @@ export default function ValueProps() {
           </h2>
         </div>
 
-        <div className="mt-8 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="mt-7 sm:mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {VALUE_PROPS.map((v) => (
             <div
               key={v.title}
