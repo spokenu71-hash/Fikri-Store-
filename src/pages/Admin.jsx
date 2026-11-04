@@ -483,6 +483,7 @@ export default function Admin() {
 
   const laptopCount = products.filter((product) => product.category === "laptop").length;
   const smartphoneCount = products.filter((product) => product.category === "smartphone").length;
+  const heroProducts = products.filter((product) => product.image_url).slice(0, 2);
 
   const totalStock = products.reduce(
     (sum, product) => sum + (Number(product.stock) || 0),
@@ -803,11 +804,20 @@ export default function Admin() {
           <section className="ap-welcome ap-welcome-premium">
             <div className="ap-welcome-copy">
               <span className="ap-eyebrow">FIKRI STORE · CONTROL CENTER</span>
-              <h1>Kelola inventaris dengan lebih terarah.</h1>
+              <h1>Inventaris toko, lebih terarah.</h1>
               <p>Pantau produk laptop dan smartphone, periksa stok, dan kelola katalog dari satu tempat.</p>
               <div className="ap-welcome-meta"><span className="ap-welcome-live"><i /> Sistem inventaris aktif</span><span>•</span><span>{products.length} produk terdaftar</span></div>
             </div>
-
+            <div className="ap-hero-product-visual" aria-label="Foto produk dari katalog toko">
+              {heroProducts.length > 0 ? heroProducts.map((product, index) => (
+                <article className={`ap-hero-product-card ${index === 0 ? "is-primary" : "is-secondary"}`} key={product.id}>
+                  <img src={product.image_url} alt={product.name} loading="lazy" />
+                  <div><strong>{product.name}</strong><span>{categoryLabel(product.category)}</span></div>
+                </article>
+              )) : (
+                <div className="ap-hero-product-empty"><Package size={38} strokeWidth={1.5} /><span>Foto produk akan tampil di sini</span></div>
+              )}
+            </div>
           </section>
 
           {notice && (
