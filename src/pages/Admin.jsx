@@ -803,18 +803,11 @@ export default function Admin() {
           <section className="ap-welcome ap-welcome-premium">
             <div className="ap-welcome-copy">
               <span className="ap-eyebrow">FIKRI STORE · CONTROL CENTER</span>
-              <h1>Semua inventaris, <em>dalam kendali.</em></h1>
-              <p>Pantau katalog laptop dan smartphone, kelola stok, dan perbarui produk dari satu tempat.</p>
+              <h1>Kelola inventaris dengan lebih terarah.</h1>
+              <p>Pantau produk laptop dan smartphone, periksa stok, dan kelola katalog dari satu tempat.</p>
               <div className="ap-welcome-meta"><span className="ap-welcome-live"><i /> Sistem inventaris aktif</span><span>•</span><span>{products.length} produk terdaftar</span></div>
             </div>
-            <div className="ap-device-stage" aria-hidden="true">
-              <div className="ap-device-glow" />
-              <div className="ap-device-laptop"><div className="ap-device-screen"><div className="ap-device-topline"><i/><i/><i/></div><div className="ap-device-screen-brand">F.</div><div className="ap-device-chart"><span/><span/><span/><span/><span/><span/><span/></div><div className="ap-device-screen-foot"><b/><b/><b/></div></div><div className="ap-device-base" /></div>
-              <div className="ap-device-phone"><div className="ap-phone-camera"/><div className="ap-phone-mark">F.</div><div className="ap-phone-lines"><i/><i/><i/></div><div className="ap-phone-chip"/></div>
-              <span className="ap-device-label ap-device-label-laptop"><Laptop size={13}/> LAPTOP</span>
-              <span className="ap-device-label ap-device-label-phone"><Smartphone size={13}/> SMARTPHONE</span>
-              <span className="ap-device-spark">✦</span>
-            </div>
+
           </section>
 
           {notice && (
