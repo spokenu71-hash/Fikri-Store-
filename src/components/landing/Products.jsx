@@ -87,7 +87,7 @@ export default function Products() {
   }
 
   return (
-    <section id="produk" className="relative py-16 sm:py-24 scroll-mt-20">
+    <section id="produk" className="relative pt-10 pb-16 sm:py-24 scroll-mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">Produk Pilihan</span>
