@@ -2,7 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search, ShieldCheck, LogOut } from "lucide-react";
+import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search, ShieldCheck, LogOut, Smartphone, Laptop, ArrowUpRight } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -481,6 +481,10 @@ export default function Admin() {
     ),
   ];
 
+  const laptopCount = products.filter((product) => product.category === "laptop").length;
+  const smartphoneCount = products.filter((product) => product.category === "smartphone").length;
+  const heroProducts = products.filter((product) => product.image_url).slice(0, 2);
+
   const totalStock = products.reduce(
     (sum, product) => sum + (Number(product.stock) || 0),
     0
@@ -797,19 +801,22 @@ export default function Admin() {
         </header>
 
         <div className="ap-content" id="ap-dashboard">
-          <section className="ap-welcome">
+          <section className="ap-welcome ap-welcome-premium">
             <div className="ap-welcome-copy">
-              <span className="ap-eyebrow">RINGKASAN TOKO</span>
-              <h1>Selamat datang, Fikri <span className="ap-welcome-wave">👋</span></h1>
-              <p>
-                Kelola inventaris tokomu
-              </p>
+              <span className="ap-eyebrow">FIKRI STORE · CONTROL CENTER</span>
+              <h1>Inventaris toko, lebih terarah.</h1>
+              <p>Pantau produk laptop dan smartphone, periksa stok, dan kelola katalog dari satu tempat.</p>
+              <div className="ap-welcome-meta"><span className="ap-welcome-live"><i /> Sistem inventaris aktif</span><span>•</span><span>{products.length} produk terdaftar</span></div>
             </div>
-
-            <div className="ap-welcome-mark" aria-hidden="true">
-              <div className="ap-mark-orbit" />
-              <div className="ap-mark-core">F.</div>
-              <span className="ap-mark-spark">✦</span>
+            <div className="ap-hero-product-visual" aria-label="Foto produk dari katalog toko">
+              {heroProducts.length > 0 ? heroProducts.map((product, index) => (
+                <article className={`ap-hero-product-card ${index === 0 ? "is-primary" : "is-secondary"}`} key={product.id}>
+                  <img src={product.image_url} alt={product.name} loading="lazy" />
+                  <div><strong>{product.name}</strong><span>{categoryLabel(product.category)}</span></div>
+                </article>
+              )) : (
+                <div className="ap-hero-product-empty"><Package size={38} strokeWidth={1.5} /><span>Foto produk akan tampil di sini</span></div>
+              )}
             </div>
           </section>
 
@@ -871,6 +878,19 @@ export default function Admin() {
               description="Produk dengan stok ≤ 5"
               tone="amber"
             />
+          </section>
+
+          <section className="ap-category-overview" aria-label="Ringkasan kategori produk">
+            <article className="ap-category-tile ap-category-laptop">
+              <span className="ap-category-tile-icon"><Laptop size={19}/></span>
+              <div><small>KATALOG LAPTOP</small><strong>{laptopCount}</strong><span>produk terdaftar</span></div>
+              <span className="ap-category-tile-arrow"><ArrowUpRight size={17}/></span>
+            </article>
+            <article className="ap-category-tile ap-category-phone">
+              <span className="ap-category-tile-icon"><Smartphone size={19}/></span>
+              <div><small>KATALOG SMARTPHONE</small><strong>{smartphoneCount}</strong><span>produk terdaftar</span></div>
+              <span className="ap-category-tile-arrow"><ArrowUpRight size={17}/></span>
+            </article>
           </section>
 
           <section className="ap-management-heading" id="ap-products">

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase.js";
+import { Images, ChevronDown, CheckCircle2, CircleDashed } from "lucide-react";
 
 const ITEMS = [
   { key: "hero", label: "Foto utama halaman depan", description: "Visual utama yang pertama dilihat pengunjung." },
@@ -143,7 +144,7 @@ export default function SiteImagesManager() {
   return (
     <section id="ap-site-images" className="ap-panel ap-site-images-panel">
       <div className="ap-panel-heading ap-site-images-heading">
-        <div className="ap-site-images-heading-icon" aria-hidden="true">▧</div>
+        <div className="ap-site-images-heading-icon" aria-hidden="true"><Images size={23} strokeWidth={1.8} /></div>
         <div>
           <span className="ap-eyebrow">KONTEN WEBSITE</span>
           <h3>Manajemen foto website</h3>
@@ -169,9 +170,9 @@ export default function SiteImagesManager() {
                   <span className="ap-site-image-placeholder">+</span>
                 )}
                 <span className={hasImage ? "ap-site-image-status is-set" : "ap-site-image-status"}>
-                  {hasImage ? "Tersimpan" : "Belum diatur"}
+                  {hasImage ? <><CheckCircle2 size={13} /> Tersimpan</> : <><CircleDashed size={13} /> Belum diatur</>}
                 </span>
-                <span className="ap-site-image-chevron" aria-hidden="true">⌄</span>
+                <span className="ap-site-image-chevron" aria-hidden="true"><ChevronDown size={18} /></span>
               </summary>
 
               <div className="ap-site-image-editor">
