@@ -2686,3 +2686,58 @@ img.ap-product-image { display:block; object-fit:cover; }
  .ap-content { padding-bottom:8px !important; }
 }
 @media(prefers-reduced-motion:reduce) { .ap-site-image-item,.ap-site-image-chevron { transition:none !important; } }
+
+
+/* Hero refinement: remove decorative device mockups and prevent clipped copy. */
+.ap-welcome-premium {
+  display:flex !important;
+  min-height:0 !important;
+  padding:clamp(25px,3.2vw,42px) !important;
+  align-items:center !important;
+  overflow:hidden !important;
+  background:radial-gradient(ellipse at 92% 8%,rgba(92,126,231,.24),transparent 34%),linear-gradient(118deg,#111c38 0%,#1b2d54 65%,#263d70 100%) !important;
+}
+.ap-welcome-premium:before {
+  opacity:.10 !important;
+  background-size:44px 44px !important;
+  mask-image:linear-gradient(90deg,transparent 0%,black 100%) !important;
+}
+.ap-welcome-premium .ap-welcome-copy {
+  z-index:1 !important;
+  width:100% !important;
+  max-width:760px !important;
+  min-width:0 !important;
+}
+.ap-welcome-premium h1 {
+  display:block !important;
+  width:100% !important;
+  max-width:720px !important;
+  margin:14px 0 12px !important;
+  white-space:normal !important;
+  overflow:visible !important;
+  overflow-wrap:normal !important;
+  word-break:normal !important;
+  text-wrap:balance !important;
+  font-size:clamp(27px,3.4vw,43px) !important;
+  letter-spacing:-1.35px !important;
+  line-height:1.18 !important;
+}
+.ap-welcome-premium p { max-width:560px !important; margin:0 !important; font-size:14px !important; line-height:1.75 !important; }
+.ap-welcome-meta { flex-wrap:wrap !important; row-gap:8px !important; margin-top:22px !important; }
+.ap-device-stage { display:none !important; }
+@media(max-width:900px) {
+ .ap-welcome-premium { min-height:0 !important; padding:27px 25px !important; }
+ .ap-welcome-premium .ap-welcome-copy { width:100% !important; max-width:100% !important; }
+ .ap-welcome-premium h1 { max-width:100% !important; font-size:clamp(27px,5vw,36px) !important; }
+}
+@media(max-width:600px) {
+ .ap-welcome-premium { min-height:0 !important; padding:25px 22px 24px !important; border-radius:20px !important; }
+ .ap-welcome-premium h1 { max-width:100% !important; margin:12px 0 10px !important; font-size:clamp(25px,7vw,30px) !important; letter-spacing:-.9px !important; line-height:1.2 !important; }
+ .ap-welcome-premium p { max-width:100% !important; font-size:12px !important; line-height:1.7 !important; }
+ .ap-welcome-meta { gap:8px !important; margin-top:17px !important; font-size:10px !important; }
+}
+@media(max-width:380px) {
+ .ap-welcome-premium { padding:22px 18px !important; }
+ .ap-welcome-premium h1 { font-size:25px !important; letter-spacing:-.7px !important; }
+ .ap-welcome-premium .ap-eyebrow { font-size:9px !important; letter-spacing:1.25px !important; }
+}
