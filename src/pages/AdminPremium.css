@@ -2832,3 +2832,72 @@ img.ap-product-image { display:block; object-fit:cover; }
  .ap-hero-product-card { height:120px; }
  .ap-hero-product-card img { height:76px; }
 }
+
+
+/* Admin mobile navigation — sculpted active dock inspired by the supplied reference. */
+@media (max-width: 900px) {
+  .ap-mobile-bottom-nav {
+    left: 50% !important;
+    bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    width: min(430px, calc(100% - 36px)) !important;
+    min-height: 70px !important;
+    height: 70px !important;
+    padding: 0 14px !important;
+    gap: 10px !important;
+    overflow: visible !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    border-radius: 25px !important;
+    background: #050505 !important;
+    box-shadow: 0 13px 30px rgba(0,0,0,.22), 0 2px 5px rgba(0,0,0,.12) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .ap-mobile-nav-item,
+  .ap-mobile-nav-item.active {
+    position: relative !important;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    min-height: 54px !important;
+    height: 54px !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    color: #fff !important;
+    box-shadow: none !important;
+    transform: none;
+    transition: transform .34s cubic-bezier(.2,.8,.2,1), color .2s ease !important;
+  }
+  .ap-mobile-nav-item.active {
+    z-index: 2 !important;
+    width: 62px !important;
+    height: 62px !important;
+    min-height: 62px !important;
+    flex: 1 1 0 !important;
+    margin-top: -22px !important;
+    border: 8px solid #f8f9fc !important;
+    background: #050505 !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.05) !important;
+    animation: adminDockSelect .42s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .ap-mobile-nav-item.active::before,
+  .ap-mobile-nav-item.active::after { content: none !important; }
+  .ap-mobile-nav-icon { display:flex !important; align-items:center !important; justify-content:center !important; }
+  .ap-mobile-nav-icon svg { width:25px !important; height:25px !important; stroke-width:2.3 !important; }
+  .ap-mobile-nav-label { display:none !important; }
+  .ap-mobile-nav-count { display:none !important; }
+  .ap-mobile-nav-item:active { transform:scale(.94) !important; }
+  .ap-mobile-nav-item.active:active { transform:translateY(-2px) scale(.96) !important; }
+  .ap-app { padding-bottom:calc(112px + env(safe-area-inset-bottom)) !important; }
+}
+@keyframes adminDockSelect {
+  0% { transform:translateY(8px) scale(.82); }
+  65% { transform:translateY(-3px) scale(1.04); }
+  100% { transform:translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-mobile-nav-item.active { animation:none !important; }
+}
