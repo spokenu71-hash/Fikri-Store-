@@ -2901,3 +2901,89 @@ img.ap-product-image { display:block; object-fit:cover; }
 @media (prefers-reduced-motion: reduce) {
   .ap-mobile-nav-item.active { animation:none !important; }
 }
+
+
+/* Final polish: compact active navigation control and motion on hero product photography. */
+@media (max-width: 900px) {
+  .ap-mobile-bottom-nav {
+    min-height: 64px !important;
+    height: 64px !important;
+    padding: 0 12px !important;
+    gap: 8px !important;
+    border-radius: 23px !important;
+  }
+  .ap-mobile-nav-item,
+  .ap-mobile-nav-item.active {
+    min-height: 48px !important;
+    height: 48px !important;
+  }
+  .ap-mobile-nav-item.active {
+    width: 50px !important;
+    height: 50px !important;
+    min-height: 50px !important;
+    flex: 0 0 50px !important;
+    margin-top: -13px !important;
+    border-width: 5px !important;
+  }
+  .ap-mobile-nav-icon svg {
+    width: 21px !important;
+    height: 21px !important;
+    stroke-width: 2.15 !important;
+  }
+  .ap-app {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom)) !important;
+  }
+}
+.ap-hero-product-card {
+  transform-origin: 50% 60%;
+  animation: ap-hero-card-float 5.8s ease-in-out infinite;
+  will-change: transform;
+}
+.ap-hero-product-card.is-secondary {
+  animation-delay: -2.9s;
+}
+.ap-hero-product-card img {
+  transform: scale(1.015);
+  animation: ap-hero-image-drift 7s ease-in-out infinite alternate;
+}
+.ap-hero-product-card.is-secondary img {
+  animation-delay: -3.5s;
+}
+.ap-hero-product-card:after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(112deg, transparent 25%, rgba(255,255,255,.22) 48%, transparent 68%);
+  transform: translateX(-130%);
+  animation: ap-hero-image-shine 7.5s ease-in-out infinite;
+}
+.ap-hero-product-card.is-secondary:after { animation-delay: -3.75s; }
+@keyframes ap-hero-card-float {
+  0%, 100% { transform: translateY(0) rotate(-.4deg); }
+  50% { transform: translateY(-7px) rotate(.4deg); }
+}
+@keyframes ap-hero-image-drift {
+  from { transform: scale(1.015); }
+  to { transform: scale(1.075); }
+}
+@keyframes ap-hero-image-shine {
+  0%, 35% { transform: translateX(-130%); }
+  65%, 100% { transform: translateX(130%); }
+}
+@media (max-width: 900px) {
+  .ap-hero-product-card.is-secondary { transform: none; }
+  @keyframes ap-hero-card-float {
+    0%, 100% { transform: translateY(0) rotate(-.35deg); }
+    50% { transform: translateY(-5px) rotate(.35deg); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-hero-product-card,
+  .ap-hero-product-card img,
+  .ap-hero-product-card:after {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
