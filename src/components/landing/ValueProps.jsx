@@ -10,7 +10,7 @@ export default function ValueProps() {
             Keunggulan Fikri Store
           </span>
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Belanja lebih tenang, pilihan lebih tepat.
+            Kenapa pilih Fikri Store?
           </h2>
         </div>
 
