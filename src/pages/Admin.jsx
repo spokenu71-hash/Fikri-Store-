@@ -2,7 +2,7 @@
 import "./AdminPremium.css";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search, ShieldCheck, LogOut } from "lucide-react";
+import { LayoutGrid, Package, Images, Layers, Pencil, Trash2, MoreVertical, Search, ShieldCheck, LogOut, Smartphone, Laptop, ArrowUpRight } from "lucide-react";
 import { supabase, supabaseConfigured } from "../lib/supabase.js";
 import SiteImagesManager from "./SiteImagesManager.jsx";
 
@@ -481,6 +481,9 @@ export default function Admin() {
     ),
   ];
 
+  const laptopCount = products.filter((product) => product.category === "laptop").length;
+  const smartphoneCount = products.filter((product) => product.category === "smartphone").length;
+
   const totalStock = products.reduce(
     (sum, product) => sum + (Number(product.stock) || 0),
     0
@@ -797,19 +800,20 @@ export default function Admin() {
         </header>
 
         <div className="ap-content" id="ap-dashboard">
-          <section className="ap-welcome">
+          <section className="ap-welcome ap-welcome-premium">
             <div className="ap-welcome-copy">
-              <span className="ap-eyebrow">RINGKASAN TOKO</span>
-              <h1>Selamat datang, Fikri <span className="ap-welcome-wave">👋</span></h1>
-              <p>
-                Kelola inventaris tokomu
-              </p>
+              <span className="ap-eyebrow">FIKRI STORE · CONTROL CENTER</span>
+              <h1>Semua inventaris, <em>dalam kendali.</em></h1>
+              <p>Pantau katalog laptop dan smartphone, kelola stok, dan perbarui produk dari satu tempat.</p>
+              <div className="ap-welcome-meta"><span className="ap-welcome-live"><i /> Sistem inventaris aktif</span><span>•</span><span>{products.length} produk terdaftar</span></div>
             </div>
-
-            <div className="ap-welcome-mark" aria-hidden="true">
-              <div className="ap-mark-orbit" />
-              <div className="ap-mark-core">F.</div>
-              <span className="ap-mark-spark">✦</span>
+            <div className="ap-device-stage" aria-hidden="true">
+              <div className="ap-device-glow" />
+              <div className="ap-device-laptop"><div className="ap-device-screen"><div className="ap-device-topline"><i/><i/><i/></div><div className="ap-device-screen-brand">F.</div><div className="ap-device-chart"><span/><span/><span/><span/><span/><span/><span/></div><div className="ap-device-screen-foot"><b/><b/><b/></div></div><div className="ap-device-base" /></div>
+              <div className="ap-device-phone"><div className="ap-phone-camera"/><div className="ap-phone-mark">F.</div><div className="ap-phone-lines"><i/><i/><i/></div><div className="ap-phone-chip"/></div>
+              <span className="ap-device-label ap-device-label-laptop"><Laptop size={13}/> LAPTOP</span>
+              <span className="ap-device-label ap-device-label-phone"><Smartphone size={13}/> SMARTPHONE</span>
+              <span className="ap-device-spark">✦</span>
             </div>
           </section>
 
@@ -871,6 +875,19 @@ export default function Admin() {
               description="Produk dengan stok ≤ 5"
               tone="amber"
             />
+          </section>
+
+          <section className="ap-category-overview" aria-label="Ringkasan kategori produk">
+            <article className="ap-category-tile ap-category-laptop">
+              <span className="ap-category-tile-icon"><Laptop size={19}/></span>
+              <div><small>KATALOG LAPTOP</small><strong>{laptopCount}</strong><span>produk terdaftar</span></div>
+              <span className="ap-category-tile-arrow"><ArrowUpRight size={17}/></span>
+            </article>
+            <article className="ap-category-tile ap-category-phone">
+              <span className="ap-category-tile-icon"><Smartphone size={19}/></span>
+              <div><small>KATALOG SMARTPHONE</small><strong>{smartphoneCount}</strong><span>produk terdaftar</span></div>
+              <span className="ap-category-tile-arrow"><ArrowUpRight size={17}/></span>
+            </article>
           </section>
 
           <section className="ap-management-heading" id="ap-products">
