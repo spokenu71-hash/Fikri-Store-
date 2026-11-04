@@ -48,7 +48,7 @@ export default function UseCases() {
   return (
     <section
       id="use-cases"
-      className="relative py-12 sm:py-20 border-t border-border bg-light"
+      className="relative pt-8 pb-8 sm:py-20 border-t border-border bg-light"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
