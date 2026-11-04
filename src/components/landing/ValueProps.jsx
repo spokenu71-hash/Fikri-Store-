@@ -3,7 +3,7 @@ import { VALUE_PROPS } from "@/lib/products";
 
 export default function ValueProps() {
   return (
-    <section className="relative pt-12 pb-9 sm:py-24 border-t border-b border-border">
+    <section className="relative pt-8 pb-8 sm:py-24 border-t border-b border-border">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
