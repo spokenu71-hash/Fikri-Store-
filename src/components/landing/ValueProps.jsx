@@ -7,10 +7,10 @@ export default function ValueProps() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-            Kenapa Kami
+            Keunggulan Fikri Store
           </span>
           <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Kenapa pilih Fikri Store?
+            Belanja lebih tenang, pilihan lebih tepat.
           </h2>
         </div>
 
