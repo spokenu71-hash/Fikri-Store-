@@ -48,7 +48,7 @@ export default function UseCases() {
   return (
     <section
       id="use-cases"
-      className="relative py-16 sm:py-24 border-t border-border bg-light"
+      className="relative pt-8 pb-8 sm:py-20 border-t border-border bg-light"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="max-w-2xl">
@@ -56,45 +56,46 @@ export default function UseCases() {
             Cocok Untuk
           </span>
 
-          <h2 className="mt-2 font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-light-foreground">
-            Perangkat untuk segala aktivitasmu
+          <h2 className="mt-2 font-heading text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-light-foreground">
+            Laptop untuk aktivitas sehari-hari
           </h2>
 
-          <p className="mt-3 text-light-muted">
-            Mau kuliah, kerja, desain, atau gaming ringan — ada unit yang pas
-            buat kamu.
+          <p className="mt-3 text-sm sm:text-base text-light-muted">
+            Pilih laptop sesuai aktivitas kuliah, kerja, desain, atau hiburan.
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-7 sm:mt-10 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {USE_CASES.map((useCase) => {
             const key = IMAGE_KEYS[useCase.title];
             const imageSrc = (key && customImages[key]) || useCase.image;
 
             return (
-              <div
+              <article
                 key={useCase.index}
-                className="group relative overflow-hidden rounded-3xl border border-light-border bg-white aspect-[3/4]"
+                className="group relative min-w-0 overflow-hidden rounded-2xl sm:rounded-3xl border border-light-border bg-white aspect-[4/5] sm:aspect-[5/6]"
               >
                 <Image
                   src={imageSrc}
                   alt={useCase.title}
-                  className="w-full h-full"
+                  className="w-full h-full transition-transform duration-500 group-hover:scale-[1.04]"
                   fittingType="fill"
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
 
-                <div className="absolute inset-0 p-5 flex flex-col justify-end">
-                  <span className="font-heading text-3xl font-extrabold text-primary text-glow-lime">
+                <div className="absolute inset-x-0 bottom-0 p-3 sm:p-5 flex flex-col">
+                  <span className="font-heading text-2xl sm:text-3xl font-extrabold text-primary text-glow-lime">
                     {useCase.index}
                   </span>
-                  <h3 className="mt-1 font-heading text-xl font-bold text-white">
+                  <h3 className="mt-1 font-heading text-base sm:text-xl font-bold leading-tight text-white">
                     {useCase.title}
                   </h3>
-                  <p className="mt-1 text-sm text-white/80">{useCase.desc}</p>
+                  <p className="mt-1 text-xs sm:text-sm leading-snug text-white/80">
+                    {useCase.desc}
+                  </p>
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

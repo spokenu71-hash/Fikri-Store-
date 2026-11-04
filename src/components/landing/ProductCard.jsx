@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
-import { MessageCircle, ChevronLeft, ChevronRight, Monitor } from "lucide-react";
+import { ChevronLeft, ChevronRight, Monitor } from "lucide-react";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { productWhatsAppLink } from "@/lib/products";
 import { Image } from "@/components/ui/image";
 
@@ -161,7 +162,7 @@ export default function ProductCard({ product, onViewDetails }) {
             rel="noopener noreferrer"
             className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground transition-transform hover:scale-[1.02] active:scale-95 min-h-[48px]"
           >
-            <MessageCircle aria-hidden="true" className="h-4 w-4" />
+            <WhatsAppIcon className="h-4 w-4" />
             Tanya produk ini
           </a>
         </div>

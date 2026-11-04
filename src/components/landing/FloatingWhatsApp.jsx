@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppLink } from "@/lib/products";
 
 export default function FloatingWhatsApp() {
@@ -25,7 +25,7 @@ export default function FloatingWhatsApp() {
         visible ? "opacity-100 translate-y-0" : "opacity-0 pointer-events-none translate-y-4"
       }`}
     >
-      <MessageCircle className="h-5 w-5" />
+      <WhatsAppIcon className="h-5 w-5" />
       <span className="hidden sm:inline">Chat WhatsApp</span>
     </a>
   );
