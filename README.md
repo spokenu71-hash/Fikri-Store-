@@ -23,7 +23,15 @@ Hasil build tersedia di folder `dist/`.
 
 ## Deployment
 
-Project terhubung ke GitHub dan Cloudflare Pages. Branch production: `main`; build command: `npm run build`; output directory: `dist`.
+Project terhubung ke GitHub dan Cloudflare Pages.
+
+- Production branch: `main`.
+- Preview deployment: pull request dan branch non-production yang diaktifkan pada pengaturan Cloudflare Pages.
+- Build command: `npm run build`.
+- Build output directory: `dist`.
+- Framework preset: Vite.
+
+Perubahan pada pull request ini ditujukan untuk Cloudflare Pages Preview; deployment production tetap mengikuti branch `main`. Konfigurasi Netlify sudah tidak digunakan.
 
 ## Konten dan katalog
 
