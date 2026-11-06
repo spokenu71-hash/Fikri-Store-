@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { ArrowRight, CheckCircle2, Truck, ShieldCheck } from "lucide-react";
 import WhatsAppIcon from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppLink } from "@/lib/products";
+import "./SceneControls.css";
 
 const SCENES = [
   { label: "WORKSPACE", title: "Ruang kerja", detail: "Fokus pada hal penting." },
@@ -16,12 +17,33 @@ const FEATURES = [
 
 export default function Hero() {
   const [scene, setScene] = useState(0);
+  const [isScenePaused, setScenePaused] = useState(false);
   const stageRef = useRef(null);
   const frameRef = useRef(null);
+
   useEffect(() => {
-    const timer = window.setInterval(() => setScene((current) => (current + 1) % SCENES.length), 4600);
-    return () => window.clearInterval(timer);
-  }, []);
+    const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timer;
+
+    const syncPlayback = () => {
+      window.clearInterval(timer);
+      if (!motionPreference.matches && !isScenePaused && !document.hidden) {
+        timer = window.setInterval(() => {
+          setScene((current) => (current + 1) % SCENES.length);
+        }, 4600);
+      }
+    };
+
+    syncPlayback();
+    motionPreference.addEventListener?.("change", syncPlayback);
+    document.addEventListener("visibilitychange", syncPlayback);
+
+    return () => {
+      window.clearInterval(timer);
+      motionPreference.removeEventListener?.("change", syncPlayback);
+      document.removeEventListener("visibilitychange", syncPlayback);
+    };
+  }, [isScenePaused]);
   function handlePointerMove(event) {
     if (!stageRef.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const rect = stageRef.current.getBoundingClientRect();
@@ -54,7 +76,15 @@ export default function Hero() {
             </div>
             <div className="fs-laptop-trust"><span><ShieldCheck className="h-4 w-4 text-primary" /> Unit diperiksa</span><span><WhatsAppIcon className="h-4 w-4 text-primary" /> Tanya langsung</span></div>
           </div>
-          <div className="fs-laptop-stage-wrap">
+          <div
+            className="fs-laptop-stage-wrap"
+            onPointerEnter={() => setScenePaused(true)}
+            onPointerLeave={() => setScenePaused(false)}
+            onFocusCapture={() => setScenePaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setScenePaused(false);
+            }}
+          >
             <div ref={stageRef} className="fs-laptop-stage" onPointerMove={handlePointerMove} onPointerLeave={resetPointer} onPointerCancel={resetPointer}>
               <div className="fs-stage-light" aria-hidden="true" /><div className="fs-laptop-shadow" aria-hidden="true" />
               <div className="fs-laptop-device">
@@ -168,7 +198,18 @@ export default function Hero() {
               </div>
               <div className="fs-stage-caption"><span className="fs-live-dot" /> {SCENES[scene].label}</div><div className="fs-stage-index">0{scene+1}<span> / 03</span></div>
             </div>
-            <div className="fs-scene-progress" aria-label={"Tampilan animasi " + (scene+1) + " dari 3"}>{SCENES.map((item,index)=><span key={item.label} className={scene===index?"is-active":""}/>)}</div>
+            <div className="fs-scene-progress" role="group" aria-label="Pilih tampilan aktivitas laptop">
+              {SCENES.map((item, index) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  aria-label={`Tampilkan ${item.title}`}
+                  aria-pressed={scene === index}
+                  className={scene === index ? "is-active" : ""}
+                  onClick={() => setScene(index)}
+                />
+              ))}
+            </div>
           </div>
         </div>
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">{FEATURES.map((feature)=><div key={feature.label} className="fs-feature-card flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3.5"><div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0"><feature.icon className="h-5 w-5 text-primary"/></div><span className="text-xs sm:text-sm font-medium">{feature.label}</span></div>)}</div>
